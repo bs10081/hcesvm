@@ -41,7 +41,7 @@ def load_parkinsons_data(
     metadata_cols = [
         'Unnamed: 0', 'status', 'ksi', 'ai', 'bi', 'ri',
         'predict value', 'predic_class', 'correct', 'accuracy',
-        'TP', 'FN', 'TN', 'FP', 'TPR', 'TNR'
+        'TP', 'FN', 'TN', 'FP', 'TPR', 'FPR', 'TNR'  # Added FPR
     ]
     feature_cols = [
         c for c in df.columns
