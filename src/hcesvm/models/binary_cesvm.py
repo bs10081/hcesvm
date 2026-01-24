@@ -152,16 +152,20 @@ class BinaryCESVM:
             model.addConstr(ksi[i] >= (1 + self.epsilon) * beta[i], name=f"acc_lb_{i}")
 
         # 5. Positive class accuracy constraint
-        pos_indices = np.where(y == 1)[0]
+        # LINGO: sum((1-beta[i])*(1+y[i])) >= l_p * sum(1+y[i])
+        # (1+y[i]) = 2 for y=+1, 0 for y=-1 (selects positive class)
         model.addConstr(
-            gp.quicksum(1 - beta[int(i)] for i in pos_indices) >= l_p * n_pos,
+            gp.quicksum((1 - beta[i]) * (1 + y[i]) for i in range(n))
+            >= l_p * gp.quicksum(1 + y[i] for i in range(n)),
             name="pos_accuracy"
         )
 
         # 6. Negative class accuracy constraint
-        neg_indices = np.where(y == -1)[0]
+        # LINGO: sum((1-beta[i])*(1-y[i])) >= l_n * sum(1-y[i])
+        # (1-y[i]) = 2 for y=-1, 0 for y=+1 (selects negative class)
         model.addConstr(
-            gp.quicksum(1 - beta[int(i)] for i in neg_indices) >= l_n * n_neg,
+            gp.quicksum((1 - beta[i]) * (1 - y[i]) for i in range(n))
+            >= l_n * gp.quicksum(1 - y[i] for i in range(n)),
             name="neg_accuracy"
         )
 
