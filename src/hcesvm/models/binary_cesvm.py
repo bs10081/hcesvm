@@ -142,7 +142,7 @@ class BinaryCESVM:
             model.addConstr(ksi[i] <= 1 + self.M * beta[i], name=f"bigM2_{i}")
             model.addConstr(ksi[i] <= 2 + self.M * rho[i], name=f"bigM3_{i}")
 
-        # 3. Tier hierarchy constraints
+        # 3. Step Loss Constraint (Tier hierarchy)
         for i in range(n):
             model.addConstr(alpha[i] >= beta[i], name=f"tier1_{i}")
             model.addConstr(beta[i] >= rho[i], name=f"tier2_{i}")
