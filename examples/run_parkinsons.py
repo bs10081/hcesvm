@@ -25,6 +25,8 @@ def main():
     # Get default parameters
     params = get_default_params()
     params['verbose'] = True
+    params['mip_gap'] = 0.05  # Allow 5% gap for faster convergence
+    params['time_limit'] = 300  # Reduce to 5 minutes
     
     print("\n" + "=" * 60)
     print("Model Parameters")

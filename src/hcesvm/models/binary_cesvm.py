@@ -195,6 +195,11 @@ class BinaryCESVM:
         if self.model.status == GRB.OPTIMAL:
             self._extract_solution()
             return True
+        elif self.model.status == GRB.TIME_LIMIT and self.model.SolCount > 0:
+            # Accept best solution found within time limit
+            print(f"Time limit reached. Using best solution found (gap: {self.model.MIPGap:.2%})")
+            self._extract_solution()
+            return True
         elif self.model.status == GRB.INFEASIBLE:
             print("Model is infeasible. Computing IIS...")
             self.model.computeIIS()
@@ -207,7 +212,7 @@ class BinaryCESVM:
 
     def _extract_solution(self):
         """Extract solution from solved Gurobi model."""
-        if self.model.status != GRB.OPTIMAL:
+        if self.model.status not in [GRB.OPTIMAL, GRB.TIME_LIMIT]:
             return
 
         d = len([v for v in self.model.getVars() if v.VarName.startswith("w_plus")])
