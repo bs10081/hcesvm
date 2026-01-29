@@ -97,20 +97,25 @@ def load_multiclass_data(
     
     # Extract feature columns
     metadata_cols = [
-        'Unnamed: 0', label_col, 'Actual', 'predict', 'correct'
+        'Unnamed: 0', label_col, 'Actual', 'predict', 'correct',
+        'class',  # Added: Balance dataset's original class label (L/B/R)
+        'ksi+', 'ksi-', 'eta21/12/13', 'eta31/32/23',  # NSVORA output columns
+        'alpha+', 'alpha-', 'beta+', 'beta-', 'k1', 'k2', 'k3',
+        'Predict'  # NSVORA prediction column
     ]
     feature_cols = [
         c for c in df.columns
         if c not in metadata_cols and not c.startswith('Unnamed')
     ]
     
-    X = df[feature_cols].values
+    # Extract features and convert to float64 (ensure numeric type)
+    X = df[feature_cols].astype(np.float64).values
     n_features = X.shape[1]
-    
+
     # Split by class
     X_classes = []
     n_classes_list = []
-    
+
     for k in [1, 2, 3]:
         mask = y == k
         X_k = X[mask]

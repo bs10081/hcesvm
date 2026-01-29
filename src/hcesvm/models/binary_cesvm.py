@@ -220,26 +220,56 @@ class BinaryCESVM:
             return
 
         d = len([v for v in self.model.getVars() if v.VarName.startswith("w_plus")])
+        n = len([v for v in self.model.getVars() if v.VarName.startswith("ksi")])
 
+        # Extract weight variables
         w_plus_vals = np.array([self.model.getVarByName(f"w_plus[{j}]").X for j in range(d)])
         w_minus_vals = np.array([self.model.getVarByName(f"w_minus[{j}]").X for j in range(d)])
         self.weights = w_plus_vals - w_minus_vals
         self.intercept = self.model.getVarByName("b").X
 
+        # Extract slack and indicator variables
+        ksi_vals = np.array([self.model.getVarByName(f"ksi[{i}]").X for i in range(n)])
+        alpha_vals = np.array([self.model.getVarByName(f"alpha[{i}]").X for i in range(n)])
+        beta_vals = np.array([self.model.getVarByName(f"beta[{i}]").X for i in range(n)])
+        rho_vals = np.array([self.model.getVarByName(f"rho[{i}]").X for i in range(n)])
+
+        # Extract feature selection variables
         if self.enable_selection:
             v_vals = np.array([self.model.getVarByName(f"v[{j}]").X for j in range(d)])
             self.selected_features = v_vals > 0.5
         else:
+            v_vals = np.ones(d)
             self.selected_features = np.ones(d, dtype=bool)
 
+        # Extract accuracy lower bounds
+        l_p_val = self.model.getVarByName("l_p").X
+        l_n_val = self.model.getVarByName("l_n").X
+
         self.solution = {
+            # Primary decision variables
             'weights': self.weights,
+            'w_plus': w_plus_vals,
+            'w_minus': w_minus_vals,
             'intercept': self.intercept,
             'selected_features': self.selected_features,
+            'v': v_vals,
+
+            # Slack and indicator variables (per sample)
+            'ksi': ksi_vals,
+            'alpha': alpha_vals,
+            'beta': beta_vals,
+            'rho': rho_vals,
+
+            # Accuracy lower bounds
+            'l_p': l_p_val,
+            'l_n': l_n_val,
+
+            # Summary statistics
             'objective_value': self.model.ObjVal,
-            'l_p': self.model.getVarByName("l_p").X,
-            'l_n': self.model.getVarByName("l_n").X,
             'n_selected_features': int(np.sum(self.selected_features)),
+            'n_support_vectors': int(np.sum(ksi_vals > 1e-6)),  # Samples with ksi > 0
+            'n_margin_errors': int(np.sum(ksi_vals > 1.0)),  # Samples with ksi > 1
         }
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'BinaryCESVM':
@@ -288,7 +318,7 @@ class BinaryCESVM:
 
     def get_solution_summary(self) -> Dict:
         """Get a summary of the solution.
-        
+
         Returns:
             Dictionary with solution information
         """
@@ -302,5 +332,71 @@ class BinaryCESVM:
             "l1_norm": np.sum(np.abs(self.weights)),
             "positive_class_accuracy_lb": self.solution['l_p'],
             "negative_class_accuracy_lb": self.solution['l_n'],
+            "n_support_vectors": self.solution['n_support_vectors'],
+            "n_margin_errors": self.solution['n_margin_errors'],
             "intercept": self.intercept,
         }
+
+    def get_slack_variables(self) -> np.ndarray:
+        """Get slack variables (ksi) for all training samples.
+
+        Returns:
+            Array of slack values (n_samples,)
+        """
+        if self.solution is None:
+            raise RuntimeError("Model not fitted. Call fit() first.")
+        return self.solution['ksi']
+
+    def get_indicator_variables(self) -> Dict[str, np.ndarray]:
+        """Get three-tier indicator variables for all training samples.
+
+        Returns:
+            Dictionary with keys 'alpha', 'beta', 'rho' containing binary arrays
+        """
+        if self.solution is None:
+            raise RuntimeError("Model not fitted. Call fit() first.")
+        return {
+            'alpha': self.solution['alpha'],
+            'beta': self.solution['beta'],
+            'rho': self.solution['rho'],
+        }
+
+    def get_support_vectors_mask(self, threshold: float = 1e-6) -> np.ndarray:
+        """Get boolean mask indicating which training samples are support vectors.
+
+        Args:
+            threshold: Minimum slack value to consider as support vector
+
+        Returns:
+            Boolean array (n_samples,)
+        """
+        if self.solution is None:
+            raise RuntimeError("Model not fitted. Call fit() first.")
+        return self.solution['ksi'] > threshold
+
+    def get_margin_errors_mask(self, margin_threshold: float = 1.0) -> np.ndarray:
+        """Get boolean mask indicating samples with margin errors.
+
+        Args:
+            margin_threshold: Slack threshold for margin errors (default: 1.0)
+
+        Returns:
+            Boolean array (n_samples,)
+        """
+        if self.solution is None:
+            raise RuntimeError("Model not fitted. Call fit() first.")
+        return self.solution['ksi'] > margin_threshold
+
+    def get_weight_decomposition(self) -> Dict[str, np.ndarray]:
+        """Get decomposition of weights into positive and negative parts.
+
+        Returns:
+            Dictionary with keys 'w_plus' and 'w_minus'
+        """
+        if self.solution is None:
+            raise RuntimeError("Model not fitted. Call fit() first.")
+        return {
+            'w_plus': self.solution['w_plus'],
+            'w_minus': self.solution['w_minus'],
+        }
+

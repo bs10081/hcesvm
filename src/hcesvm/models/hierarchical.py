@@ -5,7 +5,9 @@ Hierarchical Classifier for Multi-class Ordinal Classification
 Implements a hierarchical (cascade) classifier using two binary CE-SVM models
 to solve 3-class ordinal classification problems.
 
-Architecture:
+Two strategies are supported:
+
+1. Single Filter (original):
     Input X
       |
       v
@@ -14,6 +16,19 @@ Architecture:
       | if f1(x) < 0
       v
     [H2: Class 2 vs Class 1]
+      |
+      v
+    Final Class: 1, 2, or 3
+
+2. Multiple Filter (new):
+    Input X
+      |
+      v
+    [H1: Class 1 vs {2,3}]
+      |
+      | if f1(x) < 0
+      v
+    [H2: Class 2 vs Class 3]
       |
       v
     Final Class: 1, 2, or 3
@@ -27,18 +42,27 @@ from .binary_cesvm import BinaryCESVM
 class HierarchicalCESVM:
     """Hierarchical Cost-Effective SVM for 3-class ordinal classification."""
 
-    def __init__(self, cesvm_params: Optional[Dict] = None):
+    def __init__(self, cesvm_params: Optional[Dict] = None, strategy: str = "multiple_filter"):
         """Initialize Hierarchical CE-SVM.
-        
+
         Args:
             cesvm_params: Parameters for binary CE-SVM models (shared)
+            strategy: Classification strategy
+                - "single_filter": Class 3 vs {1,2}, then Class 2 vs Class 1 (original)
+                - "multiple_filter": Class 1 vs {2,3}, then Class 2 vs Class 3 (new)
         """
+        if strategy not in ["single_filter", "multiple_filter"]:
+            raise ValueError(f"Unknown strategy: {strategy}. "
+                            f"Must be 'single_filter' or 'multiple_filter'")
+
         self.cesvm_params = cesvm_params or {}
-        
+        self.strategy = strategy
+
         # Two binary classifiers
-        self.h1 = None  # Class 3 (+1) vs {1,2} (-1)
-        self.h2 = None  # Class 2 (+1) vs Class 1 (-1)
-        
+        # Configuration depends on strategy
+        self.h1 = None
+        self.h2 = None
+
         # Training data info
         self.n_features = None
         
@@ -48,52 +72,76 @@ class HierarchicalCESVM:
         X2: np.ndarray,
         X3: np.ndarray
     ) -> Tuple[np.ndarray, np.ndarray]:
-        """Prepare data for H1 (Class 3 vs {1,2}).
-        
+        """Prepare data for H1 classifier.
+
+        Strategy determines which classes are positive/negative:
+            - single_filter: Class 3 (+1) vs {Class 1, 2} (-1)
+            - multiple_filter: Class 1 (+1) vs {Class 2, 3} (-1)
+
         Args:
             X1: Class 1 samples
             X2: Class 2 samples
             X3: Class 3 samples
-            
+
         Returns:
             X_h1: Combined feature matrix
-            y_h1: Binary labels (+1 for Class 3, -1 for {1,2})
+            y_h1: Binary labels (+1 for positive class, -1 for negative class)
         """
-        X_pos = X3  # Positive class: Class 3
-        X_neg = np.vstack([X1, X2])  # Negative class: Class 1 + Class 2
-        
-        y_pos = np.ones(len(X3))
-        y_neg = -np.ones(len(X1) + len(X2))
-        
+        if self.strategy == "single_filter":
+            # Original: Class 3 (+1) vs {1,2} (-1)
+            X_pos = X3
+            X_neg = np.vstack([X1, X2])
+            y_pos = np.ones(len(X3))
+            y_neg = -np.ones(len(X1) + len(X2))
+        else:  # multiple_filter
+            # New: Class 1 (+1) vs {2,3} (-1)
+            X_pos = X1
+            X_neg = np.vstack([X2, X3])
+            y_pos = np.ones(len(X1))
+            y_neg = -np.ones(len(X2) + len(X3))
+
         X_h1 = np.vstack([X_pos, X_neg])
         y_h1 = np.concatenate([y_pos, y_neg])
-        
+
         return X_h1, y_h1
     
     def _prepare_h2_data(
         self,
         X1: np.ndarray,
-        X2: np.ndarray
+        X2: np.ndarray,
+        X3: np.ndarray
     ) -> Tuple[np.ndarray, np.ndarray]:
-        """Prepare data for H2 (Class 2 vs Class 1).
-        
+        """Prepare data for H2 classifier.
+
+        Strategy determines which classes are positive/negative:
+            - single_filter: Class 2 (+1) vs Class 1 (-1)
+            - multiple_filter: Class 2 (+1) vs Class 3 (-1)
+
         Args:
             X1: Class 1 samples
             X2: Class 2 samples
-            
+            X3: Class 3 samples
+
         Returns:
             X_h2: Combined feature matrix
-            y_h2: Binary labels (+1 for Class 2, -1 for Class 1)
+            y_h2: Binary labels (+1 for positive class, -1 for negative class)
         """
-        X_pos = X2  # Positive class: Class 2
-        X_neg = X1  # Negative class: Class 1
-        
-        y_pos = np.ones(len(X2))
-        y_neg = -np.ones(len(X1))
-        
+        if self.strategy == "single_filter":
+            # Original: Class 2 (+1) vs Class 1 (-1)
+            X_pos = X2
+            X_neg = X1
+            y_pos = np.ones(len(X2))
+            y_neg = -np.ones(len(X1))
+        else:  # multiple_filter
+            # New: Class 2 (+1) vs Class 3 (-1)
+            X_pos = X2
+            X_neg = X3
+            y_pos = np.ones(len(X2))
+            y_neg = -np.ones(len(X3))
+
         X_h2 = np.vstack([X_pos, X_neg])
         y_h2 = np.concatenate([y_pos, y_neg])
-        
+
         return X_h2, y_h2
     
     def fit(
@@ -113,19 +161,25 @@ class HierarchicalCESVM:
             self
         """
         self.n_features = X1.shape[1]
-        
+
         print("=" * 60)
-        print("Training Hierarchical CE-SVM")
+        print(f"Training Hierarchical CE-SVM (Strategy: {self.strategy})")
         print("=" * 60)
         print(f"Class 1: {len(X1)} samples")
         print(f"Class 2: {len(X2)} samples")
         print(f"Class 3: {len(X3)} samples")
         print(f"Features: {self.n_features}")
         print()
-        
-        # Train H1: Class 3 vs {1,2}
+
+        # Determine H1 description based on strategy
+        if self.strategy == "single_filter":
+            h1_desc = "Class 3 (+1) vs {Class 1, 2} (-1)"
+        else:
+            h1_desc = "Class 1 (+1) vs {Class 2, 3} (-1)"
+
+        # Train H1
         print("=" * 60)
-        print("Training H1: Class 3 (+1) vs {Class 1, 2} (-1)")
+        print(f"Training H1: {h1_desc}")
         print("=" * 60)
         X_h1, y_h1 = self._prepare_h1_data(X1, X2, X3)
         print(f"H1 Training samples: {len(X_h1)}")
@@ -143,12 +197,18 @@ class HierarchicalCESVM:
         print(f"  L1 norm: {h1_summary['l1_norm']:.6f}")
         print(f"  Positive accuracy lb: {h1_summary['positive_class_accuracy_lb']:.4f}")
         print(f"  Negative accuracy lb: {h1_summary['negative_class_accuracy_lb']:.4f}")
-        
-        # Train H2: Class 2 vs Class 1
+
+        # Determine H2 description based on strategy
+        if self.strategy == "single_filter":
+            h2_desc = "Class 2 (+1) vs Class 1 (-1)"
+        else:
+            h2_desc = "Class 2 (+1) vs Class 3 (-1)"
+
+        # Train H2
         print("\n" + "=" * 60)
-        print("Training H2: Class 2 (+1) vs Class 1 (-1)")
+        print(f"Training H2: {h2_desc}")
         print("=" * 60)
-        X_h2, y_h2 = self._prepare_h2_data(X1, X2)
+        X_h2, y_h2 = self._prepare_h2_data(X1, X2, X3)
         print(f"H2 Training samples: {len(X_h2)}")
         print(f"  Positive (+1): {np.sum(y_h2 == 1)} samples")
         print(f"  Negative (-1): {np.sum(y_h2 == -1)} samples")
@@ -173,60 +233,101 @@ class HierarchicalCESVM:
     
     def predict(self, X: np.ndarray) -> np.ndarray:
         """Predict class labels using hierarchical decision rule.
-        
-        Decision Rule:
-            1. Compute f1(x) = w1·x + b1
+
+        Decision Rule depends on strategy:
+
+        single_filter:
+            1. Compute f1(x) = w1*x + b1
             2. If f1(x) >= 0: predict Class 3
             3. Else:
-                a. Compute f2(x) = w2·x + b2
+                a. Compute f2(x) = w2*x + b2
                 b. If f2(x) >= 0: predict Class 2
                 c. Else: predict Class 1
-        
+
+        multiple_filter:
+            1. Compute f1(x) = w1*x + b1
+            2. If f1(x) >= 0: predict Class 1
+            3. Else:
+                a. Compute f2(x) = w2*x + b2
+                b. If f2(x) >= 0: predict Class 2
+                c. Else: predict Class 3
+
         Args:
             X: Feature matrix (n_samples, n_features)
-            
+
         Returns:
             Predicted labels (n_samples,), values in {1, 2, 3}
         """
         if self.h1 is None or self.h2 is None:
             raise RuntimeError("Model not fitted. Call fit() first.")
-        
+
         n_samples = X.shape[0]
         predictions = np.zeros(n_samples, dtype=int)
-        
+
         # Step 1: H1 decision
         f1 = self.h1.decision_function(X)
-        
-        # Class 3 samples (f1 >= 0)
-        class3_mask = f1 >= 0
-        predictions[class3_mask] = 3
-        
-        # {Class 1, 2} samples (f1 < 0)
-        class12_mask = ~class3_mask
-        
-        if np.any(class12_mask):
+
+        if self.strategy == "single_filter":
+            # f1 >= 0 --> Class 3
+            # f1 < 0  --> proceed to H2
+            first_class = 3
+            remaining_classes = (2, 1)  # (positive_class, negative_class)
+        else:  # multiple_filter
+            # f1 >= 0 --> Class 1
+            # f1 < 0  --> proceed to H2
+            first_class = 1
+            remaining_classes = (2, 3)  # (positive_class, negative_class)
+
+        # Samples classified by H1
+        h1_pos_mask = f1 >= 0
+        predictions[h1_pos_mask] = first_class
+
+        # Remaining samples go to H2
+        h2_mask = ~h1_pos_mask
+
+        if np.any(h2_mask):
             # Step 2: H2 decision on remaining samples
-            X_remaining = X[class12_mask]
+            X_remaining = X[h2_mask]
             f2 = self.h2.decision_function(X_remaining)
-            
-            # Class 2 samples (f2 >= 0)
-            class2_mask = f2 >= 0
-            predictions[class12_mask] = np.where(class2_mask, 2, 1)
-        
+
+            # f2 >= 0 --> remaining_classes[0] (positive class in H2)
+            # f2 < 0  --> remaining_classes[1] (negative class in H2)
+            h2_pos_mask = f2 >= 0
+            predictions[h2_mask] = np.where(
+                h2_pos_mask,
+                remaining_classes[0],
+                remaining_classes[1]
+            )
+
         return predictions
     
     def get_model_summary(self) -> Dict:
         """Get summary of both classifiers.
-        
+
         Returns:
             Dictionary with model information
         """
         if self.h1 is None or self.h2 is None:
             return {"status": "not_fitted"}
-        
+
+        # Determine classifier descriptions based on strategy
+        if self.strategy == "single_filter":
+            h1_desc = "Class 3 vs {1,2}"
+            h2_desc = "Class 2 vs Class 1"
+        else:
+            h1_desc = "Class 1 vs {2,3}"
+            h2_desc = "Class 2 vs Class 3"
+
         return {
             "status": "fitted",
+            "strategy": self.strategy,
             "n_features": self.n_features,
-            "h1": self.h1.get_solution_summary(),
-            "h2": self.h2.get_solution_summary(),
+            "h1": {
+                "description": h1_desc,
+                **self.h1.get_solution_summary()
+            },
+            "h2": {
+                "description": h2_desc,
+                **self.h2.get_solution_summary()
+            },
         }
