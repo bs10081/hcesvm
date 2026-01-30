@@ -28,7 +28,7 @@ Two strategies are supported:
       |
       | if f1(x) < 0
       v
-    [H2: Class 2 vs Class 3]
+    [H2: Class {1,2} vs Class 3]
       |
       v
     Final Class: 1, 2, or 3
@@ -49,7 +49,7 @@ class HierarchicalCESVM:
             cesvm_params: Parameters for binary CE-SVM models (shared)
             strategy: Classification strategy
                 - "single_filter": Class 3 vs {1,2}, then Class 2 vs Class 1 (original)
-                - "multiple_filter": Class 1 vs {2,3}, then Class 2 vs Class 3 (new)
+                - "multiple_filter": Class 1 vs {2,3}, then Class {1,2} vs Class 3 (new)
         """
         if strategy not in ["single_filter", "multiple_filter"]:
             raise ValueError(f"Unknown strategy: {strategy}. "
@@ -115,7 +115,7 @@ class HierarchicalCESVM:
 
         Strategy determines which classes are positive/negative:
             - single_filter: Class 2 (+1) vs Class 1 (-1)
-            - multiple_filter: Class 2 (+1) vs Class 3 (-1)
+            - multiple_filter: Class {1,2} (+1) vs Class 3 (-1)
 
         Args:
             X1: Class 1 samples
@@ -133,10 +133,10 @@ class HierarchicalCESVM:
             y_pos = np.ones(len(X2))
             y_neg = -np.ones(len(X1))
         else:  # multiple_filter
-            # New: Class 2 (+1) vs Class 3 (-1)
-            X_pos = X2
+            # New: Class {1,2} (+1) vs Class 3 (-1)
+            X_pos = np.vstack([X1, X2])
             X_neg = X3
-            y_pos = np.ones(len(X2))
+            y_pos = np.ones(len(X1) + len(X2))
             y_neg = -np.ones(len(X3))
 
         X_h2 = np.vstack([X_pos, X_neg])
@@ -202,7 +202,7 @@ class HierarchicalCESVM:
         if self.strategy == "single_filter":
             h2_desc = "Class 2 (+1) vs Class 1 (-1)"
         else:
-            h2_desc = "Class 2 (+1) vs Class 3 (-1)"
+            h2_desc = "Class {1,2} (+1) vs Class 3 (-1)"
 
         # Train H2
         print("\n" + "=" * 60)
@@ -316,7 +316,7 @@ class HierarchicalCESVM:
             h2_desc = "Class 2 vs Class 1"
         else:
             h1_desc = "Class 1 vs {2,3}"
-            h2_desc = "Class 2 vs Class 3"
+            h2_desc = "Class {1,2} vs Class 3"
 
         return {
             "status": "fitted",

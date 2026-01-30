@@ -58,7 +58,7 @@ def main():
     print("=" * 60)
     print("\nHierarchy Structure (Minority-First):")
     print("  H1: Class 1 (minority) vs {2,3} - Separate young abalone first")
-    print("  H2: Class 2 vs Class 3 - Then separate adult from old")
+    print("  H2: Class {1,2} vs Class 3 - Then separate old from others")
     print()
     print("This may take a while due to dataset size and imbalance...")
     print()
@@ -90,6 +90,21 @@ def main():
     print(f"  L1 Norm: {h2['l1_norm']:.6f}")
     if 'mip_gap' in h2:
         print(f"  MIP Gap: {h2['mip_gap']:.6e}")
+
+    # Output H1 and H2 Weights
+    print("\n" + "=" * 60)
+    print("H1 Weights (Class 1 vs {2,3})")
+    print("=" * 60)
+    print(f"Intercept (b): {hc.h1.intercept:.6f}")
+    print("Weight vector (w):")
+    print(hc.h1.weights)
+
+    print("\n" + "=" * 60)
+    print("H2 Weights (Class {1,2} vs Class 3)")
+    print("=" * 60)
+    print(f"Intercept (b): {hc.h2.intercept:.6f}")
+    print("Weight vector (w):")
+    print(hc.h2.weights)
 
     # Predict on training data
     print("\n" + "=" * 60)
