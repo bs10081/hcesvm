@@ -1,0 +1,9 @@
+================================================================================
+Hierarchical CE-SVM - Inverted Strategy
+Dataset: New_Thyroid
+Timestamp: 2026-01-30 21:05:51
+================================================================================
+
+Loading training data from: /home/bs10081/Developer/NSVORA/Archive/new-thyroid_split.xlsx
+
+Error loading training data: could not convert string to float: 'normal'

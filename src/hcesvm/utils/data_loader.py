@@ -103,11 +103,19 @@ def load_multiclass_data(
         'alpha+', 'alpha-', 'beta+', 'beta-', 'k1', 'k2', 'k3',
         'Predict'  # NSVORA prediction column
     ]
-    feature_cols = [
+    all_cols = [
         c for c in df.columns
         if c not in metadata_cols and not c.startswith('Unnamed')
     ]
-    
+
+    # Automatically exclude non-numeric columns (e.g., string values)
+    # Check dtype.kind == 'O' to catch both 'object' and 'str' dtypes
+    non_numeric_cols = [c for c in all_cols if df[c].dtype.kind == 'O']
+    if non_numeric_cols:
+        print(f"  Note: Excluding non-numeric columns: {non_numeric_cols}")
+
+    feature_cols = [c for c in all_cols if df[c].dtype.kind != 'O']
+
     # Extract features and convert to float64 (ensure numeric type)
     X = df[feature_cols].astype(np.float64).values
     n_features = X.shape[1]
