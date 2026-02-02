@@ -43,10 +43,11 @@ class BinaryCESVM:
         time_limit: int = 600,
         mip_gap: float = 1e-4,
         threads: int = 0,
-        verbose: bool = True
+        verbose: bool = True,
+        accuracy_mode: str = "both"
     ):
         """Initialize Binary CE-SVM model.
-        
+
         Args:
             C_hyper: Slack penalty coefficient
             epsilon: Accuracy constraint tolerance
@@ -58,6 +59,8 @@ class BinaryCESVM:
             mip_gap: Gurobi MIP gap tolerance
             threads: Number of threads (0 = all available)
             verbose: Whether to print solver output
+            accuracy_mode: Which accuracy bounds to include in objective
+                          ("both", "positive_only", "negative_only")
         """
         self.C_hyper = C_hyper
         self.epsilon = epsilon
@@ -69,6 +72,14 @@ class BinaryCESVM:
         self.mip_gap = mip_gap
         self.threads = threads
         self.verbose = verbose
+        self.accuracy_mode = accuracy_mode
+
+        # Validate accuracy_mode
+        if accuracy_mode not in ["both", "positive_only", "negative_only"]:
+            raise ValueError(
+                f"accuracy_mode must be 'both', 'positive_only', or 'negative_only', "
+                f"got '{accuracy_mode}'"
+            )
 
         # Solution storage
         self.weights = None
@@ -122,8 +133,14 @@ class BinaryCESVM:
         obj_expr = (
             gp.quicksum(w_plus[j] + w_minus[j] for j in range(d))
             + self.C_hyper * gp.quicksum(alpha[i] + beta[i] + rho[i] for i in range(n))
-            - l_p - l_n
         )
+
+        # Add accuracy terms based on mode
+        if self.accuracy_mode in ("both", "negative_only"):
+            obj_expr -= l_n  # Maximize negative class accuracy lb
+        if self.accuracy_mode in ("both", "positive_only"):
+            obj_expr -= l_p  # Maximize positive class accuracy lb
+
         model.setObjective(obj_expr, GRB.MINIMIZE)
 
         # === Constraints ===
