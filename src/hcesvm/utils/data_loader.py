@@ -98,10 +98,10 @@ def load_multiclass_data(
     # Extract feature columns
     metadata_cols = [
         'Unnamed: 0', label_col, 'Actual', 'predict', 'correct',
-        'class',  # Added: Balance dataset's original class label (L/B/R)
+        'class', 'Class',  # Both lowercase and capitalized versions
         'ksi+', 'ksi-', 'eta21/12/13', 'eta31/32/23',  # NSVORA output columns
         'alpha+', 'alpha-', 'beta+', 'beta-', 'k1', 'k2', 'k3',
-        'Predict'  # NSVORA prediction column
+        'Predict', 'Predict '  # Include 'Predict ' with trailing space for Squash_Stored
     ]
     all_cols = [
         c for c in df.columns
