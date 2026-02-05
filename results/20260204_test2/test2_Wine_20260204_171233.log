@@ -1,0 +1,395 @@
+================================================================================
+Hierarchical CE-SVM - Test2 Strategy
+Dataset: Wine
+Timestamp: 2026-02-04 17:12:33
+================================================================================
+
+Loading training data from: /home/bs10081/Developer/NSVORA/Archive/wine_split.xlsx
+
+Loaded multi-class data:
+  Class 1: 47 samples
+  Class 2: 57 samples
+  Class 3: 38 samples
+  Features: 13
+Training data loaded:
+  Class 1: 47 samples
+  Class 2: 57 samples
+  Class 3: 38 samples
+  Features: 13
+
+================================================================================
+Model Parameters
+================================================================================
+  C_hyper: 1.0
+  epsilon: 0.0001
+  M: 1000.0
+  time_limit: 1800
+  mip_gap: 0.0001
+  threads: 0
+  verbose: True
+  enable_selection: True
+  feat_upper_bound: 1000
+  feat_lower_bound: 1e-07
+
+================================================================================
+Training Hierarchical Classifier - Test2 Strategy
+================================================================================
+
+Test2 Strategy:
+  H1: {minority, medium} vs majority
+  H2: minority vs medium
+  (Class roles determined dynamically based on sample counts)
+
+============================================================
+Training Hierarchical CE-SVM (Strategy: test2)
+============================================================
+Class 1: 47 samples
+Class 2: 57 samples
+Class 3: 38 samples
+Features: 13
+
+Dynamic Class Roles:
+  Majority:  Class 2 (57 samples)
+  Medium:    Class 1 (47 samples)
+  Minority:  Class 3 (38 samples)
+
+============================================================
+Training H1: Class 3 (+1) vs {Class 1, 2} (-1)
+============================================================
+H1 Training samples: 142
+  Positive (+1): 38 samples
+  Negative (-1): 104 samples
+  Accuracy mode: positive_only
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 1022 rows, 610 columns and 5902 nonzeros (Min)
+Model fingerprint: 0x9f1e6f62
+Model has 453 linear objective coefficients
+Variable types: 171 continuous, 439 integer (439 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+02]
+
+Presolve removed 15 rows and 15 columns
+Presolve time: 0.00s
+Presolved: 1007 rows, 595 columns, 5962 nonzeros
+Variable types: 27 continuous, 568 integer (426 binary)
+Found heuristic solution: objective 426.0000000
+Found heuristic solution: objective 425.0000000
+Found heuristic solution: objective 141.0000000
+Found heuristic solution: objective 140.6500703
+
+Root relaxation: objective -8.080000e-01, 396 iterations, 0.00 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -0.80800    0  114  140.65007   -0.80800   101%     -    0s
+H    0     0                      76.0000000   -0.80800   101%     -    0s
+H    0     0                       4.0667751   -0.80800   120%     -    0s
+     0     0    0.67376    0  130    4.06678    0.67376  83.4%     -    0s
+H    0     0                       3.5265323    0.67402  80.9%     -    0s
+     0     0    0.67973    0  130    3.52653    0.67973  80.7%     -    0s
+     0     0    0.69733    0  160    3.52653    0.69733  80.2%     -    0s
+     0     0    0.69933    0  160    3.52653    0.69933  80.2%     -    0s
+     0     0    0.71901    0  135    3.52653    0.71901  79.6%     -    0s
+     0     0    1.02632    0  103    3.52653    1.02632  70.9%     -    0s
+     0     0    1.05448    0  100    3.52653    1.05448  70.1%     -    0s
+     0     0    1.21524    0   88    3.52653    1.21524  65.5%     -    0s
+     0     0    1.21524    0   91    3.52653    1.21524  65.5%     -    0s
+     0     0    1.33955    0   97    3.52653    1.33955  62.0%     -    0s
+     0     0    1.33955    0   95    3.52653    1.33955  62.0%     -    0s
+     0     0    1.39813    0   95    3.52653    1.39813  60.4%     -    0s
+     0     0    1.51660    0   95    3.52653    1.51660  57.0%     -    0s
+     0     0    1.51660    0   95    3.52653    1.51660  57.0%     -    0s
+     0     0    1.51660    0   95    3.52653    1.51660  57.0%     -    0s
+     0     2    1.59439    0   95    3.52653    1.59439  54.8%     -    0s
+
+Cutting planes:
+  Gomory: 3
+  Implied bound: 9
+  MIR: 8
+  Flow cover: 3
+  Zero half: 1
+  RLT: 1
+
+Explored 49 nodes (2112 simplex iterations) in 0.13 seconds (0.30 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 7: 3.52653 4.06678 76 ... 426
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.526532334575e+00, best bound 3.526532334575e+00, gap 0.0000%
+
+H1 Solution:
+  Weights (w): [ 0.00000000e+00  2.36069553e-01  0.00000000e+00  8.37765121e-02
+  5.92657508e-03  0.00000000e+00 -2.68342446e+00  0.00000000e+00
+  0.00000000e+00  5.17267843e-01  0.00000000e+00  0.00000000e+00
+ -6.73926668e-05]
+  Intercept (b): -2.481492415453718
+  Objective: 3.526532
+  Selected features: 13/13
+  L1 norm: 3.526532
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+============================================================
+Training H2: Class {2, 3} (+1) vs Class 1 (-1)
+============================================================
+H2 Training samples: 142
+  Positive (+1): 95 samples
+  Negative (-1): 47 samples
+  Accuracy mode: negative_only
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 1022 rows, 610 columns and 5902 nonzeros (Min)
+Model fingerprint: 0xb08cc9a8
+Model has 453 linear objective coefficients
+Variable types: 171 continuous, 439 integer (439 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+02]
+
+Presolve removed 15 rows and 15 columns
+Presolve time: 0.00s
+Presolved: 1007 rows, 595 columns, 5962 nonzeros
+Variable types: 27 continuous, 568 integer (426 binary)
+Found heuristic solution: objective 426.0000000
+Found heuristic solution: objective 425.0000000
+Found heuristic solution: objective 141.0000000
+Found heuristic solution: objective 140.5507120
+
+Root relaxation: objective -9.389121e-01, 338 iterations, 0.00 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -0.93891    0  102  140.55071   -0.93891   101%     -    0s
+H    0     0                      93.5507120   -0.93891   101%     -    0s
+H    0     0                      53.7567668   -0.93891   102%     -    0s
+H    0     0                       5.1537577   -0.93891   118%     -    0s
+     0     0   -0.28277    0   68    5.15376   -0.28277   105%     -    0s
+     0     0    0.54104    0   66    5.15376    0.54104  89.5%     -    0s
+     0     0    0.96075    0   67    5.15376    0.96075  81.4%     -    0s
+     0     0    0.96075    0   79    5.15376    0.96075  81.4%     -    0s
+     0     0    1.06109    0   75    5.15376    1.06109  79.4%     -    0s
+     0     0    1.07766    0   78    5.15376    1.07766  79.1%     -    0s
+     0     0    1.24533    0   90    5.15376    1.24533  75.8%     -    0s
+     0     0    1.25076    0   66    5.15376    1.25076  75.7%     -    0s
+     0     0    1.25076    0   70    5.15376    1.25076  75.7%     -    0s
+     0     0    1.25076    0   78    5.15376    1.25076  75.7%     -    0s
+     0     0    1.25076    0   78    5.15376    1.25076  75.7%     -    0s
+     0     0    1.45643    0   76    5.15376    1.45643  71.7%     -    0s
+     0     0    1.45643    0   76    5.15376    1.45643  71.7%     -    0s
+     0     0    1.45643    0   76    5.15376    1.45643  71.7%     -    0s
+     0     2    1.50277    0   76    5.15376    1.50277  70.8%     -    0s
+
+Cutting planes:
+  Gomory: 5
+  Implied bound: 18
+  MIR: 10
+  Flow cover: 9
+  RLT: 1
+
+Explored 250 nodes (5323 simplex iterations) in 0.12 seconds (0.24 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 7: 5.15376 53.7568 93.5507 ... 426
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.153757658863e+00, best bound 5.153757658863e+00, gap 0.0000%
+
+H2 Solution:
+  Weights (w): [-1.44860227e+00 -3.85781256e-01 -2.37361426e+00  2.74544020e-01
+  1.19891914e-03  0.00000000e+00 -1.15292702e+00  0.00000000e+00
+  0.00000000e+00  9.11356923e-02  0.00000000e+00 -4.21397046e-01
+ -4.55717897e-03]
+  Intercept (b): 27.220390340037948
+  Objective: 5.153758
+  Selected features: 13/13
+  L1 norm: 6.153758
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training Complete!
+============================================================
+
+Training completed in: 0:00:00.268891
+
+================================================================================
+Model Summary
+================================================================================
+Status: fitted
+Strategy: test2
+Features: 13
+
+Class Roles:
+  Majority: Class 2
+  Medium:   Class 1
+  Minority: Class 3
+
+Test2 Rule Applied: Yes (Majority = Class 2)
+Accuracy Modes:
+  H1: positive_only
+  H2: negative_only
+
+Classifier 1 (H1): Class 3 vs Class {1, 2}
+  Objective: 3.526532
+  Selected Features: 13/13
+  L1 Norm: 3.526532
+
+Classifier 2 (H2): Class {2, 3} vs Class 1
+  Objective: 5.153758
+  Selected Features: 13/13
+  L1 Norm: 6.153758
+
+================================================================================
+H1 Complete Weights and Bias
+================================================================================
+Description: Class 3 vs Class {1, 2}
+
+Intercept (b): -2.4814924155
+
+Weight vector (w) - 13 features:
+  w[0] = 0.0000000000
+  w[1] = 0.2360695535
+  w[2] = 0.0000000000
+  w[3] = 0.0837765121
+  w[4] = 0.0059265751
+  w[5] = 0.0000000000
+  w[6] = -2.6834244583
+  w[7] = 0.0000000000
+  w[8] = 0.0000000000
+  w[9] = 0.5172678430
+  w[10] = 0.0000000000
+  w[11] = 0.0000000000
+  w[12] = -0.0000673927
+
+L1 Norm: 3.5265323346
+
+================================================================================
+H2 Complete Weights and Bias
+================================================================================
+Description: Class {2, 3} vs Class 1
+
+Intercept (b): 27.2203903400
+
+Weight vector (w) - 13 features:
+  w[0] = -1.4486022676
+  w[1] = -0.3857812559
+  w[2] = -2.3736142565
+  w[3] = 0.2745440196
+  w[4] = 0.0011989191
+  w[5] = 0.0000000000
+  w[6] = -1.1529270227
+  w[7] = 0.0000000000
+  w[8] = 0.0000000000
+  w[9] = 0.0911356923
+  w[10] = 0.0000000000
+  w[11] = -0.4213970462
+  w[12] = -0.0045571790
+
+L1 Norm: 6.1537576589
+
+================================================================================
+Training Set Evaluation
+================================================================================
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 0.9930
+
+Per-Class Accuracy:
+  Class 1: 1.0000
+  Class 2: 1.0000
+  Class 3: 0.9737
+
+Class Distribution:
+  Class 1: 47 samples
+  Class 2: 57 samples
+  Class 3: 38 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:    47       0       0
+True 2:     0      57       0
+True 3:     0       1      37
+============================================================
+
+================================================================================
+Test Set Evaluation
+================================================================================
+
+Loading test data (skiprows=4)...
+Loaded multi-class data:
+  Class 1: 12 samples
+  Class 2: 14 samples
+  Class 3: 10 samples
+  Features: 13
+Test data loaded:
+  Class 1: 12 samples
+  Class 2: 14 samples
+  Class 3: 10 samples
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 0.9722
+
+Per-Class Accuracy:
+  Class 1: 1.0000
+  Class 2: 1.0000
+  Class 3: 0.9000
+
+Class Distribution:
+  Class 1: 12 samples
+  Class 2: 14 samples
+  Class 3: 10 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:    12       0       0
+True 2:     0      14       0
+True 3:     0       1       9
+============================================================
+
+================================================================================
+Test Complete!
+================================================================================
+Training Duration: 0:00:00.268891
+Training Accuracy: 0.9930
+Test Accuracy: 0.9722
+Log saved to: /home/bs10081/Developer/hcesvm/results/test2_Wine_20260204_171233.log
+================================================================================
