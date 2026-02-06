@@ -221,6 +221,27 @@ def test_single_dataset(dataset_name: str, data_path: str, results_dir: Path) ->
             if 'mip_gap' in h2:
                 print(f"  MIP Gap: {h2['mip_gap']:.6e}")
 
+            # Output complete H1 and H2 Weights and Bias
+            print("\n" + "=" * 80)
+            print("H1 Complete Weights and Bias")
+            print("=" * 80)
+            print(f"Description: {summary['h1']['description']}")
+            print(f"\nIntercept (b): {hc.h1.intercept:.10f}")
+            print(f"\nWeight vector (w) - {len(hc.h1.weights)} features:")
+            for i, w in enumerate(hc.h1.weights):
+                print(f"  w[{i}] = {w:.10f}")
+            print(f"\nL1 Norm: {np.sum(np.abs(hc.h1.weights)):.10f}")
+
+            print("\n" + "=" * 80)
+            print("H2 Complete Weights and Bias")
+            print("=" * 80)
+            print(f"Description: {summary['h2']['description']}")
+            print(f"\nIntercept (b): {hc.h2.intercept:.10f}")
+            print(f"\nWeight vector (w) - {len(hc.h2.weights)} features:")
+            for i, w in enumerate(hc.h2.weights):
+                print(f"  w[{i}] = {w:.10f}")
+            print(f"\nL1 Norm: {np.sum(np.abs(hc.h2.weights)):.10f}")
+
             # Training Set Evaluation
             print("\n" + "=" * 80)
             print("Training Set Evaluation")
