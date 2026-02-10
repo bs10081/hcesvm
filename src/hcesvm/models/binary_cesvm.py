@@ -44,7 +44,8 @@ class BinaryCESVM:
         mip_gap: float = 1e-4,
         threads: int = 0,
         verbose: bool = True,
-        accuracy_mode: str = "both"
+        accuracy_mode: str = "both",
+        class_weight: str = "none"
     ):
         """Initialize Binary CE-SVM model.
 
@@ -61,6 +62,8 @@ class BinaryCESVM:
             verbose: Whether to print solver output
             accuracy_mode: Which accuracy bounds to include in objective
                           ("both", "positive_only", "negative_only")
+            class_weight: Class weighting for accuracy terms
+                         ("none": equal weight (default), "balanced": inverse of sample count)
         """
         self.C_hyper = C_hyper
         self.epsilon = epsilon
@@ -73,12 +76,19 @@ class BinaryCESVM:
         self.threads = threads
         self.verbose = verbose
         self.accuracy_mode = accuracy_mode
+        self.class_weight = class_weight
 
         # Validate accuracy_mode
         if accuracy_mode not in ["both", "positive_only", "negative_only"]:
             raise ValueError(
                 f"accuracy_mode must be 'both', 'positive_only', or 'negative_only', "
                 f"got '{accuracy_mode}'"
+            )
+
+        # Validate class_weight
+        if class_weight not in ["none", "balanced"]:
+            raise ValueError(
+                f"class_weight must be 'none' or 'balanced', got '{class_weight}'"
             )
 
         # Solution storage
@@ -115,37 +125,87 @@ class BinaryCESVM:
         model.setParam('Threads', self.threads)
 
         # === Decision Variables ===
+        # w⁺ⱼ ∈ ℝ⁺, j = 1,...,d  (positive part of weight vector)
         w_plus = model.addVars(d, lb=0, name="w_plus")
+
+        # w⁻ⱼ ∈ ℝ⁺, j = 1,...,d  (negative part of weight vector)
+        # Note: w = w⁺ - w⁻, and ||w||₁ = Σⱼ(w⁺ⱼ + w⁻ⱼ)
         w_minus = model.addVars(d, lb=0, name="w_minus")
+
+        # b ∈ ℝ  (intercept/bias term)
         b = model.addVar(lb=-GRB.INFINITY, name="b")
+
+        # ξᵢ ∈ ℝ⁺, i = 1,...,n  (slack variables for margin violations)
         ksi = model.addVars(n, lb=0, name="ksi")
+
+        # αᵢ ∈ {0,1}  (tier-1 indicator: αᵢ=1 if ξᵢ > 0)
         alpha = model.addVars(n, vtype=GRB.BINARY, name="alpha")
+
+        # βᵢ ∈ {0,1}  (tier-2 indicator: βᵢ=1 if ξᵢ > 1, i.e., misclassified)
         beta = model.addVars(n, vtype=GRB.BINARY, name="beta")
+
+        # ρᵢ ∈ {0,1}  (tier-3 indicator: ρᵢ=1 if ξᵢ > 2, i.e., severely misclassified)
         rho = model.addVars(n, vtype=GRB.BINARY, name="rho")
+
+        # l⁺ ∈ [0,1]  (lower bound on positive class accuracy)
         l_p = model.addVar(lb=0, ub=1, name="l_p")
+
+        # l⁻ ∈ [0,1]  (lower bound on negative class accuracy)
         l_n = model.addVar(lb=0, ub=1, name="l_n")
 
-        # Feature selection variables (optional)
+        # vⱼ ∈ {0,1}  (feature selection indicator: vⱼ=1 if feature j is selected)
         if self.enable_selection:
             v = model.addVars(d, vtype=GRB.BINARY, name="v")
 
         # === Objective Function ===
+        #
+        # Standard (accuracy_mode="both", class_weight="none"):
+        #   min  Σⱼ(w⁺ⱼ + w⁻ⱼ) + C·Σᵢ(αᵢ + βᵢ + ρᵢ) - l⁺ - l⁻
+        #        \_________/     \__________________/   \_____/
+        #         ||w||₁          misclassification     accuracy
+        #        (sparsity)         penalty            maximization
+        #
+        # Test2 Rule variants (class_weight="none"):
+        #   accuracy_mode="positive_only":  ... - l⁺        (remove -l⁻)
+        #   accuracy_mode="negative_only":  ... - l⁻        (remove -l⁺)
+        #
+        # Test3 (class_weight="balanced"):
+        #   min  Σⱼ(w⁺ⱼ + w⁻ⱼ) + C·Σᵢ(αᵢ + βᵢ + ρᵢ) - (1/s⁺)·l⁺ - (1/s⁻)·l⁻
+        #   Where s⁺ = |{i: yᵢ=+1}|, s⁻ = |{i: yᵢ=-1}|
+        #   Gives higher weight to accuracy of minority class
+        #
         obj_expr = (
+            # Term 1: ||w||₁ = Σⱼ(w⁺ⱼ + w⁻ⱼ)  (L1 regularization for sparsity)
             gp.quicksum(w_plus[j] + w_minus[j] for j in range(d))
+            # Term 2: C·Σᵢ(αᵢ + βᵢ + ρᵢ)  (three-tier misclassification penalty)
             + self.C_hyper * gp.quicksum(alpha[i] + beta[i] + rho[i] for i in range(n))
         )
 
-        # Add accuracy terms based on mode
+        # Determine accuracy term weights based on class_weight parameter
+        if self.class_weight == "balanced":
+            # Test3: Use inverse of sample count as weight
+            weight_pos = 1.0 / n_pos
+            weight_neg = 1.0 / n_neg
+        else:
+            # Standard or Test2: Equal weights
+            weight_pos = 1.0
+            weight_neg = 1.0
+
+        # Term 3: -weight_neg·l⁻  (maximize negative class accuracy lower bound)
         if self.accuracy_mode in ("both", "negative_only"):
-            obj_expr -= l_n  # Maximize negative class accuracy lb
+            obj_expr -= weight_neg * l_n
+
+        # Term 4: -weight_pos·l⁺  (maximize positive class accuracy lower bound)
         if self.accuracy_mode in ("both", "positive_only"):
-            obj_expr -= l_p  # Maximize positive class accuracy lb
+            obj_expr -= weight_pos * l_p
 
         model.setObjective(obj_expr, GRB.MINIMIZE)
 
         # === Constraints ===
 
-        # 1. SVM separation constraints
+        # Constraint 1: SVM Separation (margin constraint)
+        # yᵢ·(w·xᵢ + b) ≥ 1 - ξᵢ,  ∀i = 1,...,n
+        # where w·xᵢ = Σⱼ(w⁺ⱼ - w⁻ⱼ)·xᵢⱼ
         for i in range(n):
             model.addConstr(
                 y[i] * (gp.quicksum((w_plus[j] - w_minus[j]) * X[i, j] for j in range(d)) + b)
@@ -153,22 +213,35 @@ class BinaryCESVM:
                 name=f"svm_sep_{i}"
             )
 
-        # 2. Big-M constraints (three-tier)
+        # Constraint 2: Big-M Constraints (three-tier indicator activation)
+        # These constraints link slack variables ξᵢ to binary indicators αᵢ, βᵢ, ρᵢ
+        #
+        # Tier 1: ξᵢ ≤ M·αᵢ         (αᵢ=0 → ξᵢ=0, perfect classification)
+        # Tier 2: ξᵢ ≤ 1 + M·βᵢ     (βᵢ=0 → ξᵢ≤1, within margin)
+        # Tier 3: ξᵢ ≤ 2 + M·ρᵢ     (ρᵢ=0 → ξᵢ≤2, acceptable error)
         for i in range(n):
             model.addConstr(ksi[i] <= self.M * alpha[i], name=f"bigM1_{i}")
             model.addConstr(ksi[i] <= 1 + self.M * beta[i], name=f"bigM2_{i}")
             model.addConstr(ksi[i] <= 2 + self.M * rho[i], name=f"bigM3_{i}")
 
-        # 3. Step Loss Constraint (Tier hierarchy)
+        # Constraint 3: Tier Hierarchy
+        # αᵢ ≥ βᵢ ≥ ρᵢ,  ∀i
+        # Ensures: if ξᵢ > 2 (ρᵢ=1), then ξᵢ > 1 (βᵢ=1), then ξᵢ > 0 (αᵢ=1)
         for i in range(n):
             model.addConstr(alpha[i] >= beta[i], name=f"tier1_{i}")
             model.addConstr(beta[i] >= rho[i], name=f"tier2_{i}")
 
-        # 4. Accuracy lower bound constraints
+        # Constraint 4: Accuracy Lower Bound Trigger
+        # ξᵢ ≥ (1 + ε)·βᵢ,  ∀i
+        # If βᵢ=1 (misclassified), then ξᵢ ≥ 1+ε (ensures ξᵢ > 1)
         for i in range(n):
             model.addConstr(ksi[i] >= (1 + self.epsilon) * beta[i], name=f"acc_lb_{i}")
 
-        # 5. Positive class accuracy constraint
+        # Constraint 5: Positive Class Accuracy Lower Bound
+        # Σᵢ[(1-βᵢ)·𝟙{yᵢ=+1}] ≥ l⁺·|{i: yᵢ=+1}|
+        #
+        # Using indicator trick: (1+yᵢ)/2 = 1 if yᵢ=+1, 0 if yᵢ=-1
+        # Rewritten: Σᵢ[(1-βᵢ)·(1+yᵢ)] ≥ l⁺·Σᵢ(1+yᵢ)
         # LINGO: sum((1-beta[i])*(1+y[i])) >= l_p * sum(1+y[i])
         # (1+y[i]) = 2 for y=+1, 0 for y=-1 (selects positive class)
         model.addConstr(
@@ -177,7 +250,11 @@ class BinaryCESVM:
             name="pos_accuracy"
         )
 
-        # 6. Negative class accuracy constraint
+        # Constraint 6: Negative Class Accuracy Lower Bound
+        # Σᵢ[(1-βᵢ)·𝟙{yᵢ=-1}] ≥ l⁻·|{i: yᵢ=-1}|
+        #
+        # Using indicator trick: (1-yᵢ)/2 = 1 if yᵢ=-1, 0 if yᵢ=+1
+        # Rewritten: Σᵢ[(1-βᵢ)·(1-yᵢ)] ≥ l⁻·Σᵢ(1-yᵢ)
         # LINGO: sum((1-beta[i])*(1-y[i])) >= l_n * sum(1-y[i])
         # (1-y[i]) = 2 for y=-1, 0 for y=+1 (selects negative class)
         model.addConstr(
@@ -186,7 +263,12 @@ class BinaryCESVM:
             name="neg_accuracy"
         )
 
-        # 7. Feature activation constraints (no cost/budget)
+        # Constraint 7: Feature Selection Bounds
+        # If vⱼ = 0 (feature not selected): w⁺ⱼ + w⁻ⱼ = 0
+        # If vⱼ = 1 (feature selected):     L ≤ w⁺ⱼ + w⁻ⱼ ≤ U
+        #
+        # Upper bound: w⁺ⱼ + w⁻ⱼ ≤ U·vⱼ
+        # Lower bound: w⁺ⱼ + w⁻ⱼ ≥ L·vⱼ  (forces non-zero weight if selected)
         if self.enable_selection:
             for j in range(d):
                 model.addConstr(

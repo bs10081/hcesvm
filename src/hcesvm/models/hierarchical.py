@@ -68,10 +68,11 @@ class HierarchicalCESVM:
                 - "multiple_filter": Class 1 vs {2,3}, then Class {1,2} vs Class 3 (new)
                 - "inverted": medium vs {majority, minority}, then {medium, majority} vs minority (dynamic)
                 - "test2": Split based on minority position with ordinal labeling and Test2 rule
+                - "test3": Split based on minority position with ordinal labeling and balanced class weighting
         """
-        if strategy not in ["single_filter", "multiple_filter", "inverted", "test2"]:
+        if strategy not in ["single_filter", "multiple_filter", "inverted", "test2", "test3"]:
             raise ValueError(f"Unknown strategy: {strategy}. "
-                            f"Must be 'single_filter', 'multiple_filter', 'inverted', or 'test2'")
+                            f"Must be 'single_filter', 'multiple_filter', 'inverted', 'test2', or 'test3'")
 
         self.cesvm_params = cesvm_params or {}
         self.strategy = strategy
@@ -127,7 +128,28 @@ class HierarchicalCESVM:
         positive_classes: list,
         negative_classes: list
     ) -> str:
-        """Determine accuracy_mode based on majority position (Test2 Rule).
+        """Determine accuracy_mode based on majority class position (Test2 Rule).
+
+        Test2 Rule Logic:
+        ─────────────────
+        The standard CE-SVM objective is:
+            min ||w||₁ + C·Σ(α+β+ρ) - l⁺ - l⁻
+
+        Problem: In imbalanced data, maximizing both l⁺ and l⁻ can lead to
+        trivial solutions where the model predicts only the majority class.
+
+        Solution (Test2 Rule):
+        - If majority class is at an EDGE (Class 1 or 3): Use standard "both" mode
+        - If majority class is in the MIDDLE (Class 2): Apply special handling
+            * If majority ∈ positive classes (+1): Remove -l⁺ from objective
+              → Objective becomes: min ||w||₁ + C·Σ(α+β+ρ) - l⁻
+              → Forces model to focus on negative class (minority) accuracy
+            * If majority ∈ negative classes (-1): Remove -l⁻ from objective
+              → Objective becomes: min ||w||₁ + C·Σ(α+β+ρ) - l⁺
+              → Forces model to focus on positive class (minority) accuracy
+
+        This prevents the optimizer from taking the "easy path" of maximizing
+        majority class accuracy at the expense of minority classes.
 
         Only applies when majority is NOT at the edge (majority = class 2).
         - If majority in +1 class: return "negative_only" (remove -l_p)
@@ -143,15 +165,19 @@ class HierarchicalCESVM:
         """
         majority = self.class_roles['majority']
 
-        # Check if majority is at the edge
+        # Check if majority is at the ordinal edge
         if majority in [1, 3]:
-            return "both"  # Normal objective
+            return "both"  # Standard objective: min ||w||₁ + C·Σ(α+β+ρ) - l⁺ - l⁻
 
-        # Majority = 2 (not at edge), apply test2 rule
+        # Majority = 2 (middle class, not at edge) → Apply Test2 Rule
         if majority in positive_classes:
-            return "negative_only"  # Remove -l_p (don't maximize +1 accuracy)
+            # Majority is in +1 class → Don't maximize l⁺
+            # Objective: min ||w||₁ + C·Σ(α+β+ρ) - l⁻
+            return "negative_only"
         elif majority in negative_classes:
-            return "positive_only"  # Remove -l_n (don't maximize -1 accuracy)
+            # Majority is in -1 class → Don't maximize l⁻
+            # Objective: min ||w||₁ + C·Σ(α+β+ρ) - l⁺
+            return "positive_only"
         else:
             return "both"
 
@@ -168,6 +194,7 @@ class HierarchicalCESVM:
             - multiple_filter: Class 1 (+1) vs {Class 2, 3} (-1)
             - inverted: medium (+1) vs {majority, minority} (-1) - dynamic based on sample counts
             - test2: Split based on minority position with ordinal labeling
+            - test3: Same as test2 but uses balanced class weighting
 
         Args:
             X1: Class 1 samples
@@ -192,6 +219,29 @@ class HierarchicalCESVM:
             y_neg = -np.ones(len(X2) + len(X3))
         elif self.strategy == "test2":
             # Test2: Split based on minority position, follow ordinal rule
+            roles = self._determine_class_roles(X1, X2, X3)
+            minority = roles['minority']
+
+            if minority == 1:
+                # Minority at Class 1 (edge) -> {1} vs {2, 3}
+                X_neg = X1  # Lower ordinal = -1
+                X_pos = np.vstack([X2, X3])  # Higher ordinal = +1
+                y_neg = -np.ones(len(X1))
+                y_pos = np.ones(len(X2) + len(X3))
+            elif minority == 3:
+                # Minority at Class 3 (edge) -> {1, 2} vs {3}
+                X_neg = np.vstack([X1, X2])  # Lower ordinal = -1
+                X_pos = X3  # Higher ordinal = +1
+                y_neg = -np.ones(len(X1) + len(X2))
+                y_pos = np.ones(len(X3))
+            else:  # minority == 2
+                # Minority at middle -> default {1} vs {2, 3}
+                X_neg = X1  # Lower ordinal = -1
+                X_pos = np.vstack([X2, X3])  # Higher ordinal = +1
+                y_neg = -np.ones(len(X1))
+                y_pos = np.ones(len(X2) + len(X3))
+        elif self.strategy == "test3":
+            # Test3: Same data preparation as test2
             roles = self._determine_class_roles(X1, X2, X3)
             minority = roles['minority']
 
@@ -239,6 +289,7 @@ class HierarchicalCESVM:
             - multiple_filter: Class {1,2} (+1) vs Class 3 (-1)
             - inverted: {medium, majority} (+1) vs minority (-1) - dynamic based on sample counts
             - test2: Split based on minority position with ordinal labeling (uses ALL training data)
+            - test3: Same as test2 but uses balanced class weighting
 
         Args:
             X1: Class 1 samples
@@ -263,6 +314,29 @@ class HierarchicalCESVM:
             y_neg = -np.ones(len(X3))
         elif self.strategy == "test2":
             # Test2: H2 uses ALL training data
+            roles = self._determine_class_roles(X1, X2, X3)
+            minority = roles['minority']
+
+            if minority == 1:
+                # H2 split {1,2} vs {3} (using all training data)
+                X_neg = np.vstack([X1, X2])  # Lower ordinal = -1
+                X_pos = X3  # Higher ordinal = +1
+                y_neg = -np.ones(len(X1) + len(X2))
+                y_pos = np.ones(len(X3))
+            elif minority == 3:
+                # H2 split {1} vs {2,3} (using all training data)
+                X_neg = X1  # Lower ordinal = -1
+                X_pos = np.vstack([X2, X3])  # Higher ordinal = +1
+                y_neg = -np.ones(len(X1))
+                y_pos = np.ones(len(X2) + len(X3))
+            else:  # minority == 2
+                # H2 split {1,2} vs {3} (using all training data)
+                X_neg = np.vstack([X1, X2])  # Lower ordinal = -1
+                X_pos = X3  # Higher ordinal = +1
+                y_neg = -np.ones(len(X1) + len(X2))
+                y_pos = np.ones(len(X3))
+        elif self.strategy == "test3":
+            # Test3: Same data preparation as test2
             roles = self._determine_class_roles(X1, X2, X3)
             minority = roles['minority']
 
@@ -324,8 +398,8 @@ class HierarchicalCESVM:
         print(f"Class 3: {len(X3)} samples")
         print(f"Features: {self.n_features}")
 
-        # For inverted and test2 strategies, determine and store class roles
-        if self.strategy in ["inverted", "test2"]:
+        # For inverted, test2, and test3 strategies, determine and store class roles
+        if self.strategy in ["inverted", "test2", "test3"]:
             self.class_roles = self._determine_class_roles(X1, X2, X3)
             print(f"\nDynamic Class Roles:")
             print(f"  Majority:  Class {self.class_roles['majority']} ({len(self.class_roles['X_majority'])} samples)")
@@ -340,6 +414,14 @@ class HierarchicalCESVM:
         elif self.strategy == "multiple_filter":
             h1_desc = "Class 1 (+1) vs {Class 2, 3} (-1)"
         elif self.strategy == "test2":
+            minority = self.class_roles['minority']
+            if minority == 1:
+                h1_desc = "Class {2, 3} (+1) vs Class 1 (-1)"
+            elif minority == 3:
+                h1_desc = "Class 3 (+1) vs {Class 1, 2} (-1)"
+            else:  # minority == 2
+                h1_desc = "Class {2, 3} (+1) vs Class 1 (-1)"
+        elif self.strategy == "test3":
             minority = self.class_roles['minority']
             if minority == 1:
                 h1_desc = "Class {2, 3} (+1) vs Class 1 (-1)"
@@ -377,6 +459,12 @@ class HierarchicalCESVM:
             )
             h1_params['accuracy_mode'] = h1_accuracy_mode
             print(f"  Accuracy mode: {h1_accuracy_mode}")
+        elif self.strategy == "test3":
+            # Test3: Use balanced class weighting, always use "both" accuracy mode
+            h1_params['class_weight'] = "balanced"
+            h1_params['accuracy_mode'] = "both"
+            print(f"  Class weight: balanced")
+            print(f"  Accuracy mode: both")
         print()
 
         self.h1 = BinaryCESVM(**h1_params)
@@ -384,6 +472,8 @@ class HierarchicalCESVM:
 
         print(f"\nH1 Solution:")
         h1_summary = self.h1.get_solution_summary()
+        print(f"  Weights (w): {self.h1.weights}")
+        print(f"  Intercept (b): {self.h1.intercept}")
         print(f"  Objective: {h1_summary['objective_value']:.6f}")
         print(f"  Selected features: {h1_summary['n_selected_features']}/{self.n_features}")
         print(f"  L1 norm: {h1_summary['l1_norm']:.6f}")
@@ -396,6 +486,14 @@ class HierarchicalCESVM:
         elif self.strategy == "multiple_filter":
             h2_desc = "Class {1,2} (+1) vs Class 3 (-1)"
         elif self.strategy == "test2":
+            minority = self.class_roles['minority']
+            if minority == 1:
+                h2_desc = "Class 3 (+1) vs Class {1, 2} (-1)"
+            elif minority == 3:
+                h2_desc = "Class {2, 3} (+1) vs Class 1 (-1)"
+            else:  # minority == 2
+                h2_desc = "Class 3 (+1) vs Class {1, 2} (-1)"
+        elif self.strategy == "test3":
             minority = self.class_roles['minority']
             if minority == 1:
                 h2_desc = "Class 3 (+1) vs Class {1, 2} (-1)"
@@ -436,6 +534,12 @@ class HierarchicalCESVM:
             )
             h2_params['accuracy_mode'] = h2_accuracy_mode
             print(f"  Accuracy mode: {h2_accuracy_mode}")
+        elif self.strategy == "test3":
+            # Test3: Use balanced class weighting, always use "both" accuracy mode
+            h2_params['class_weight'] = "balanced"
+            h2_params['accuracy_mode'] = "both"
+            print(f"  Class weight: balanced")
+            print(f"  Accuracy mode: both")
         print()
 
         self.h2 = BinaryCESVM(**h2_params)
@@ -443,6 +547,8 @@ class HierarchicalCESVM:
 
         print(f"\nH2 Solution:")
         h2_summary = self.h2.get_solution_summary()
+        print(f"  Weights (w): {self.h2.weights}")
+        print(f"  Intercept (b): {self.h2.intercept}")
         print(f"  Objective: {h2_summary['objective_value']:.6f}")
         print(f"  Selected features: {h2_summary['n_selected_features']}/{self.n_features}")
         print(f"  L1 norm: {h2_summary['l1_norm']:.6f}")
@@ -528,6 +634,20 @@ class HierarchicalCESVM:
                 first_class = -1
                 remaining_classes = (3, 2)
                 negative_first_class = 1
+        elif self.strategy == "test3":
+            # Test3: Same prediction logic as test2
+            minority = self.class_roles['minority']
+            if minority == 1:
+                first_class = -1
+                remaining_classes = (3, 2)
+                negative_first_class = 1
+            elif minority == 3:
+                first_class = 3
+                remaining_classes = (2, 1)
+            else:  # minority == 2
+                first_class = -1
+                remaining_classes = (3, 2)
+                negative_first_class = 1
         else:  # inverted
             # f1 >= 0 --> medium class
             # f1 < 0  --> proceed to H2
@@ -537,9 +657,9 @@ class HierarchicalCESVM:
         # Samples classified by H1
         h1_pos_mask = f1 >= 0
 
-        # Special handling for test2 when first_class is negative marker
-        if self.strategy == "test2" and first_class == -1:
-            # For test2 minority=1 or minority=2: f1 < 0 -> negative_first_class
+        # Special handling for test2 and test3 when first_class is negative marker
+        if self.strategy in ["test2", "test3"] and first_class == -1:
+            # For test2/test3 minority=1 or minority=2: f1 < 0 -> negative_first_class
             h1_neg_mask = f1 < 0
             predictions[h1_neg_mask] = negative_first_class
             # f1 >= 0 -> proceed to H2
@@ -593,6 +713,17 @@ class HierarchicalCESVM:
             else:  # minority == 2
                 h1_desc = "Class {2, 3} vs Class 1"
                 h2_desc = "Class 3 vs Class {1, 2}"
+        elif self.strategy == "test3":
+            minority = self.class_roles['minority']
+            if minority == 1:
+                h1_desc = "Class {2, 3} vs Class 1"
+                h2_desc = "Class 3 vs Class {1, 2}"
+            elif minority == 3:
+                h1_desc = "Class 3 vs Class {1, 2}"
+                h2_desc = "Class {2, 3} vs Class 1"
+            else:  # minority == 2
+                h1_desc = "Class {2, 3} vs Class 1"
+                h2_desc = "Class 3 vs Class {1, 2}"
         else:  # inverted
             h1_desc = f"Class {self.class_roles['medium']} vs {{Class {self.class_roles['majority']}, {self.class_roles['minority']}}}"
             h2_desc = f"Class {{Class {self.class_roles['medium']}, {self.class_roles['majority']}}} vs Class {self.class_roles['minority']}"
@@ -611,8 +742,8 @@ class HierarchicalCESVM:
             },
         }
 
-        # Add class roles info for inverted and test2 strategies
-        if self.strategy in ["inverted", "test2"] and self.class_roles is not None:
+        # Add class roles info for inverted, test2, and test3 strategies
+        if self.strategy in ["inverted", "test2", "test3"] and self.class_roles is not None:
             summary["class_roles"] = {
                 "majority": self.class_roles['majority'],
                 "medium": self.class_roles['medium'],
