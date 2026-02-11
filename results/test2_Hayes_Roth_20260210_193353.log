@@ -1,0 +1,404 @@
+================================================================================
+Hierarchical CE-SVM - TEST2 Strategy
+Dataset: Hayes_Roth
+Timestamp: 2026-02-10 19:33:53
+================================================================================
+
+Training data:
+  Class 1: 40 samples
+  Class 2: 41 samples
+  Class 3: 24 samples
+  Features: 4
+
+================================================================================
+Model Parameters
+================================================================================
+  C_hyper: 1.0
+  epsilon: 0.0001
+  M: 1000.0
+  time_limit: 1800
+  mip_gap: 0.0001
+  threads: 0
+  verbose: True
+  enable_selection: True
+  feat_upper_bound: 1000
+  feat_lower_bound: 1e-07
+
+================================================================================
+Training Hierarchical Classifier - TEST2 Strategy
+================================================================================
+
+Test2 Strategy:
+  H1: {minority, medium} vs majority
+  H2: minority vs medium
+  Objective function modified based on class roles
+
+============================================================
+Training Hierarchical CE-SVM (Strategy: test2)
+============================================================
+Class 1: 40 samples
+Class 2: 41 samples
+Class 3: 24 samples
+Features: 4
+
+Dynamic Class Roles:
+  Majority:  Class 2 (41 samples)
+  Medium:    Class 1 (40 samples)
+  Minority:  Class 3 (24 samples)
+
+============================================================
+Training H1: Class 3 (+1) vs {Class 1, 2} (-1)
+============================================================
+H1 Training samples: 105
+  Positive (+1): 24 samples
+  Negative (-1): 81 samples
+  Accuracy mode: positive_only
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 745 rows, 435 columns and 2441 nonzeros (Min)
+Model fingerprint: 0x10646762
+Model has 324 linear objective coefficients
+Variable types: 116 continuous, 319 integer (319 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+02]
+
+Presolve removed 321 rows and 186 columns
+Presolve time: 0.00s
+Presolved: 424 rows, 249 columns, 1290 nonzeros
+Variable types: 9 continuous, 240 integer (180 binary)
+Found heuristic solution: objective 315.0000000
+Found heuristic solution: objective 314.0000000
+Found heuristic solution: objective 104.0000000
+
+Root relaxation: objective -8.780000e-01, 166 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -0.87800    0   72  104.00000   -0.87800   101%     -    0s
+H    0     0                      48.0000000   -0.87800   102%     -    0s
+     0     0    1.71236    0   78   48.00000    1.71236  96.4%     -    0s
+H    0     0                      30.2083333    1.71460  94.3%     -    0s
+H    0     0                      20.0833333    1.71460  91.5%     -    0s
+     0     0    2.21131    0   72   20.08333    2.21131  89.0%     -    0s
+     0     0    2.21131    0   72   20.08333    2.21131  89.0%     -    0s
+     0     0    5.46905    0   54   20.08333    5.46905  72.8%     -    0s
+     0     0    5.47105    0   55   20.08333    5.47105  72.8%     -    0s
+     0     0    5.84048    0  118   20.08333    5.84048  70.9%     -    0s
+     0     0    5.96203    0   86   20.08333    5.96203  70.3%     -    0s
+     0     0    6.06025    0   77   20.08333    6.06025  69.8%     -    0s
+     0     0    6.40841    0   80   20.08333    6.40841  68.1%     -    0s
+     0     0    6.43825    0   91   20.08333    6.43825  67.9%     -    0s
+     0     0    6.49997    0   85   20.08333    6.49997  67.6%     -    0s
+     0     0    6.50044    0   85   20.08333    6.50044  67.6%     -    0s
+     0     0    6.95170    0  104   20.08333    6.95170  65.4%     -    0s
+     0     0    7.17002    0   88   20.08333    7.17002  64.3%     -    0s
+     0     0    7.32734    0   87   20.08333    7.32734  63.5%     -    0s
+     0     0    7.40220    0   91   20.08333    7.40220  63.1%     -    0s
+     0     0    7.42042    0   93   20.08333    7.42042  63.1%     -    0s
+     0     0    7.42439    0   97   20.08333    7.42439  63.0%     -    0s
+     0     0    8.17854    0  110   20.08333    8.17854  59.3%     -    0s
+     0     0    8.27782    0   93   20.08333    8.27782  58.8%     -    0s
+     0     0    8.28648    0   98   20.08333    8.28648  58.7%     -    0s
+     0     0    8.28691    0  101   20.08333    8.28691  58.7%     -    0s
+     0     0    9.02743    0   92   20.08333    9.02743  55.1%     -    0s
+     0     0    9.26009    0  106   20.08333    9.26009  53.9%     -    0s
+     0     0    9.31479    0   96   20.08333    9.31479  53.6%     -    0s
+     0     0    9.32589    0   96   20.08333    9.32589  53.6%     -    0s
+     0     0    9.33891    0   90   20.08333    9.33891  53.5%     -    0s
+     0     0    9.34398    0   94   20.08333    9.34398  53.5%     -    0s
+     0     0    9.35157    0   99   20.08333    9.35157  53.4%     -    0s
+     0     0    9.35157    0  100   20.08333    9.35157  53.4%     -    0s
+     0     0    9.59827    0   97   20.08333    9.59827  52.2%     -    0s
+     0     0    9.67201    0   94   20.08333    9.67201  51.8%     -    0s
+     0     0    9.68476    0   99   20.08333    9.68476  51.8%     -    0s
+     0     0    9.68962    0   95   20.08333    9.68962  51.8%     -    0s
+     0     0    9.68979    0   99   20.08333    9.68979  51.8%     -    0s
+     0     0    9.78912    0  108   20.08333    9.78912  51.3%     -    0s
+     0     0    9.79389    0  107   20.08333    9.79389  51.2%     -    0s
+     0     0   10.31804    0   78   20.08333   10.31804  48.6%     -    0s
+     0     0   10.37071    0   85   20.08333   10.37071  48.4%     -    0s
+     0     0   10.37663    0   86   20.08333   10.37663  48.3%     -    0s
+     0     0   10.37682    0   90   20.08333   10.37682  48.3%     -    0s
+     0     0   10.40212    0   90   20.08333   10.40212  48.2%     -    0s
+     0     0   10.51734    0  101   20.08333   10.51734  47.6%     -    0s
+     0     0   10.57990    0  103   20.08333   10.57990  47.3%     -    0s
+     0     0   10.64384    0  112   20.08333   10.64384  47.0%     -    0s
+     0     0   10.64609    0  103   20.08333   10.64609  47.0%     -    0s
+     0     0   10.68650    0  112   20.08333   10.68650  46.8%     -    0s
+     0     0   10.68915    0  118   20.08333   10.68915  46.8%     -    0s
+     0     0   10.70331    0  112   20.08333   10.70331  46.7%     -    0s
+     0     0   10.70950    0  112   20.08333   10.70950  46.7%     -    0s
+     0     0   10.70950    0  112   20.08333   10.70950  46.7%     -    0s
+     0     0   10.70950    0  112   20.08333   10.70950  46.7%     -    0s
+     0     2   10.70950    0  112   20.08333   10.70950  46.7%     -    0s
+
+Cutting planes:
+  Gomory: 16
+  Cover: 17
+  Implied bound: 35
+  MIR: 156
+  Flow cover: 106
+  Inf proof: 59
+
+Explored 3162 nodes (74200 simplex iterations) in 0.35 seconds (0.43 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 6: 20.0833 30.2083 48 ... 315
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.008333333333e+01, best bound 2.008333333333e+01, gap 0.0000%
+
+H1 Solution:
+  Weights (w): [0. 1. 1. 1.]
+  Intercept (b): -7.0
+  Objective: 20.083333
+  Selected features: 4/4
+  L1 norm: 3.000000
+  Positive accuracy lb: 0.9167
+  Negative accuracy lb: 0.0000
+
+============================================================
+Training H2: Class {2, 3} (+1) vs Class 1 (-1)
+============================================================
+H2 Training samples: 105
+  Positive (+1): 65 samples
+  Negative (-1): 40 samples
+  Accuracy mode: negative_only
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 745 rows, 435 columns and 2441 nonzeros (Min)
+Model fingerprint: 0xd7795e03
+Model has 324 linear objective coefficients
+Variable types: 116 continuous, 319 integer (319 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+02]
+
+Presolve removed 272 rows and 158 columns
+Presolve time: 0.00s
+Presolved: 473 rows, 277 columns, 1442 nonzeros
+Variable types: 9 continuous, 268 integer (201 binary)
+Found heuristic solution: objective 315.0000000
+Found heuristic solution: objective 314.0000000
+Found heuristic solution: objective 104.0000000
+
+Root relaxation: objective -7.980000e-01, 215 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -0.79800    0   66  104.00000   -0.79800   101%     -    0s
+H    0     0                      80.0000000   -0.79800   101%     -    0s
+     0     0    3.12746    0   68   80.00000    3.12746  96.1%     -    0s
+H    0     0                      67.2250000    3.12746  95.3%     -    0s
+H    0     0                      45.3500000    3.12746  93.1%     -    0s
+     0     0    7.00000    0   63   45.35000    7.00000  84.6%     -    0s
+     0     0    7.01284    0   63   45.35000    7.01284  84.5%     -    0s
+     0     0   11.31146    0  138   45.35000   11.31146  75.1%     -    0s
+     0     0   13.34276    0  130   45.35000   13.34276  70.6%     -    0s
+     0     0   13.70138    0  138   45.35000   13.70138  69.8%     -    0s
+     0     0   21.48986    0   91   45.35000   21.48986  52.6%     -    0s
+     0     0   22.33757    0  127   45.35000   22.33757  50.7%     -    0s
+     0     0   22.36315    0  133   45.35000   22.36315  50.7%     -    0s
+     0     0   22.36418    0  132   45.35000   22.36418  50.7%     -    0s
+     0     0   24.68632    0  136   45.35000   24.68632  45.6%     -    0s
+     0     0   25.11026    0  130   45.35000   25.11026  44.6%     -    0s
+     0     0   25.12502    0  121   45.35000   25.12502  44.6%     -    0s
+     0     0   25.12624    0  122   45.35000   25.12624  44.6%     -    0s
+     0     0   26.28388    0  150   45.35000   26.28388  42.0%     -    0s
+     0     0   28.13148    0  151   45.35000   28.13148  38.0%     -    0s
+     0     0   28.15493    0  153   45.35000   28.15493  37.9%     -    0s
+     0     0   28.30143    0  149   45.35000   28.30143  37.6%     -    0s
+     0     0   28.30562    0  149   45.35000   28.30562  37.6%     -    0s
+     0     0   28.58943    0  176   45.35000   28.58943  37.0%     -    0s
+     0     0   28.62548    0  174   45.35000   28.62548  36.9%     -    0s
+     0     0   28.62548    0  175   45.35000   28.62548  36.9%     -    0s
+     0     0   28.62548    0  174   45.35000   28.62548  36.9%     -    0s
+     0     0   28.62548    0  182   45.35000   28.62548  36.9%     -    0s
+     0     0   28.72409    0  186   45.35000   28.72409  36.7%     -    0s
+     0     0   28.73263    0  186   45.35000   28.73263  36.6%     -    0s
+     0     0   28.73263    0  186   45.35000   28.73263  36.6%     -    0s
+     0     2   28.78569    0  186   45.35000   28.78569  36.5%     -    0s
+H  984    13                      45.3499990   40.14464  11.5%  26.8    0s
+
+Cutting planes:
+  Gomory: 6
+  Cover: 8
+  Implied bound: 27
+  Dual implied bound: 1
+  Clique: 1
+  MIR: 84
+  Flow cover: 85
+  Inf proof: 12
+  RLT: 8
+  Relax-and-lift: 1
+
+Explored 1042 nodes (28933 simplex iterations) in 0.19 seconds (0.26 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 7: 45.35 45.35 67.225 ... 315
+No other solutions better than 45.35
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (1.0009e-06) exceeds tolerance
+Best objective 4.534999900431e+01, best bound 4.534999900431e+01, gap 0.0000%
+
+H2 Solution:
+  Weights (w): [0. 2. 2. 2.]
+  Intercept (b): -9.0
+  Objective: 45.349999
+  Selected features: 4/4
+  L1 norm: 6.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 0.6500
+
+============================================================
+Training Complete!
+============================================================
+
+Training completed in: 0:00:00.561626
+
+================================================================================
+Model Summary
+================================================================================
+Status: fitted
+Strategy: test2
+Features: 4
+
+Class Roles:
+  Majority: Class 2
+  Medium:   Class 1
+  Minority: Class 3
+
+Classifier 1 (H1): Class 3 vs Class {1, 2}
+  Objective: 20.083333
+  Selected Features: 4/4
+  L1 Norm: 3.000000
+
+Classifier 2 (H2): Class {2, 3} vs Class 1
+  Objective: 45.349999
+  Selected Features: 4/4
+  L1 Norm: 6.000000
+
+================================================================================
+H1 Complete Weights and Bias
+================================================================================
+Description: Class 3 vs Class {1, 2}
+
+Intercept (b): -7.0000000000
+
+Weight vector (w) - 4 features:
+  w[0] = 0.0000000000
+  w[1] = 1.0000000000
+  w[2] = 1.0000000000
+  w[3] = 1.0000000000
+
+L1 Norm: 3.0000000000
+
+================================================================================
+H2 Complete Weights and Bias
+================================================================================
+Description: Class {2, 3} vs Class 1
+
+Intercept (b): -9.0000000000
+
+Weight vector (w) - 4 features:
+  w[0] = 0.0000000000
+  w[1] = 2.0000000000
+  w[2] = 2.0000000000
+  w[3] = 2.0000000000
+
+L1 Norm: 6.0000000000
+
+================================================================================
+Training Set Evaluation
+================================================================================
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 0.8000
+
+Per-Class Accuracy:
+  Class 1: 0.6500
+  Class 2: 0.8780
+  Class 3: 0.9167
+
+Class Distribution:
+  Class 1: 40 samples
+  Class 2: 41 samples
+  Class 3: 24 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:    26      12       2
+True 2:     0      36       5
+True 3:     0       2      22
+============================================================
+
+================================================================================
+Test Set Evaluation
+================================================================================
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 0.6667
+
+Per-Class Accuracy:
+  Class 1: 0.3636
+  Class 2: 0.9000
+  Class 3: 0.8333
+
+Class Distribution:
+  Class 1: 11 samples
+  Class 2: 10 samples
+  Class 3: 6 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:     4       6       1
+True 2:     0       9       1
+True 3:     0       1       5
+============================================================
+
+================================================================================
+Test Complete!
+================================================================================
+Training Duration: 0:00:00.561626
+Training Accuracy: 0.8000
+Test Accuracy: 0.6667
+Log saved to: /home/bs10081/Developer/hcesvm/results/test2_Hayes_Roth_20260210_193353.log
+================================================================================
