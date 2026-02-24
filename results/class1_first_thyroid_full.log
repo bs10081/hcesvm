@@ -1,0 +1,264 @@
+================================================================================
+Class1-First Strategy Test: THYROID
+================================================================================
+Dataset: /home/bs10081/Developer/NSVORA/Archive/thyroid_split.xlsx
+Timestamp: 20260213_124355
+Time limit: No time limit (run to global optimum)
+C: 1.0, M: 1000.0
+================================================================================
+
+Loading data...
+Loaded multi-class data:
+  Class 1: 14 samples
+  Class 2: 29 samples
+  Class 3: 533 samples
+  Features: 21
+Loaded multi-class data:
+  Class 1: 3 samples
+  Class 2: 8 samples
+  Class 3: 133 samples
+  Features: 21
+Training set sizes: Class 1: 14, Class 2: 29, Class 3: 533
+Test set size: 144
+
+============================================================
+Training Class1-First Hierarchical CE-SVM
+============================================================
+Class 1: 14 samples
+Class 2: 29 samples
+Class 3: 533 samples
+Features: 21
+
+============================================================
+Training H1: Class 1 (+1) vs {Class 2, 3} (-1)
+============================================================
+H1 Training samples: 576
+  Positive (+1, Class 1): 14 samples
+  Negative (-1, Class 2+3): 562 samples
+
+Set parameter Username
+Set parameter LicenseID to value 2749150
+Academic license - for non-commercial use only - expires 2026-12-03
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Optimize a model with 4076 rows, 2370 columns and 16498 nonzeros (Min)
+Model fingerprint: 0xb0c69d80
+Model has 1772 linear objective coefficients
+Variable types: 621 continuous, 1749 integer (1749 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+03]
+
+Presolve removed 32 rows and 33 columns
+Presolve time: 0.01s
+Presolved: 4044 rows, 2337 columns, 16832 nonzeros
+Variable types: 33 continuous, 2304 integer (1728 binary)
+Found heuristic solution: objective 1555.8469751
+Found heuristic solution: objective 1554.8469751
+Found heuristic solution: objective 574.0000000
+
+Root relaxation: objective -1.928000e+00, 661 iterations, 0.01 seconds (0.04 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -1.92800    0   42  574.00000   -1.92800   100%     -    0s
+H    0     0                      27.0000000   -1.92800   107%     -    0s
+     0     0   -0.92501    0   47   27.00000   -0.92501   103%     -    0s
+     0     0    0.07000    0   47   27.00000    0.07000   100%     -    0s
+     0     0    3.07076    0   54   27.00000    3.07076  88.6%     -    0s
+     0     0    4.06677    0   54   27.00000    4.06677  84.9%     -    0s
+     0     0   10.06511    0  105   27.00000   10.06511  62.7%     -    0s
+     0     0   10.06611    0  107   27.00000   10.06611  62.7%     -    0s
+     0     0   16.39906    0  122   27.00000   16.39906  39.3%     -    0s
+     0     0   17.41614    0  112   27.00000   17.41614  35.5%     -    0s
+     0     0   17.71717    0  113   27.00000   17.71717  34.4%     -    0s
+     0     0   17.89770    0  111   27.00000   17.89770  33.7%     -    0s
+     0     0   17.94638    0  114   27.00000   17.94638  33.5%     -    0s
+     0     0   17.95458    0  109   27.00000   17.95458  33.5%     -    0s
+     0     0   17.96338    0  117   27.00000   17.96338  33.5%     -    0s
+     0     0   17.96378    0  117   27.00000   17.96378  33.5%     -    0s
+     0     0   20.51999    0  108   27.00000   20.51999  24.0%     -    0s
+     0     0   21.07842    0  121   27.00000   21.07842  21.9%     -    0s
+     0     0   21.29668    0  120   27.00000   21.29668  21.1%     -    0s
+     0     0   21.31203    0  123   27.00000   21.31203  21.1%     -    0s
+     0     0   21.32746    0  123   27.00000   21.32746  21.0%     -    0s
+     0     0   21.34078    0  121   27.00000   21.34078  21.0%     -    0s
+     0     0   21.34997    0  125   27.00000   21.34997  20.9%     -    0s
+     0     0   21.35306    0  126   27.00000   21.35306  20.9%     -    0s
+     0     0   23.64052    0  125   27.00000   23.64052  12.4%     -    0s
+     0     0   24.05006    0  131   27.00000   24.05006  10.9%     -    0s
+     0     0   24.09931    0  129   27.00000   24.09931  10.7%     -    0s
+     0     0   24.11489    0  130   27.00000   24.11489  10.7%     -    0s
+     0     0   24.12111    0  137   27.00000   24.12111  10.7%     -    0s
+     0     0   24.12759    0  137   27.00000   24.12759  10.6%     -    0s
+     0     0   24.12840    0  138   27.00000   24.12840  10.6%     -    0s
+     0     0   24.87170    0  121   27.00000   24.87170  7.88%     -    0s
+     0     0   25.12035    0  112   27.00000   25.12035  6.96%     -    0s
+     0     0   25.15278    0  121   27.00000   25.15278  6.84%     -    0s
+     0     0   25.15471    0  112   27.00000   25.15471  6.83%     -    0s
+     0     0   26.40554    0   97   27.00000   26.40554  2.20%     -    0s
+     0     0   26.42256    0   40   27.00000   26.42256  2.14%     -    0s
+     0     0 infeasible    0        27.00000   27.00000  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 23
+  Implied bound: 1
+  MIR: 17
+  Flow cover: 14
+  RLT: 12
+  Relax-and-lift: 1
+
+Explored 1 nodes (3291 simplex iterations) in 0.33 seconds (0.78 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 5: 27 66.0018 574 ... 1555.85
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.700000000000e+01, best bound 2.700000000000e+01, gap 0.0000%
+
+H1 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 27.000000
+  Selected features: 21/21
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H2: Class 2 (+1) vs Class 3 (-1)
+============================================================
+H2 Training samples: 562
+  Positive (+1, Class 2): 29 samples
+  Negative (-1, Class 3): 533 samples
+
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Optimize a model with 3978 rows, 2314 columns and 16102 nonzeros (Min)
+Model fingerprint: 0x462c5735
+Model has 1730 linear objective coefficients
+Variable types: 607 continuous, 1707 integer (1707 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+03]
+
+Found heuristic solution: objective 1089.0426944
+Presolve removed 33 rows and 34 columns
+Presolve time: 0.01s
+Presolved: 3945 rows, 2280 columns, 16384 nonzeros
+Found heuristic solution: objective 534.1381776
+Variable types: 32 continuous, 2248 integer (1686 binary)
+Found heuristic solution: objective 523.1381776
+
+Root relaxation: objective -1.853000e+00, 739 iterations, 0.01 seconds (0.05 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -1.85300    0   87  523.13818   -1.85300   100%     -    0s
+H    0     0                      57.0000000   -1.85300   103%     -    0s
+     0     0   -0.84502    0   96   57.00000   -0.84502   101%     -    0s
+     0     0    1.14500    0   96   57.00000    1.14500  98.0%     -    0s
+     0     0    4.14286    0  102   57.00000    4.14286  92.7%     -    0s
+     0     0   12.14830    0  111   57.00000   12.14830  78.7%     -    0s
+     0     0   12.64604    0  111   57.00000   12.64604  77.8%     -    0s
+     0     0   20.62877    0  118   57.00000   20.62877  63.8%     -    0s
+     0     0   21.12752    0  118   57.00000   21.12752  62.9%     -    0s
+     0     0   21.12851    0  118   57.00000   21.12851  62.9%     -    0s
+     0     0   23.12447    0  122   57.00000   23.12447  59.4%     -    0s
+     0     0   24.12837    0  125   57.00000   24.12837  57.7%     -    0s
+     0     0   25.12937    0  129   57.00000   25.12937  55.9%     -    0s
+     0     0   25.13136    0  132   57.00000   25.13136  55.9%     -    0s
+     0     0   25.13143    0  132   57.00000   25.13143  55.9%     -    0s
+     0     0   25.13143    0  132   57.00000   25.13143  55.9%     -    0s
+     0     0   25.13143    0  132   57.00000   25.13143  55.9%     -    0s
+     0     2   25.13143    0  132   57.00000   25.13143  55.9%     -    0s
+
+Cutting planes:
+  Gomory: 47
+  Lift-and-project: 18
+  Cover: 5
+  MIR: 76
+  StrongCG: 1
+  Flow cover: 221
+  Inf proof: 12
+  RLT: 4
+  Relax-and-lift: 2
+
+Explored 3933 nodes (228789 simplex iterations) in 1.59 seconds (3.58 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 4: 57 523.138 534.138 1089.04 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.700000000000e+01, best bound 5.700000000000e+01, gap 0.0000%
+
+H2 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 57.000000
+  Selected features: 21/21
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training Complete!
+============================================================
+
+================================================================================
+EVALUATION
+================================================================================
+
+--------------------------------------------------------------------------------
+TRAINING SET RESULTS
+--------------------------------------------------------------------------------
+Class 1 Accuracy: 0.0000 (0/14)
+Class 2 Accuracy: 0.0000 (0/29)
+Class 3 Accuracy: 1.0000 (533/533)
+Total Accuracy: 0.9253 (533/576)
+
+--------------------------------------------------------------------------------
+TEST SET RESULTS
+--------------------------------------------------------------------------------
+Class 1 Accuracy: 0.0000 (0/3)
+Class 2 Accuracy: 0.0000 (0/8)
+Class 3 Accuracy: 1.0000 (133/133)
+Total Accuracy: 0.9236 (133/144)
+
+--------------------------------------------------------------------------------
+MODEL PARAMETERS
+--------------------------------------------------------------------------------
+
+H1 (Class 1 vs {2,3}):
+  Weights: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept: -1.0
+  MIP Gap: 0.000000
+  Status: 2
+
+H2 (Class 2 vs 3):
+  Weights: [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept: -1.0
+  MIP Gap: 0.000000
+  Status: 2
+
+
+Results saved to: /home/bs10081/Developer/hcesvm/results/class1_first_thyroid_20260213_124355.log
+================================================================================

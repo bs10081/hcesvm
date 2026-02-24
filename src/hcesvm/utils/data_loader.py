@@ -139,13 +139,80 @@ def load_multiclass_data(
     return X_classes, n_classes_list, n_features
 
 
+def load_split_data(
+    excel_file: str,
+    train_sheet: str = 'Train',
+    test_sheet: str = 'Test',
+    train_skiprows: int = 5,
+    test_skiprows: int = 4
+) -> dict:
+    """Load pre-split 3-class ordinal classification data (train/test).
+
+    Args:
+        excel_file: Path to Excel file with Train and Test sheets
+        train_sheet: Training sheet name
+        test_sheet: Testing sheet name
+        train_skiprows: Number of rows to skip in training sheet
+        test_skiprows: Number of rows to skip in testing sheet
+
+    Returns:
+        dict: {
+            'train': (X1_train, X2_train, X3_train),
+            'test': (X1_test, X2_test, X3_test),
+            'X1_train': np.ndarray,
+            'X2_train': np.ndarray,
+            'X3_train': np.ndarray,
+            'X1_test': np.ndarray,
+            'X2_test': np.ndarray,
+            'X3_test': np.ndarray,
+            'X_test': np.ndarray,  # Combined test features
+            'y_test': np.ndarray,  # Test labels
+            'n_features': int
+        }
+    """
+    # Load training data
+    X_train_classes, n_train_list, n_features = load_multiclass_data(
+        excel_file, sheet_name=train_sheet, skiprows=train_skiprows
+    )
+
+    # Load test data
+    X_test_classes, n_test_list, _ = load_multiclass_data(
+        excel_file, sheet_name=test_sheet, skiprows=test_skiprows
+    )
+
+    X1_train, X2_train, X3_train = X_train_classes
+    X1_test, X2_test, X3_test = X_test_classes
+
+    # Create combined test set
+    X_test = np.vstack([X1_test, X2_test, X3_test])
+    y_test = np.concatenate([
+        np.ones(len(X1_test)),
+        2 * np.ones(len(X2_test)),
+        3 * np.ones(len(X3_test))
+    ]).astype(int)
+
+    return {
+        'train': (X1_train, X2_train, X3_train),
+        'test': (X1_test, X2_test, X3_test),
+        'X1_train': X1_train,
+        'X2_train': X2_train,
+        'X3_train': X3_train,
+        'X1_test': X1_test,
+        'X2_test': X2_test,
+        'X3_test': X3_test,
+        'X_test': X_test,
+        'y_test': y_test,
+        'n_features': n_features
+    }
+
+
 def relabel_for_binary(y: np.ndarray, positive_class: int) -> np.ndarray:
     """Relabel multi-class labels for binary classification.
-    
+
     Args:
         y: Original labels (1, 2, 3, ...)
         positive_class: Which class to label as +1
-        
+
     Returns:
         Binary labels (+1 for positive_class, -1 for others)
     """

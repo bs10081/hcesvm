@@ -3,6 +3,7 @@
 from .data_loader import (
     load_parkinsons_data,
     load_multiclass_data,
+    load_split_data,
     relabel_for_binary,
 )
 from .evaluator import (
@@ -16,6 +17,7 @@ from .evaluator import (
 __all__ = [
     'load_parkinsons_data',
     'load_multiclass_data',
+    'load_split_data',
     'relabel_for_binary',
     'calculate_accuracy',
     'calculate_per_class_accuracy',

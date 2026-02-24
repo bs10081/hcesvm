@@ -40,7 +40,7 @@ class BinaryCESVM:
         enable_selection: bool = True,
         feat_upper_bound: float = 1000,
         feat_lower_bound: float = 0.0000001,
-        time_limit: int = 600,
+        time_limit: Optional[int] = 600,
         mip_gap: float = 1e-4,
         threads: int = 0,
         verbose: bool = True,
@@ -119,7 +119,8 @@ class BinaryCESVM:
 
         # Create Gurobi model
         model = gp.Model("Binary_CE_SVM")
-        model.setParam('TimeLimit', self.time_limit)
+        if self.time_limit is not None:
+            model.setParam('TimeLimit', self.time_limit)
         model.setParam('MIPGap', self.mip_gap)
         model.setParam('OutputFlag', 1 if self.verbose else 0)
         model.setParam('Threads', self.threads)
@@ -369,6 +370,10 @@ class BinaryCESVM:
             'n_selected_features': int(np.sum(self.selected_features)),
             'n_support_vectors': int(np.sum(ksi_vals > 1e-6)),  # Samples with ksi > 0
             'n_margin_errors': int(np.sum(ksi_vals > 1.0)),  # Samples with ksi > 1
+
+            # Solver information
+            'mip_gap': self.model.MIPGap if hasattr(self.model, 'MIPGap') else 0.0,
+            'solver_status': self.model.Status,
         }
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'BinaryCESVM':
@@ -434,6 +439,8 @@ class BinaryCESVM:
             "n_support_vectors": self.solution['n_support_vectors'],
             "n_margin_errors": self.solution['n_margin_errors'],
             "intercept": self.intercept,
+            "mip_gap": self.solution.get('mip_gap', 0.0),
+            "solver_status": self.solution.get('solver_status', 'unknown'),
         }
 
     def get_slack_variables(self) -> np.ndarray:
