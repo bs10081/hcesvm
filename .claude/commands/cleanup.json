@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "name": "cleanup",
+  "description": "Clean up temporary files from HCESVM project root",
+  "instructions": "Execute the project cleanup script to remove temporary files, logs, and monitoring scripts from the root directory.\n\n**What it does:**\n- Scans root directory for temporary files (*.log, monitor_*.sh, test_*.py, etc.)\n- Categorizes files into DELETE/KEEP\n- Shows detailed report with file sizes and modification dates\n- Executes cleanup after confirmation\n\n**Usage:**\n```bash\n# Preview (dry-run mode)\npython scripts/cleanup_temp_files.py\n\n# Execute cleanup\npython scripts/cleanup_temp_files.py --execute\n\n# Execute without confirmation (use with caution!)\npython scripts/cleanup_temp_files.py --execute --yes\n```\n\n**Safe files (never deleted):**\n- README.md, CLAUDE.md, FINAL_TEST_RESULTS.md, CLASS1_FIRST_SUMMARY.md\n- All files in src/, examples/, tests/, docs/ directories\n- Configuration files (.gitignore, pyproject.toml, uv.lock)\n\nRun the cleanup script now with dry-run mode first to preview changes.",
+  "handler": {
+    "type": "command",
+    "command": "python scripts/cleanup_temp_files.py"
+  }
+}

@@ -1,0 +1,276 @@
+================================================================================
+Hierarchical CE-SVM - Test2 Strategy
+Dataset: Thyroid
+Timestamp: 2026-02-01 12:30:19
+================================================================================
+
+Loading training data from: /home/bs10081/Developer/NSVORA/Archive/thyroid_split.xlsx
+
+Loaded multi-class data:
+  Class 1: 14 samples
+  Class 2: 29 samples
+  Class 3: 533 samples
+  Features: 22
+Training data loaded:
+  Class 1: 14 samples
+  Class 2: 29 samples
+  Class 3: 533 samples
+  Features: 22
+
+================================================================================
+Model Parameters
+================================================================================
+  C_hyper: 1.0
+  epsilon: 0.0001
+  M: 1000.0
+  time_limit: 1800
+  mip_gap: 0.0001
+  threads: 0
+  verbose: True
+  enable_selection: True
+  feat_upper_bound: 1000
+  feat_lower_bound: 1e-07
+
+================================================================================
+Training Hierarchical Classifier - Test2 Strategy
+================================================================================
+
+Test2 Strategy:
+  H1: {minority, medium} vs majority
+  H2: minority vs medium
+  (Class roles determined dynamically based on sample counts)
+
+============================================================
+Training Hierarchical CE-SVM (Strategy: test2)
+============================================================
+Class 1: 14 samples
+Class 2: 29 samples
+Class 3: 533 samples
+Features: 22
+
+Dynamic Class Roles:
+  Majority:  Class 3 (533 samples)
+  Medium:    Class 2 (29 samples)
+  Minority:  Class 1 (14 samples)
+
+============================================================
+Training H1: Class {2, 3} (+1) vs Class 1 (-1)
+============================================================
+H1 Training samples: 576
+  Positive (+1): 562 samples
+  Negative (-1): 14 samples
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 4078 rows, 2373 columns and 17656 nonzeros (Min)
+Model fingerprint: 0x8eaa9d3f
+Model has 1774 linear objective coefficients
+Variable types: 623 continuous, 1750 integer (1750 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+03]
+
+Found heuristic solution: objective 179.2021453
+Presolve removed 34 rows and 35 columns
+Presolve time: 0.01s
+Presolved: 4044 rows, 2338 columns, 17408 nonzeros
+Found heuristic solution: objective 39.4315539
+Variable types: 34 continuous, 2304 integer (1728 binary)
+Found heuristic solution: objective 36.4315539
+
+Root relaxation: objective -1.928000e+00, 661 iterations, 0.00 seconds (0.03 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -1.92800    0   42   36.43155   -1.92800   105%     -    0s
+H    0     0                      27.0000000   -1.92800   107%     -    0s
+H    0     0                       0.0000000   -1.92800      -     -    0s
+H    0     0                      -0.0000000   -1.92800      -     -    0s
+     0     0     cutoff    0        -0.00000   -0.00000  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 8
+  Implied bound: 14
+  MIR: 1
+
+Explored 1 nodes (707 simplex iterations) in 0.05 seconds (0.16 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 5: -1e-10 27 36.4316 ... 179.202
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.000000082740e-10, best bound -1.000000082740e-10, gap 0.0000%
+
+H1 Solution:
+  Objective: -0.000000
+  Selected features: 22/22
+  L1 norm: 2.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H2: Class 3 (+1) vs Class {1, 2} (-1)
+============================================================
+H2 Training samples: 576
+  Positive (+1): 533 samples
+  Negative (-1): 43 samples
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 4078 rows, 2373 columns and 17656 nonzeros (Min)
+Model fingerprint: 0x04e4130a
+Model has 1774 linear objective coefficients
+Variable types: 623 continuous, 1750 integer (1750 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+03]
+
+Found heuristic solution: objective 191.9762720
+Presolve removed 30 rows and 31 columns
+Presolve time: 0.01s
+Presolved: 4048 rows, 2342 columns, 18028 nonzeros
+Found heuristic solution: objective 160.7877311
+Variable types: 38 continuous, 2304 integer (1728 binary)
+Found heuristic solution: objective 130.7877311
+
+Root relaxation: objective -1.748000e+00, 836 iterations, 0.01 seconds (0.04 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -1.74800    0  129  130.78773   -1.74800   101%     -    0s
+H    0     0                       0.0000000   -1.74800      -     -    0s
+H    0     0                      -0.0000000   -1.74800      -     -    0s
+
+Cutting planes:
+  Gomory: 28
+  Implied bound: 43
+
+Explored 1 nodes (836 simplex iterations) in 0.06 seconds (0.19 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 4: -1e-10 130.788 160.788 191.976 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.000000082740e-10, best bound -1.000000082740e-10, gap 0.0000%
+
+H2 Solution:
+  Objective: -0.000000
+  Selected features: 22/22
+  L1 norm: 2.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training Complete!
+============================================================
+
+Training completed in: 0:00:00.205567
+
+================================================================================
+Model Summary
+================================================================================
+Status: fitted
+Strategy: test2
+Features: 22
+
+Class Roles:
+  Majority: Class 3
+  Medium:   Class 2
+  Minority: Class 1
+
+Test2 Rule Applied: No (Majority = Class 3)
+Accuracy Modes:
+  H1: both
+  H2: both
+
+Classifier 1 (H1): Class {2, 3} vs Class 1
+  Objective: -0.000000
+  Selected Features: 22/22
+  L1 Norm: 2.000000
+
+Classifier 2 (H2): Class 3 vs Class {1, 2}
+  Objective: -0.000000
+  Selected Features: 22/22
+  L1 Norm: 2.000000
+
+================================================================================
+Training Set Evaluation
+================================================================================
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 1.0000
+
+Per-Class Accuracy:
+  Class 1: 1.0000
+  Class 2: 1.0000
+  Class 3: 1.0000
+
+Class Distribution:
+  Class 1: 14 samples
+  Class 2: 29 samples
+  Class 3: 533 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:    14       0       0
+True 2:     0      29       0
+True 3:     0       0     533
+============================================================
+
+================================================================================
+Test Set Evaluation
+================================================================================
+
+Loading test data (skiprows=4)...
+Loaded multi-class data:
+  Class 1: 3 samples
+  Class 2: 8 samples
+  Class 3: 133 samples
+  Features: 21
+Test data loaded:
+  Class 1: 3 samples
+  Class 2: 8 samples
+  Class 3: 133 samples
+
+Warning: Could not load or evaluate test data: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 22 is different from 21)
+Skipping test set evaluation.
+
+================================================================================
+Test Complete!
+================================================================================
+Training Duration: 0:00:00.205567
+Training Accuracy: 1.0000
+Log saved to: /home/bs10081/Developer/hcesvm/results/test2_Thyroid_20260201_123019.log
+================================================================================

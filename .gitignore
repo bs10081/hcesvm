@@ -8,3 +8,17 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Temporary logs (root directory only)
+/*.log
+
+# Temporary scripts
+monitor_*.sh
+
+# Backup files
+*.backup
+*.bak
+
+# IDE
+.idea/
+.vscode/

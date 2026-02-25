@@ -85,8 +85,15 @@ X1 = np.array([[1, 2], [1.5, 2.5]])  # Class 1
 X2 = np.array([[3, 4], [3.5, 4.5]])  # Class 2
 X3 = np.array([[5, 6], [5.5, 6.5]])  # Class 3
 
-# 建立層次分類器
-hc = HierarchicalCESVM()
+# 建立層次分類器（使用 class1_first 策略）
+hc = HierarchicalCESVM(
+    cesvm_params={
+        'C_hyper': 1.0,
+        'M': 1000.0,
+        'time_limit': 1800
+    },
+    strategy='class1_first'  # 可選: single_filter, multiple_filter, inverted, test2, test3
+)
 
 # 訓練
 hc.fit(X1, X2, X3)
@@ -96,6 +103,197 @@ X_test = np.array([[1, 2], [3, 4], [5, 6]])
 predictions = hc.predict(X_test)
 print(predictions)  # [1, 2, 3]
 ```
+
+### 不平衡資料範例
+
+```python
+# 使用 test3 策略處理不平衡資料
+hc_imbalanced = HierarchicalCESVM(
+    cesvm_params={
+        'C_hyper': 1.0,
+        'M': 1000.0,
+        'time_limit': 1800
+    },
+    strategy='test3'  # 樣本加權，適合不平衡資料
+)
+
+# 訓練（自動檢測少數類並調整權重）
+hc_imbalanced.fit(X1_small, X2_large, X3_medium)
+```
+
+## 分類策略 (Classification Strategies)
+
+HCESVM 支援 **6 種分類策略**，分為固定策略和動態策略兩類：
+
+### 策略總覽
+
+| 策略 | 類型 | H1 分組 | H2 分組 | 目標函數 | 適用場景 |
+|------|------|---------|---------|----------|----------|
+| **single_filter** | 固定 | Class 3 vs {1,2} | Class 2 vs 1 | 標準 | 原始基準策略 |
+| **multiple_filter** | 固定 | Class 1 vs {2,3} | {1,2} vs 3 | 標準 | 標準多層過濾 |
+| **class1_first** | 固定 | Class 1 vs {2,3} | Class 2 vs 3 | 標準 | 優先識別 Class 1 |
+| **inverted** | 動態 | Medium vs {Maj,Min} | {Med,Maj} vs Min | 標準 | 動態分組適應 |
+| **test2** | 動態 | 依 minority 位置 | 依 minority 位置 | 移除準確率項 | 激進不平衡處理 |
+| **test3** | 動態 | 依 minority 位置 | 依 minority 位置 | 樣本加權 | 平衡不平衡處理 |
+
+**圖例**:
+- **Maj** = 多數類（最大樣本數）
+- **Med** = 中位類（中等樣本數）
+- **Min** = 少數類（最小樣本數）
+- **s_p** = 正類 (+1) 樣本數
+- **s_n** = 負類 (-1) 樣本數
+
+---
+
+### 固定策略 (Fixed Strategies)
+
+**特性**:
+- 類別分組預先定義
+- 不受樣本分布影響
+- 所有資料集行為一致
+- 更容易理解和除錯
+
+**適用時機**:
+- 平衡資料集（各類別樣本數相近）
+- 領域知識建議特定分類層次
+- 優先考慮可重現性和一致性
+
+**可用策略**:
+1. **`single_filter`** - Class 3 優先分離
+2. **`multiple_filter`** - Class 1 優先分離
+3. **`class1_first`** - Class 1 優先且特定預測流程
+
+---
+
+### 動態策略 (Dynamic Strategies)
+
+**特性**:
+- 類別分組適應樣本分布
+- 訓練時識別少數類
+- 不同資料集可能有不同分組
+- 更複雜但可能在不平衡資料上表現更好
+
+**適用時機**:
+- 不平衡資料集（樣本數差異顯著）
+- 少數類檢測至關重要
+- 需要在多樣資料集上達到最佳性能
+
+**可用策略**:
+1. **`inverted`** - 中位類分離，使用標準目標
+2. **`test2`** - 激進地移除多數類準確率項
+3. **`test3`** - 平衡的樣本加權目標函數
+
+---
+
+### 目標函數變化
+
+#### 標準目標
+```
+min  Σⱼ(w⁺ⱼ + w⁻ⱼ) + C·Σᵢ(αᵢ + βᵢ + ρᵢ) - l⁺ - l⁻
+```
+使用於: `single_filter`, `multiple_filter`, `class1_first`, `inverted`
+
+#### Test2 目標（準確率項移除）
+```
+當多數類為 Class 2 時:
+  移除多數類的準確率項
+
+結果: 更激進地優化少數類
+```
+使用於: `test2`
+
+#### Test3 目標（樣本加權）
+```
+min  Σⱼ(w⁺ⱼ + w⁻ⱼ) + C·Σᵢ(αᵢ + βᵢ + ρᵢ) - (1/s⁺)·l⁺ - (1/s⁻)·l⁻
+```
+**效果**: 少數類通過樣本數倒數自動獲得更高權重。
+
+使用於: `test3`
+
+---
+
+### 策略選擇指南
+
+#### 決策樹
+
+```
+資料集有顯著類別不平衡？
+├─ 否 → 使用固定策略
+│   ├─ 領域建議 Class 1 優先？→ class1_first
+│   ├─ 標準方法？→ multiple_filter
+│   └─ 基準比較？→ single_filter
+│
+└─ 是 → 使用動態策略
+    ├─ 激進少數類聚焦？→ test2
+    ├─ 平衡加權？→ test3
+    └─ 標準適應？→ inverted
+```
+
+#### 推薦預設值
+
+| 場景 | 推薦策略 | 理由 |
+|------|----------|------|
+| 平衡資料集 | `multiple_filter` 或 `class1_first` | 一致、可解釋 |
+| 中度不平衡 (1:2-1:3) | `test3` | 平衡的樣本加權 |
+| 嚴重不平衡 (>1:3) | `test2` | 激進的少數類聚焦 |
+| 探索性分析 | `inverted` | 標準目標的自適應 |
+| 生產部署 | `class1_first` | 固定、可預測行為 |
+
+---
+
+### 實作範例
+
+#### 固定策略範例
+```python
+from hcesvm import HierarchicalCESVM
+
+model = HierarchicalCESVM(
+    cesvm_params={
+        'C_hyper': 1.0,
+        'M': 1000.0,
+        'time_limit': 1800
+    },
+    strategy='class1_first'  # 固定策略
+)
+
+model.fit(X1_train, X2_train, X3_train)
+predictions = model.predict(X_test)
+```
+
+#### 動態策略範例
+```python
+from hcesvm import HierarchicalCESVM
+
+# Test3 策略（樣本加權）
+model = HierarchicalCESVM(
+    cesvm_params={
+        'C_hyper': 1.0,
+        'M': 1000.0,
+        'time_limit': 1800
+    },
+    strategy='test3'  # 動態策略，平衡加權
+)
+
+model.fit(X1_train, X2_train, X3_train)
+predictions = model.predict(X_test)
+```
+
+---
+
+### 性能考量
+
+**計算成本**:
+所有策略的計算複雜度相似，主要由 MIP 求解時間主導。
+
+**典型求解時間（每個分類器）**: 1-30 分鐘（取決於資料集大小和 `time_limit`）
+
+**記憶體使用**:
+- **固定策略**: 最小開銷
+- **動態策略**: 額外的樣本計數和類別檢測（~O(n)）
+
+**準確率權衡**:
+- **固定策略**: 一致但可能無法適應不平衡
+- **動態策略**: 在不平衡資料上可能更好，但較不可預測
 
 ## 專案結構
 
@@ -112,8 +310,14 @@ hcesvm/
 ├── examples/                # 範例腳本
 │   ├── run_parkinsons.py    # Parkinsons 二元分類
 │   └── run_balance_hierarchical.py  # Balance 3-class
-├── data/                    # 測試資料
+├── results/                 # 執行結果
+│   └── archive/             # 歷史日誌歸檔
 ├── docs/                    # 文檔
+│   ├── strategies/          # 策略文檔
+│   ├── reports/             # 測試報告歸檔
+│   ├── CE_SVM_MATHEMATICAL_MODEL.md
+│   └── DECISION_VARIABLES.md
+├── scripts/                 # 維護腳本
 └── tests/                   # 單元測試
 ```
 

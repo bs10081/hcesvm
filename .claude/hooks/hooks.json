@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const fs=require('fs');let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const i=JSON.parse(d);const p=i.tool_input?.file_path||'';if(/\\.(md|txt)$/.test(p)&&!/(README|CLAUDE|AGENTS|CONTRIBUTING)\\.md$/.test(p)&&!/\\.claude\\/plans\\//.test(p)&&!/\\.claude\\/(rules|agents|commands)\\/.+\\.md$/.test(p)&&!/docs\\/(strategies|reports)\\/.+\\.md$/.test(p)){console.error('[Hook] BLOCKED: Unnecessary documentation file creation');console.error('[Hook] File: '+p);console.error('[Hook] Use README.md for documentation instead');process.exit(2)}}catch{}console.log(d)})\""
+          }
+        ],
+        "description": "Allow .md files in .claude/* and docs/* for HCESVM project"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const fs=require('fs');let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const i=JSON.parse(d);const p=i.tool_input?.file_path||'';if(p&&/\\.py$/.test(p)&&!p.includes('__pycache__')&&!p.includes('.venv')){const{execSync}=require('child_process');try{execSync('command -v black',{stdio:'ignore'});execSync(\`black --quiet \\\"${p}\\\"\`,{stdio:'inherit'});console.error('[Hook] ✓ Formatted with Black: '+p)}catch(e){console.error('[Hook] ℹ Black not available, skipping format')}}}catch(e){}console.log(d)})\""
+          }
+        ],
+        "description": "Auto-format Python files with Black after Edit/Write"
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const fs=require('fs');let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const i=JSON.parse(d);const p=i.tool_input?.file_path||'';if(p&&/\\.py$/.test(p)&&!p.includes('__pycache__')&&!p.includes('.venv')&&!p.includes('tests/')){const{execSync}=require('child_process');try{execSync('command -v flake8',{stdio:'ignore'});const out=execSync(\`flake8 --max-line-length=88 --extend-ignore=E203,W503 \\\"${p}\\\"\`,{encoding:'utf-8',stdio:'pipe'});if(out.trim()){console.error('[Hook] ⚠ Flake8 warnings:\\n'+out)}}catch(e){if(e.stdout){console.error('[Hook] ⚠ Flake8 warnings:\\n'+e.stdout)}}}}catch(e){}console.log(d)})\""
+          }
+        ],
+        "description": "Run Flake8 linter after editing Python source files"
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const{execSync}=require('child_process');let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const result=execSync('git diff --name-only --cached',{encoding:'utf-8'}).split('\\n').filter(f=>f.endsWith('.py'));if(result.length>0){const consoleLog=execSync(\`git diff --cached -U0 | grep -E '^\\\\+.*console\\\\.log'\`,{encoding:'utf-8',stdio:'pipe'}).trim();if(consoleLog){console.error('[Hook] ⚠ WARNING: console.log found in staged files');console.error('[Hook] Consider removing debug statements before commit')}}}catch(e){}console.log(d)})\""
+          }
+        ],
+        "description": "Warn about console.log in staged Python files before response ends"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "name": "test-strategies",
+  "description": "Run tests for all 6 classification strategies",
+  "instructions": "Execute the hierarchical CESVM test suite to verify all classification strategies work correctly.\n\n**What it tests:**\n- All 6 strategies: single_filter, multiple_filter, class1_first, inverted, test2, test3\n- Fixed strategies behavior\n- Dynamic strategies class detection\n- Prediction logic and model summaries\n- Edge cases and error handling\n\n**Usage:**\n```bash\n# Run all strategy tests\npytest tests/test_hierarchical.py -v\n\n# Run specific test class\npytest tests/test_hierarchical.py::TestHierarchicalCESVMFixedStrategies -v\n\n# Run all tests with coverage\npytest tests/ -v --cov=src/hcesvm\n```\n\n**Test classes:**\n1. `TestHierarchicalCESVMFixedStrategies` - Fixed strategies\n2. `TestHierarchicalCESVMDynamicStrategies` - Dynamic strategies\n3. `TestHierarchicalCESVMPredictionLogic` - Prediction flow\n4. `TestHierarchicalCESVMStrategyComparison` - Strategy comparison\n5. `TestHierarchicalCESVMEdgeCases` - Edge cases\n\nRun the test suite now to verify all strategies.",
+  "handler": {
+    "type": "command",
+    "command": "source .venv/bin/activate && pytest tests/test_hierarchical.py -v"
+  }
+}

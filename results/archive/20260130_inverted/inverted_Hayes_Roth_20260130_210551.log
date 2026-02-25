@@ -1,0 +1,246 @@
+================================================================================
+Hierarchical CE-SVM - Inverted Strategy
+Dataset: Hayes_Roth
+Timestamp: 2026-01-30 21:05:51
+================================================================================
+
+Loading training data from: /home/bs10081/Developer/NSVORA/Archive/hayes-roth_split.xlsx
+
+Loaded multi-class data:
+  Class 1: 40 samples
+  Class 2: 41 samples
+  Class 3: 24 samples
+  Features: 5
+Training data loaded:
+  Class 1: 40 samples
+  Class 2: 41 samples
+  Class 3: 24 samples
+  Features: 5
+
+================================================================================
+Model Parameters
+================================================================================
+  C_hyper: 1.0
+  epsilon: 0.0001
+  M: 1000.0
+  time_limit: 1800
+  mip_gap: 0.0001
+  threads: 0
+  verbose: True
+  enable_selection: True
+  feat_upper_bound: 1000
+  feat_lower_bound: 1e-07
+
+================================================================================
+Training Hierarchical Classifier - Inverted Strategy
+================================================================================
+
+Inverted Strategy:
+  H1: medium class vs {majority, minority}
+  H2: {medium, majority} vs minority
+  (Class roles determined dynamically based on sample counts)
+
+============================================================
+Training Hierarchical CE-SVM (Strategy: inverted)
+============================================================
+Class 1: 40 samples
+Class 2: 41 samples
+Class 3: 24 samples
+Features: 5
+
+Dynamic Class Roles:
+  Majority:  Class 2 (41 samples)
+  Medium:    Class 1 (40 samples)
+  Minority:  Class 3 (24 samples)
+
+============================================================
+Training H1: Class 1 (+1) vs {Class 2, 3} (-1)
+============================================================
+H1 Training samples: 105
+  Positive (+1): 40 samples
+  Negative (-1): 65 samples
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 747 rows, 438 columns and 2657 nonzeros (Min)
+Model fingerprint: 0x2fb1c136
+Model has 327 linear objective coefficients
+Variable types: 118 continuous, 320 integer (320 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+02]
+
+Presolve removed 274 rows and 160 columns
+Presolve time: 0.00s
+Presolved: 473 rows, 278 columns, 1487 nonzeros
+Variable types: 10 continuous, 268 integer (201 binary)
+Found heuristic solution: objective 315.0000000
+Found heuristic solution: objective 314.0000000
+Found heuristic solution: objective 103.0000000
+Found heuristic solution: objective 102.5000000
+
+Root relaxation: objective -1.798000e+00, 214 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -1.79800    0   66  102.50000   -1.79800   102%     -    0s
+H    0     0                      79.0000000   -1.79800   102%     -    0s
+H    0     0                      34.2500000   -1.79800   105%     -    0s
+H    0     0                       0.0000000   -1.79800      -     -    0s
+H    0     0                      -0.0000000   -1.79800      -     -    0s
+
+Cutting planes:
+  Gomory: 10
+  Implied bound: 14
+  MIR: 6
+
+Explored 1 nodes (214 simplex iterations) in 0.02 seconds (0.02 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 7: -1e-10 34.25 79 ... 315
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.000000082740e-10, best bound -1.000000082740e-10, gap 0.0000%
+
+H1 Solution:
+  Objective: -0.000000
+  Selected features: 5/5
+  L1 norm: 2.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H2: Class {Class 1, 2} (+1) vs Class 3 (-1)
+============================================================
+H2 Training samples: 105
+  Positive (+1): 81 samples
+  Negative (-1): 24 samples
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 747 rows, 438 columns and 2657 nonzeros (Min)
+Model fingerprint: 0x0419fb40
+Model has 327 linear objective coefficients
+Variable types: 118 continuous, 320 integer (320 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+02]
+
+Presolve removed 274 rows and 160 columns
+Presolve time: 0.00s
+Presolved: 473 rows, 278 columns, 1487 nonzeros
+Variable types: 10 continuous, 268 integer (201 binary)
+Found heuristic solution: objective 315.0000000
+Found heuristic solution: objective 314.0000000
+Found heuristic solution: objective 103.0000000
+
+Root relaxation: objective -1.878000e+00, 176 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -1.87800    0   72  103.00000   -1.87800   102%     -    0s
+H    0     0                      47.0000000   -1.87800   104%     -    0s
+H    0     0                      45.0123457   -1.87800   104%     -    0s
+H    0     0                       0.0000000   -1.87800      -     -    0s
+H    0     0                      -0.0000000   -1.87800      -     -    0s
+
+Cutting planes:
+  Gomory: 22
+  Implied bound: 24
+
+Explored 1 nodes (176 simplex iterations) in 0.01 seconds (0.02 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 6: -1e-10 45.0123 47 ... 315
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.000000082740e-10, best bound -1.000000082740e-10, gap 0.0000%
+
+H2 Solution:
+  Objective: -0.000000
+  Selected features: 5/5
+  L1 norm: 2.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training Complete!
+============================================================
+
+Training completed in: 0:00:00.041929
+
+================================================================================
+Model Summary
+================================================================================
+Status: fitted
+Strategy: inverted
+Features: 5
+
+Class Roles:
+  Majority: Class 2
+  Medium:   Class 1
+  Minority: Class 3
+
+Classifier 1 (H1): Class 1 vs {Class 2, 3}
+  Objective: -0.000000
+  Selected Features: 5/5
+  L1 Norm: 2.000000
+
+Classifier 2 (H2): Class {Class 1, 2} vs Class 3
+  Objective: -0.000000
+  Selected Features: 5/5
+  L1 Norm: 2.000000
+
+================================================================================
+Training Set Evaluation
+================================================================================
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 1.0000
+
+Per-Class Accuracy:
+  Class 1: 1.0000
+  Class 2: 1.0000
+  Class 3: 1.0000
+
+Class Distribution:
+  Class 1: 40 samples
+  Class 2: 41 samples
+  Class 3: 24 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:    40       0       0
+True 2:     0      41       0
+True 3:     0       0      24
+============================================================

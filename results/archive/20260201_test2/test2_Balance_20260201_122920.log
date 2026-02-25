@@ -1,0 +1,468 @@
+================================================================================
+Hierarchical CE-SVM - Test2 Strategy
+Dataset: Balance
+Timestamp: 2026-02-01 12:29:20
+================================================================================
+
+Loading training data from: /home/bs10081/Developer/NSVORA/Archive/balance_split.xlsx
+
+Loaded multi-class data:
+  Class 1: 230 samples
+  Class 2: 39 samples
+  Class 3: 231 samples
+  Features: 4
+Training data loaded:
+  Class 1: 230 samples
+  Class 2: 39 samples
+  Class 3: 231 samples
+  Features: 4
+
+================================================================================
+Model Parameters
+================================================================================
+  C_hyper: 1.0
+  epsilon: 0.0001
+  M: 1000.0
+  time_limit: 1800
+  mip_gap: 0.0001
+  threads: 0
+  verbose: True
+  enable_selection: True
+  feat_upper_bound: 1000
+  feat_lower_bound: 1e-07
+
+================================================================================
+Training Hierarchical Classifier - Test2 Strategy
+================================================================================
+
+Test2 Strategy:
+  H1: {minority, medium} vs majority
+  H2: minority vs medium
+  (Class roles determined dynamically based on sample counts)
+
+============================================================
+Training Hierarchical CE-SVM (Strategy: test2)
+============================================================
+Class 1: 230 samples
+Class 2: 39 samples
+Class 3: 231 samples
+Features: 4
+
+Dynamic Class Roles:
+  Majority:  Class 3 (231 samples)
+  Medium:    Class 1 (230 samples)
+  Minority:  Class 2 (39 samples)
+
+============================================================
+Training H1: Class {2, 3} (+1) vs Class 1 (-1)
+============================================================
+H1 Training samples: 500
+  Positive (+1): 270 samples
+  Negative (-1): 230 samples
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 3510 rows, 2015 columns and 11526 nonzeros (Min)
+Model fingerprint: 0x2e90d7cf
+Model has 1510 linear objective coefficients
+Variable types: 511 continuous, 1504 integer (1504 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+02]
+
+Found heuristic solution: objective 854.2961353
+Presolve removed 6 rows and 6 columns
+Presolve time: 0.01s
+Presolved: 3504 rows, 2009 columns, 11194 nonzeros
+Found heuristic solution: objective 812.6191626
+Variable types: 9 continuous, 2000 integer (1500 binary)
+Found heuristic solution: objective 800.6191626
+
+Root relaxation: objective -9.980801e-01, 1580 iterations, 0.03 seconds (0.15 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -0.99808    0 1500  800.61916   -0.99808   100%     -    0s
+H    0     0                     468.6196821   -0.99808   100%     -    0s
+H    0     0                     372.6116306   -0.99808   100%     -    0s
+H    0     0                     369.4383253   -0.99808   100%     -    0s
+H    0     0                     345.3365539   -0.99808   100%     -    0s
+H    0     0                     243.3235105   -0.99808   100%     -    0s
+H    0     0                     186.5417578   -0.99808   101%     -    0s
+H    0     0                     181.7296296   -0.99808   101%     -    0s
+H    0     0                     179.7259259   -0.99808   101%     -    0s
+H    0     0                     174.8430069   -0.99808   101%     -    0s
+H    0     0                     173.5085346   -0.99808   101%     -    0s
+H    0     0                     138.5085346   -0.99808   101%     -    0s
+     0     0    1.31508    0  900  138.50853    1.31508  99.1%     -    0s
+     0     0    6.49418    0 1075  138.50853    6.49418  95.3%     -    0s
+     0     0    6.49418    0  964  138.50853    6.49418  95.3%     -    0s
+H    0     0                     100.7442834    7.08318  93.0%     -    0s
+     0     0    7.08318    0  282  100.74428    7.08318  93.0%     -    0s
+H    0     0                      47.0813205    7.10613  84.9%     -    0s
+     0     0    7.10613    0  298   47.08132    7.10613  84.9%     -    0s
+     0     0    7.11250    0  303   47.08132    7.11250  84.9%     -    0s
+     0     0    7.11566    0  302   47.08132    7.11566  84.9%     -    0s
+     0     0    9.52928    0  510   47.08132    9.52928  79.8%     -    0s
+H    0     0                      46.0813205    9.52996  79.3%     -    0s
+     0     0   10.44682    0  368   46.08132   10.44682  77.3%     -    0s
+     0     0   10.86120    0  345   46.08132   10.86120  76.4%     -    0s
+     0     0   10.87584    0  350   46.08132   10.87584  76.4%     -    0s
+     0     0   10.87638    0  352   46.08132   10.87638  76.4%     -    0s
+     0     0   12.71434    0  439   46.08132   12.71434  72.4%     -    0s
+     0     0   13.10108    0  384   46.08132   13.10108  71.6%     -    0s
+     0     0   13.20128    0  368   46.08132   13.20128  71.4%     -    0s
+     0     0   13.54741    0  432   46.08132   13.54741  70.6%     -    0s
+     0     0   13.61593    0  413   46.08132   13.61593  70.5%     -    0s
+     0     0   13.63702    0  432   46.08132   13.63702  70.4%     -    0s
+     0     0   13.64739    0  444   46.08132   13.64739  70.4%     -    0s
+     0     0   13.65346    0  441   46.08132   13.65346  70.4%     -    0s
+     0     0   13.65478    0  440   46.08132   13.65478  70.4%     -    0s
+     0     0   15.56424    0  411   46.08132   15.56424  66.2%     -    0s
+     0     0   16.08634    0  360   46.08132   16.08634  65.1%     -    0s
+     0     0   16.17981    0  358   46.08132   16.17981  64.9%     -    0s
+     0     0   16.18670    0  361   46.08132   16.18670  64.9%     -    0s
+     0     0   16.18729    0  365   46.08132   16.18729  64.9%     -    0s
+     0     0   16.80511    0  404   46.08132   16.80511  63.5%     -    0s
+     0     0   17.10993    0  401   46.08132   17.10993  62.9%     -    0s
+     0     0   17.14925    0  419   46.08132   17.14925  62.8%     -    0s
+     0     0   17.15425    0  438   46.08132   17.15425  62.8%     -    0s
+     0     0   17.80031    0  418   46.08132   17.80031  61.4%     -    0s
+     0     0   18.07081    0  208   46.08132   18.07081  60.8%     -    0s
+     0     0   18.14267    0  368   46.08132   18.14267  60.6%     -    0s
+     0     0   18.18706    0  380   46.08132   18.18706  60.5%     -    0s
+     0     0   18.19072    0  379   46.08132   18.19072  60.5%     -    0s
+     0     0   18.44859    0  357   46.08132   18.44859  60.0%     -    0s
+     0     0   18.47932    0  404   46.08132   18.47932  59.9%     -    0s
+     0     0   18.48128    0  419   46.08132   18.48128  59.9%     -    0s
+     0     0   18.62834    0  365   46.08132   18.62834  59.6%     -    0s
+     0     0   18.66917    0  400   46.08132   18.66917  59.5%     -    0s
+     0     0   18.67639    0  409   46.08132   18.67639  59.5%     -    0s
+     0     0   18.68862    0  374   46.08132   18.68862  59.4%     -    0s
+     0     0   18.69391    0  333   46.08132   18.69391  59.4%     -    0s
+     0     0   19.27134    0  382   46.08132   19.27134  58.2%     -    0s
+     0     0   19.32072    0  404   46.08132   19.32072  58.1%     -    0s
+     0     0   19.35377    0  415   46.08132   19.35377  58.0%     -    0s
+     0     0   19.38009    0  398   46.08132   19.38009  57.9%     -    0s
+     0     0   19.38524    0  401   46.08132   19.38524  57.9%     -    0s
+     0     0   19.59394    0  381   46.08132   19.59394  57.5%     -    0s
+     0     0   19.59969    0  409   46.08132   19.59969  57.5%     -    0s
+     0     0   19.60990    0  389   46.08132   19.60990  57.4%     -    0s
+     0     0   19.61252    0  395   46.08132   19.61252  57.4%     -    0s
+     0     0   19.76151    0  361   46.08132   19.76151  57.1%     -    0s
+     0     0   19.83600    0  317   46.08132   19.83600  57.0%     -    0s
+     0     0   19.84108    0  326   46.08132   19.84108  56.9%     -    0s
+     0     0   19.86642    0  340   46.08132   19.86642  56.9%     -    0s
+     0     0   19.90621    0  346   46.08132   19.90621  56.8%     -    0s
+     0     0   20.01972    0  357   46.08132   20.01972  56.6%     -    0s
+     0     0   20.03693    0  335   46.08132   20.03693  56.5%     -    0s
+     0     0   20.03700    0  338   46.08132   20.03700  56.5%     -    0s
+     0     0   20.04290    0  365   46.08132   20.04290  56.5%     -    0s
+     0     0   20.04428    0  370   46.08132   20.04428  56.5%     -    0s
+     0     0   20.04671    0  404   46.08132   20.04671  56.5%     -    0s
+     0     0   20.04871    0  386   46.08132   20.04871  56.5%     -    0s
+     0     0   20.05009    0  402   46.08132   20.05009  56.5%     -    0s
+     0     0   20.05052    0  402   46.08132   20.05052  56.5%     -    0s
+     0     0   20.05052    0  402   46.08132   20.05052  56.5%     -    0s
+     0     2   20.05172    0  402   46.08132   20.05172  56.5%     -    0s
+H  319   324                      46.0813153   20.94895  54.5%   125    1s
+  3680  2095   39.66558   22  363   46.08132   27.29931  40.8%  75.9    5s
+  4340  2385   41.08070   39  415   46.08132   35.48468  23.0%  85.3   10s
+ 14318  4192   42.77209   43  341   46.08132   38.72285  16.0%  83.5   15s
+ 29377  4425   44.94939   47  312   46.08132   42.20856  8.40%  81.5   20s
+
+Cutting planes:
+  Gomory: 4
+  Cover: 46
+  Dual implied bound: 2
+  MIR: 179
+  StrongCG: 2
+  Flow cover: 294
+  GUB cover: 6
+  Inf proof: 83
+  Zero half: 8
+  Relax-and-lift: 1
+
+Explored 35060 nodes (2777644 simplex iterations) in 22.11 seconds (60.24 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 10: 46.0813 46.0813 46.0813 ... 179.726
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.608131531788e+01, best bound 4.608131531788e+01, gap 0.0000%
+
+H1 Solution:
+  Objective: 46.081315
+  Selected features: 4/4
+  L1 norm: 8.000000
+  Positive accuracy lb: 0.9926
+  Negative accuracy lb: 0.9261
+
+============================================================
+Training H2: Class 3 (+1) vs Class {1, 2} (-1)
+============================================================
+H2 Training samples: 500
+  Positive (+1): 231 samples
+  Negative (-1): 269 samples
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 3510 rows, 2015 columns and 11526 nonzeros (Min)
+Model fingerprint: 0x36cf6a50
+Model has 1510 linear objective coefficients
+Variable types: 511 continuous, 1504 integer (1504 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+02]
+
+Found heuristic solution: objective 1124.3975459
+Presolve removed 6 rows and 6 columns
+Presolve time: 0.01s
+Presolved: 3504 rows, 2009 columns, 11194 nonzeros
+Found heuristic solution: objective 1120.2632686
+Variable types: 9 continuous, 2000 integer (1500 binary)
+Found heuristic solution: objective 1061.2632686
+
+Root relaxation: objective -9.980761e-01, 1578 iterations, 0.03 seconds (0.15 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -0.99808    0 1500 1061.26327   -0.99808   100%     -    0s
+H    0     0                     690.9893424   -0.99808   100%     -    0s
+H    0     0                     363.7924613   -0.99808   100%     -    0s
+H    0     0                     343.6310168   -0.99808   100%     -    0s
+H    0     0                     338.6272993   -0.99808   100%     -    0s
+H    0     0                     336.8772993   -0.99808   100%     -    0s
+H    0     0                     248.7831394   -0.99808   100%     -    0s
+     0     0    0.36746    0 1569  248.78314    0.36746   100%     -    0s
+H    0     0                     116.1275206    0.47216   100%     -    0s
+     0     0    0.47216    0 1669  116.12752    0.47216   100%     -    0s
+     0     0    1.44254    0 1297  116.12752    1.44254  98.8%     -    0s
+H    0     0                     115.1275206    1.77052  98.5%     -    0s
+     0     0    1.77052    0 1068  115.12752    1.77052  98.5%     -    0s
+     0     0    1.77553    0 1068  115.12752    1.77553  98.5%     -    0s
+H    0     0                     105.1312380    1.77553  98.3%     -    0s
+H    0     0                     104.1312380    1.77553  98.3%     -    0s
+H    0     0                     102.1312380    1.77553  98.3%     -    0s
+     0     0    7.20739    0  460  102.13124    7.20739  92.9%     -    0s
+H    0     0                      87.0742529    7.27792  91.6%     -    0s
+H    0     0                      85.0655949    7.27792  91.4%     -    0s
+H    0     0                      82.0841822    7.27792  91.1%     -    0s
+H    0     0                      79.0755242    7.27792  90.8%     -    0s
+H    0     0                      78.0761358    7.27792  90.7%     -    0s
+     0     0    8.28229    0  277   78.07614    8.28229  89.4%     -    0s
+     0     0    8.28229    0  309   78.07614    8.28229  89.4%     -    0s
+     0     0    8.28229    0  322   78.07614    8.28229  89.4%     -    0s
+     0     0   11.97434    0  384   78.07614   11.97434  84.7%     -    0s
+     0     0   12.08922    0  325   78.07614   12.08922  84.5%     -    0s
+     0     0   12.09679    0  360   78.07614   12.09679  84.5%     -    0s
+     0     0   12.09786    0  355   78.07614   12.09786  84.5%     -    0s
+     0     0   12.99593    0  356   78.07614   12.99593  83.4%     -    0s
+     0     0   13.20199    0  382   78.07614   13.20199  83.1%     -    0s
+     0     0   13.22923    0  331   78.07614   13.22923  83.1%     -    0s
+     0     0   13.23074    0  326   78.07614   13.23074  83.1%     -    0s
+     0     0   13.78013    0  391   78.07614   13.78013  82.4%     -    0s
+     0     0   14.16421    0  378   78.07614   14.16421  81.9%     -    0s
+     0     0   14.31443    0  367   78.07614   14.31443  81.7%     -    0s
+     0     0   14.34770    0  373   78.07614   14.34770  81.6%     -    0s
+     0     0   14.35189    0  388   78.07614   14.35189  81.6%     -    0s
+     0     0   15.02304    0  293   78.07614   15.02304  80.8%     -    0s
+     0     0   15.09315    0  356   78.07614   15.09315  80.7%     -    0s
+     0     0   15.09928    0  375   78.07614   15.09928  80.7%     -    0s
+     0     0   15.10525    0  356   78.07614   15.10525  80.7%     -    0s
+     0     0   15.10531    0  349   78.07614   15.10531  80.7%     -    0s
+     0     0   15.99666    0  449   78.07614   15.99666  79.5%     -    0s
+     0     0   16.16223    0  422   78.07614   16.16223  79.3%     -    0s
+     0     0   16.17623    0  430   78.07614   16.17623  79.3%     -    0s
+     0     0   16.19361    0  413   78.07614   16.19361  79.3%     -    0s
+     0     0   16.19469    0  416   78.07614   16.19469  79.3%     -    0s
+     0     0   16.65056    0  397   78.07614   16.65056  78.7%     -    0s
+     0     0   16.72325    0  386   78.07614   16.72325  78.6%     -    0s
+     0     0   16.73254    0  366   78.07614   16.73254  78.6%     -    0s
+     0     0   16.73548    0  364   78.07614   16.73548  78.6%     -    0s
+     0     0   16.93873    0  402   78.07614   16.93873  78.3%     -    0s
+     0     0   17.02205    0  391   78.07614   17.02205  78.2%     -    0s
+     0     0   17.06184    0  354   78.07614   17.06184  78.1%     -    0s
+     0     0   17.08040    0  390   78.07614   17.08040  78.1%     -    0s
+     0     0   17.08359    0  399   78.07614   17.08359  78.1%     -    0s
+     0     0   17.60294    0  386   78.07614   17.60294  77.5%     -    0s
+     0     0   17.67610    0  341   78.07614   17.67610  77.4%     -    0s
+     0     0   17.68851    0  355   78.07614   17.68851  77.3%     -    0s
+     0     0   17.69046    0  362   78.07614   17.69046  77.3%     -    0s
+     0     0   17.69920    0  379   78.07614   17.69920  77.3%     -    0s
+     0     0   17.70090    0  377   78.07614   17.70090  77.3%     -    0s
+     0     0   17.70716    0  385   78.07614   17.70716  77.3%     -    0s
+     0     0   17.70839    0  385   78.07614   17.70839  77.3%     -    0s
+     0     0   17.70839    0  385   78.07614   17.70839  77.3%     -    0s
+     0     2   17.70839    0  385   78.07614   17.70839  77.3%     -    0s
+H   16    32                      44.0760875   18.00444  59.2%   171    1s
+H   20    32                      43.0760875   18.00444  58.2%   168    1s
+H 2649  1389                      43.0760873   20.68531  52.0%  70.4    4s
+  4515  2004   34.04284   20  385   43.07609   22.35454  48.1%  66.8    6s
+  4792  2192   38.08635   25  342   43.07609   35.01443  18.7%  74.6   10s
+  7488  2226   42.91996   35  319   43.07609   37.81030  12.2%  88.9   15s
+
+Cutting planes:
+  Learned: 11
+  Gomory: 2
+  Cover: 44
+  MIR: 217
+  Flow cover: 276
+  GUB cover: 5
+  Inf proof: 72
+  Zero half: 2
+  RLT: 2
+  Relax-and-lift: 1
+
+Explored 13096 nodes (1279943 simplex iterations) in 17.04 seconds (42.89 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 10: 43.0761 43.0761 43.0761 ... 102.131
+No other solutions better than 43.0761
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.307608680458e+01, best bound 4.307608680458e+01, gap 0.0000%
+
+H2 Solution:
+  Objective: 43.076087
+  Selected features: 4/4
+  L1 norm: 8.000000
+  Positive accuracy lb: 0.9351
+  Negative accuracy lb: 0.9888
+
+============================================================
+Training Complete!
+============================================================
+
+Training completed in: 0:00:39.210697
+
+================================================================================
+Model Summary
+================================================================================
+Status: fitted
+Strategy: test2
+Features: 4
+
+Class Roles:
+  Majority: Class 3
+  Medium:   Class 1
+  Minority: Class 2
+
+Test2 Rule Applied: No (Majority = Class 3)
+Accuracy Modes:
+  H1: both
+  H2: both
+
+Classifier 1 (H1): Class {2, 3} vs Class 1
+  Objective: 46.081315
+  Selected Features: 4/4
+  L1 Norm: 8.000000
+
+Classifier 2 (H2): Class 3 vs Class {1, 2}
+  Objective: 43.076087
+  Selected Features: 4/4
+  L1 Norm: 8.000000
+
+================================================================================
+Training Set Evaluation
+================================================================================
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 0.9320
+
+Per-Class Accuracy:
+  Class 1: 0.9261
+  Class 2: 0.9487
+  Class 3: 0.9351
+
+Class Distribution:
+  Class 1: 230 samples
+  Class 2: 39 samples
+  Class 3: 231 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:   213      15       2
+True 2:     1      37       1
+True 3:     1      14     216
+============================================================
+
+================================================================================
+Test Set Evaluation
+================================================================================
+
+Loading test data (skiprows=4)...
+Loaded multi-class data:
+  Class 1: 58 samples
+  Class 2: 10 samples
+  Class 3: 57 samples
+  Features: 4
+Test data loaded:
+  Class 1: 58 samples
+  Class 2: 10 samples
+  Class 3: 57 samples
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 0.8560
+
+Per-Class Accuracy:
+  Class 1: 0.8793
+  Class 2: 0.8000
+  Class 3: 0.8421
+
+Class Distribution:
+  Class 1: 58 samples
+  Class 2: 10 samples
+  Class 3: 57 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:    51       5       2
+True 2:     1       8       1
+True 3:     3       6      48
+============================================================
+
+================================================================================
+Test Complete!
+================================================================================
+Training Duration: 0:00:39.210697
+Training Accuracy: 0.9320
+Test Accuracy: 0.8560
+Log saved to: /home/bs10081/Developer/hcesvm/results/test2_Balance_20260201_122920.log
+================================================================================

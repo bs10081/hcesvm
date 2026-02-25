@@ -1,0 +1,9 @@
+================================================================================
+Hierarchical CE-SVM - Inverted Strategy
+Dataset: Squash_Unstored
+Timestamp: 2026-01-31 13:33:12
+================================================================================
+
+Loading training data from: /home/bs10081/Developer/NSVORA/Archive/squash-unstored_split.xlsx
+
+Error loading training data: could not convert string to float: 'LINC'

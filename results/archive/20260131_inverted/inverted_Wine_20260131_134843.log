@@ -1,0 +1,269 @@
+================================================================================
+Hierarchical CE-SVM - Inverted Strategy
+Dataset: Wine
+Timestamp: 2026-01-31 13:48:43
+================================================================================
+
+Loading training data from: /home/bs10081/Developer/NSVORA/Archive/wine_split.xlsx
+
+Loaded multi-class data:
+  Class 1: 47 samples
+  Class 2: 57 samples
+  Class 3: 38 samples
+  Features: 14
+Training data loaded:
+  Class 1: 47 samples
+  Class 2: 57 samples
+  Class 3: 38 samples
+  Features: 14
+
+================================================================================
+Model Parameters
+================================================================================
+  C_hyper: 1.0
+  epsilon: 0.0001
+  M: 1000.0
+  time_limit: 1800
+  mip_gap: 0.0001
+  threads: 0
+  verbose: True
+  enable_selection: True
+  feat_upper_bound: 1000
+  feat_lower_bound: 1e-07
+
+================================================================================
+Training Hierarchical Classifier - Inverted Strategy
+================================================================================
+
+Inverted Strategy:
+  H1: medium class vs {majority, minority}
+  H2: {medium, majority} vs minority
+  (Class roles determined dynamically based on sample counts)
+
+============================================================
+Training Hierarchical CE-SVM (Strategy: inverted)
+============================================================
+Class 1: 47 samples
+Class 2: 57 samples
+Class 3: 38 samples
+Features: 14
+
+Dynamic Class Roles:
+  Majority:  Class 2 (57 samples)
+  Medium:    Class 1 (47 samples)
+  Minority:  Class 3 (38 samples)
+
+============================================================
+Training H1: Class 1 (+1) vs {Class 2, 3} (-1)
+============================================================
+H1 Training samples: 142
+  Positive (+1): 47 samples
+  Negative (-1): 95 samples
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 1024 rows, 613 columns and 6192 nonzeros (Min)
+Model fingerprint: 0x6c230252
+Model has 456 linear objective coefficients
+Variable types: 173 continuous, 440 integer (440 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+02]
+
+Presolve removed 17 rows and 17 columns
+Presolve time: 0.00s
+Presolved: 1007 rows, 596 columns, 6057 nonzeros
+Variable types: 28 continuous, 568 integer (426 binary)
+Found heuristic solution: objective 426.0000000
+Found heuristic solution: objective 425.0000000
+Found heuristic solution: objective 140.0000000
+Found heuristic solution: objective 139.3537346
+
+Root relaxation: objective -1.938804e+00, 334 iterations, 0.00 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -1.93880    0  102  139.35373   -1.93880   101%     -    0s
+H    0     0                     101.3537346   -1.93880   102%     -    0s
+H    0     0                      16.5930062   -1.93880   112%     -    0s
+H    0     0                       0.0000000   -1.93880      -     -    0s
+H    0     0                      -0.0000000   -1.93880      -     -    0s
+
+Cutting planes:
+  Gomory: 4
+  Implied bound: 30
+
+Explored 1 nodes (334 simplex iterations) in 0.02 seconds (0.04 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 7: -1e-10 16.593 101.354 ... 426
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.000000082740e-10, best bound -1.000000082740e-10, gap 0.0000%
+
+H1 Solution:
+  Objective: -0.000000
+  Selected features: 14/14
+  L1 norm: 2.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H2: Class {Class 1, 2} (+1) vs Class 3 (-1)
+============================================================
+H2 Training samples: 142
+  Positive (+1): 104 samples
+  Negative (-1): 38 samples
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 1024 rows, 613 columns and 6192 nonzeros (Min)
+Model fingerprint: 0xf05ec0b5
+Model has 456 linear objective coefficients
+Variable types: 173 continuous, 440 integer (440 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+02]
+
+Found heuristic solution: objective 79.4073194
+Presolve removed 17 rows and 17 columns
+Presolve time: 0.00s
+Presolved: 1007 rows, 596 columns, 6057 nonzeros
+Found heuristic solution: objective 55.2014170
+Variable types: 28 continuous, 568 integer (426 binary)
+Found heuristic solution: objective 44.2014170
+
+Root relaxation: objective -1.808000e+00, 391 iterations, 0.00 seconds (0.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -1.80800    0  114   44.20142   -1.80800   104%     -    0s
+H    0     0                       0.0000000   -1.80800      -     -    0s
+H    0     0                      -0.0000000   -1.80800      -     -    0s
+
+Cutting planes:
+  Gomory: 6
+  Implied bound: 38
+
+Explored 1 nodes (391 simplex iterations) in 0.02 seconds (0.06 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 4: -1e-10 44.2014 55.2014 79.4073 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective -1.000000082740e-10, best bound -1.000000082740e-10, gap 0.0000%
+
+H2 Solution:
+  Objective: -0.000000
+  Selected features: 14/14
+  L1 norm: 2.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training Complete!
+============================================================
+
+Training completed in: 0:00:00.076361
+
+================================================================================
+Model Summary
+================================================================================
+Status: fitted
+Strategy: inverted
+Features: 14
+
+Class Roles:
+  Majority: Class 2
+  Medium:   Class 1
+  Minority: Class 3
+
+Classifier 1 (H1): Class 1 vs {Class 2, 3}
+  Objective: -0.000000
+  Selected Features: 14/14
+  L1 Norm: 2.000000
+
+Classifier 2 (H2): Class {Class 1, 2} vs Class 3
+  Objective: -0.000000
+  Selected Features: 14/14
+  L1 Norm: 2.000000
+
+================================================================================
+Training Set Evaluation
+================================================================================
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 1.0000
+
+Per-Class Accuracy:
+  Class 1: 1.0000
+  Class 2: 1.0000
+  Class 3: 1.0000
+
+Class Distribution:
+  Class 1: 47 samples
+  Class 2: 57 samples
+  Class 3: 38 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:    47       0       0
+True 2:     0      57       0
+True 3:     0       0      38
+============================================================
+
+================================================================================
+Test Set Evaluation
+================================================================================
+
+Loading test data (skiprows=4)...
+Loaded multi-class data:
+  Class 1: 12 samples
+  Class 2: 14 samples
+  Class 3: 10 samples
+  Features: 13
+Test data loaded:
+  Class 1: 12 samples
+  Class 2: 14 samples
+  Class 3: 10 samples
+
+Warning: Could not load or evaluate test data: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 14 is different from 13)
+Skipping test set evaluation.
+
+================================================================================
+Test Complete!
+================================================================================
+Training Duration: 0:00:00.076361
+Training Accuracy: 1.0000
+Log saved to: /home/bs10081/Developer/hcesvm/results/inverted_Wine_20260131_134843.log
+================================================================================

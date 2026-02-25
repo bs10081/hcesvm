@@ -1,0 +1,273 @@
+================================================================================
+Hierarchical CE-SVM - Test2 Strategy
+Dataset: Contraceptive
+Timestamp: 2026-02-01 12:29:59
+================================================================================
+
+Loading training data from: /home/bs10081/Developer/NSVORA/Archive/contraceptive_split.xlsx
+
+Loaded multi-class data:
+  Class 1: 503 samples
+  Class 2: 266 samples
+  Class 3: 409 samples
+  Features: 10
+Training data loaded:
+  Class 1: 503 samples
+  Class 2: 266 samples
+  Class 3: 409 samples
+  Features: 10
+
+================================================================================
+Model Parameters
+================================================================================
+  C_hyper: 1.0
+  epsilon: 0.0001
+  M: 1000.0
+  time_limit: 1800
+  mip_gap: 0.0001
+  threads: 0
+  verbose: True
+  enable_selection: True
+  feat_upper_bound: 1000
+  feat_lower_bound: 1e-07
+
+================================================================================
+Training Hierarchical Classifier - Test2 Strategy
+================================================================================
+
+Test2 Strategy:
+  H1: {minority, medium} vs majority
+  H2: minority vs medium
+  (Class roles determined dynamically based on sample counts)
+
+============================================================
+Training Hierarchical CE-SVM (Strategy: test2)
+============================================================
+Class 1: 503 samples
+Class 2: 266 samples
+Class 3: 409 samples
+Features: 10
+
+Dynamic Class Roles:
+  Majority:  Class 1 (503 samples)
+  Medium:    Class 3 (409 samples)
+  Minority:  Class 2 (266 samples)
+
+============================================================
+Training H1: Class {2, 3} (+1) vs Class 1 (-1)
+============================================================
+H1 Training samples: 1178
+  Positive (+1): 675 samples
+  Negative (-1): 503 samples
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 8268 rows, 4745 columns and 38020 nonzeros (Min)
+Model fingerprint: 0x256a3f04
+Model has 3556 linear objective coefficients
+Variable types: 1201 continuous, 3544 integer (3544 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 1e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+03]
+
+Presolve removed 188 rows and 113 columns
+Presolve time: 0.03s
+Presolved: 8080 rows, 4632 columns, 37173 nonzeros
+Variable types: 20 continuous, 4612 integer (3459 binary)
+Found heuristic solution: objective 3534.0000000
+Found heuristic solution: objective 3533.0000000
+Found heuristic solution: objective 1176.0000000
+
+Root relaxation: objective -4.676059e-01, 3027 iterations, 0.05 seconds (0.27 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -0.46761    0  510 1176.00000   -0.46761   100%     -    0s
+H    0     0                     265.0000000   -0.46761   100%     -    0s
+H    0     0                     251.0000000   -0.46761   100%     -    0s
+H    0     0                       0.0000000   -0.46761      -     -    0s
+     0     0     cutoff    0         0.00000    0.00000  0.00%     -    0s
+
+Explored 1 nodes (3339 simplex iterations) in 0.16 seconds (0.58 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 6: 0 251 265 ... 3534
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+H1 Solution:
+  Objective: 0.000000
+  Selected features: 10/10
+  L1 norm: 2.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H2: Class 3 (+1) vs Class {1, 2} (-1)
+============================================================
+H2 Training samples: 1178
+  Positive (+1): 409 samples
+  Negative (-1): 769 samples
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+Set parameter OutputFlag to value 1
+Set parameter Threads to value 0
+Gurobi Optimizer version 13.0.1 build v13.0.1rc0 (linux64 - "Ubuntu 24.04.3 LTS")
+
+CPU model: AMD Ryzen 9 9900X 12-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 20 physical cores, 20 logical processors, using up to 20 threads
+
+Non-default parameters:
+TimeLimit  1800
+
+Optimize a model with 8268 rows, 4745 columns and 38020 nonzeros (Min)
+Model fingerprint: 0x88b97a89
+Model has 3556 linear objective coefficients
+Variable types: 1201 continuous, 3544 integer (3544 binary)
+Coefficient statistics:
+  Matrix range     [1e-07, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+03]
+
+Presolve removed 187 rows and 112 columns
+Presolve time: 0.03s
+Presolved: 8081 rows, 4633 columns, 38328 nonzeros
+Variable types: 21 continuous, 4612 integer (3459 binary)
+Found heuristic solution: objective 3534.0000000
+Found heuristic solution: objective 3533.0000000
+Found heuristic solution: objective 1176.0000000
+
+Root relaxation: objective -4.676541e-01, 3321 iterations, 0.06 seconds (0.29 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   -0.46765    0  510 1176.00000   -0.46765   100%     -    0s
+H    0     0                     265.0000000   -0.46765   100%     -    0s
+H    0     0                     251.0000000   -0.46765   100%     -    0s
+H    0     0                       0.0000000   -0.46765      -     -    0s
+     0     0     cutoff    0         0.00000    0.00000  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 6
+  Implied bound: 254
+
+Explored 1 nodes (3618 simplex iterations) in 0.17 seconds (0.62 work units)
+Thread count was 20 (of 20 available processors)
+
+Solution count 6: 0 251 265 ... 3534
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+H2 Solution:
+  Objective: 0.000000
+  Selected features: 10/10
+  L1 norm: 2.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training Complete!
+============================================================
+
+Training completed in: 0:00:00.456594
+
+================================================================================
+Model Summary
+================================================================================
+Status: fitted
+Strategy: test2
+Features: 10
+
+Class Roles:
+  Majority: Class 1
+  Medium:   Class 3
+  Minority: Class 2
+
+Test2 Rule Applied: No (Majority = Class 1)
+Accuracy Modes:
+  H1: both
+  H2: both
+
+Classifier 1 (H1): Class {2, 3} vs Class 1
+  Objective: 0.000000
+  Selected Features: 10/10
+  L1 Norm: 2.000000
+
+Classifier 2 (H2): Class 3 vs Class {1, 2}
+  Objective: 0.000000
+  Selected Features: 10/10
+  L1 Norm: 2.000000
+
+================================================================================
+Training Set Evaluation
+================================================================================
+
+
+============================================================
+Evaluation Results
+============================================================
+
+Total Accuracy: 1.0000
+
+Per-Class Accuracy:
+  Class 1: 1.0000
+  Class 2: 1.0000
+  Class 3: 1.0000
+
+Class Distribution:
+  Class 1: 503 samples
+  Class 2: 266 samples
+  Class 3: 409 samples
+
+Confusion Matrix:
+     Pred 1  Pred 2  Pred 3
+True 1:   503       0       0
+True 2:     0     266       0
+True 3:     0       0     409
+============================================================
+
+================================================================================
+Test Set Evaluation
+================================================================================
+
+Loading test data (skiprows=4)...
+Loaded multi-class data:
+  Class 1: 126 samples
+  Class 2: 67 samples
+  Class 3: 102 samples
+  Features: 9
+Test data loaded:
+  Class 1: 126 samples
+  Class 2: 67 samples
+  Class 3: 102 samples
+
+Warning: Could not load or evaluate test data: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 10 is different from 9)
+Skipping test set evaluation.
+
+================================================================================
+Test Complete!
+================================================================================
+Training Duration: 0:00:00.456594
+Training Accuracy: 1.0000
+Log saved to: /home/bs10081/Developer/hcesvm/results/test2_Contraceptive_20260201_122959.log
+================================================================================
