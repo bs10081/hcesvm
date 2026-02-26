@@ -4,6 +4,77 @@
 import numpy as np
 import pandas as pd
 from typing import Tuple, List, Optional
+from sklearn.model_selection import train_test_split
+
+
+def load_csv_ordinal_data(
+    filepath: str,
+    target_col: str = "response",
+    test_size: float = 0.2,
+    random_state: int = 42
+) -> Tuple[List[np.ndarray], List[np.ndarray], np.ndarray, np.ndarray, int]:
+    """Load CSV ordinal regression data with train/test split.
+
+    Args:
+        filepath: Path to CSV file
+        target_col: Name of target column (default: "response")
+        test_size: Proportion of test set (default: 0.2)
+        random_state: Random seed for reproducibility (default: 42)
+
+    Returns:
+        train_classes: List[np.ndarray] - X arrays for each class (training)
+        test_classes: List[np.ndarray] - X arrays for each class (testing)
+        X_test: Combined test features (n_test_samples, n_features)
+        y_test: Test labels (n_test_samples,)
+        n_features: Number of features
+    """
+    # Load CSV file
+    df = pd.read_csv(filepath)
+
+    if target_col not in df.columns:
+        raise ValueError(f"Target column '{target_col}' not found in CSV file")
+
+    # Extract labels and features
+    y = df[target_col].values
+    X = df.drop(columns=[target_col]).values
+    n_features = X.shape[1]
+
+    # Detect number of classes
+    unique_classes = sorted(np.unique(y))
+    n_classes = len(unique_classes)
+
+    print(f"Loaded CSV data: {filepath}")
+    print(f"  Total samples: {len(y)}")
+    print(f"  Features: {n_features}")
+    print(f"  Classes: {n_classes} (values: {unique_classes})")
+
+    # Check if classes are consecutive integers starting from 1
+    expected_classes = list(range(1, n_classes + 1))
+    if unique_classes != expected_classes:
+        raise ValueError(f"Classes must be consecutive integers from 1 to {n_classes}, got {unique_classes}")
+
+    # Stratified train/test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_size, random_state=random_state, stratify=y
+    )
+
+    # Split training data by class
+    train_classes = []
+    for k in range(1, n_classes + 1):
+        mask = y_train == k
+        X_k = X_train[mask]
+        train_classes.append(X_k)
+        print(f"  Class {k} (train): {len(X_k)} samples")
+
+    # Split test data by class
+    test_classes = []
+    for k in range(1, n_classes + 1):
+        mask = y_test == k
+        X_k = X_test[mask]
+        test_classes.append(X_k)
+        print(f"  Class {k} (test): {len(X_k)} samples")
+
+    return train_classes, test_classes, X_test, y_test, n_features
 
 
 def load_parkinsons_data(

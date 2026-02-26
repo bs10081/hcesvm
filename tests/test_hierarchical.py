@@ -1,10 +1,9 @@
 """
 Unit tests for HierarchicalCESVM
 
-Tests the hierarchical three-class classifier including:
-- All 4 classification strategies
-- Fixed strategies (single_filter, multiple_filter, test3)
-- Dynamic strategy (inverted)
+Tests the hierarchical multi-class classifier including:
+- 3-class strategies (single_filter, multiple_filter, inverted, test3)
+- N-class test3 strategy (5-class, 7-class)
 - Prediction logic and model summaries
 """
 
@@ -14,7 +13,7 @@ from hcesvm.models.hierarchical import HierarchicalCESVM
 
 
 class TestHierarchicalCESVMFixedStrategies:
-    """Test fixed classification strategies."""
+    """Test fixed classification strategies (3-class)."""
 
     def setup_method(self):
         """Set up test data for three classes."""
@@ -72,7 +71,7 @@ class TestHierarchicalCESVMFixedStrategies:
 
 
 class TestHierarchicalCESVMDynamicStrategies:
-    """Test dynamic classification strategies."""
+    """Test dynamic classification strategies (3-class)."""
 
     def setup_method(self):
         """Set up imbalanced test data."""
@@ -134,6 +133,110 @@ class TestHierarchicalCESVMDynamicStrategies:
 
         # Test3 uses fixed grouping, no dynamic class detection
         assert not hasattr(model, 'class_roles') or model.class_roles is None
+
+
+class TestHierarchicalCESVMNClass:
+    """Test N-class test3 strategy (N > 3)."""
+
+    def test_5class_test3_strategy(self):
+        """Test test3 strategy with 5 classes."""
+        np.random.seed(42)
+        # Create 5 well-separated classes
+        X1 = np.random.randn(8, 2) + [0, 0]
+        X2 = np.random.randn(8, 2) + [5, 0]
+        X3 = np.random.randn(8, 2) + [10, 0]
+        X4 = np.random.randn(8, 2) + [15, 0]
+        X5 = np.random.randn(8, 2) + [20, 0]
+
+        # Test data
+        X_test = np.array([
+            [0, 0],   # Class 1
+            [5, 0],   # Class 2
+            [10, 0],  # Class 3
+            [15, 0],  # Class 4
+            [20, 0]   # Class 5
+        ])
+
+        model = HierarchicalCESVM(
+            cesvm_params={
+                'C_hyper': 1.0,
+                'M': 1000.0,
+                'time_limit': 120,
+                'verbose': False
+            },
+            strategy='test3',
+            n_classes=5
+        )
+
+        model.fit(X1, X2, X3, X4, X5)
+
+        # Check model properties
+        assert model.n_classes == 5
+        assert len(model.classifiers) == 4  # N-1 classifiers
+
+        # Check predictions
+        predictions = model.predict(X_test)
+        assert len(predictions) == len(X_test)
+        assert all(p in [1, 2, 3, 4, 5] for p in predictions)
+
+        # Check model summary
+        summary = model.get_model_summary()
+        assert summary['status'] == 'fitted'
+        assert summary['n_classes'] == 5
+        assert 'classifiers' in summary
+        assert len(summary['classifiers']) == 4
+
+    def test_7class_test3_strategy(self):
+        """Test test3 strategy with 7 classes."""
+        np.random.seed(42)
+        # Create 7 well-separated classes
+        X1 = np.random.randn(6, 2) + [0, 0]
+        X2 = np.random.randn(6, 2) + [5, 0]
+        X3 = np.random.randn(6, 2) + [10, 0]
+        X4 = np.random.randn(6, 2) + [15, 0]
+        X5 = np.random.randn(6, 2) + [20, 0]
+        X6 = np.random.randn(6, 2) + [25, 0]
+        X7 = np.random.randn(6, 2) + [30, 0]
+
+        # Test data
+        X_test = np.array([
+            [0, 0],   # Class 1
+            [5, 0],   # Class 2
+            [10, 0],  # Class 3
+            [15, 0],  # Class 4
+            [20, 0],  # Class 5
+            [25, 0],  # Class 6
+            [30, 0]   # Class 7
+        ])
+
+        model = HierarchicalCESVM(
+            cesvm_params={
+                'C_hyper': 1.0,
+                'M': 1000.0,
+                'time_limit': 120,
+                'verbose': False
+            },
+            strategy='test3',
+            n_classes=7
+        )
+
+        model.fit(X1, X2, X3, X4, X5, X6, X7)
+
+        # Check model properties
+        assert model.n_classes == 7
+        assert len(model.classifiers) == 6  # N-1 classifiers
+
+        # Check predictions
+        predictions = model.predict(X_test)
+        assert len(predictions) == len(X_test)
+        assert all(p in [1, 2, 3, 4, 5, 6, 7] for p in predictions)
+
+        # Check model summary
+        summary = model.get_model_summary()
+        assert summary['status'] == 'fitted'
+        assert summary['n_classes'] == 7
+        assert 'classifiers' in summary
+        assert len(summary['classifiers']) == 6
 
 
 class TestHierarchicalCESVMPredictionLogic:
@@ -245,6 +348,20 @@ class TestHierarchicalCESVMEdgeCases:
         predictions = model.predict(X1)
         assert len(predictions) == len(X1)
         assert all(p in [1, 2, 3] for p in predictions)
+
+    def test_nclass_with_wrong_strategy(self):
+        """Test N-class (N>3) with non-test3 strategy should fail."""
+        np.random.seed(42)
+        X1 = np.random.randn(5, 2)
+        X2 = np.random.randn(5, 2)
+        X3 = np.random.randn(5, 2)
+        X4 = np.random.randn(5, 2)
+        X5 = np.random.randn(5, 2)
+
+        model = HierarchicalCESVM(strategy='multiple_filter', n_classes=5)
+
+        with pytest.raises(ValueError, match="only supports 3 classes"):
+            model.fit(X1, X2, X3, X4, X5)
 
 
 if __name__ == '__main__':
