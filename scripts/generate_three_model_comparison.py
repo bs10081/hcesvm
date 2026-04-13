@@ -11,12 +11,16 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
+from openpyxl import Workbook
+from openpyxl.styles import Font
+
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS_DIR = ROOT / "results"
 DOCS_DIR = ROOT / "docs" / "reports"
 DEFAULT_SVOR_NPSVOR_LOG = RESULTS_DIR / "svor_npsvor_all_datasets_20260323_035717.log"
 DEFAULT_REPORT_OUTPUT = DOCS_DIR / "SVOR_NPSVOR_HCESVM_TEST3_COMPARISON.md"
 DEFAULT_CSV_OUTPUT = DOCS_DIR / "SVOR_NPSVOR_HCESVM_TEST3_COMPARISON.csv"
+DEFAULT_XLSX_OUTPUT = DOCS_DIR / "SVOR_NPSVOR_HCESVM_TEST3_COMPARISON.xlsx"
 
 DATASET_ORDER = [
     "Car_Evaluation",
@@ -96,6 +100,13 @@ class HCESVMSelection:
     skipped_newer_incomplete: list[HCESVMCandidate] = field(default_factory=list)
 
 
+@dataclass(slots=True)
+class DatasetSizes:
+    dataset: str
+    train_class: list[int]
+    test_class: list[int]
+
+
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Generate the SVOR/NPSVOR/HCESVM(test3) comparison report."
@@ -117,6 +128,12 @@ def parse_arguments() -> argparse.Namespace:
         type=Path,
         default=DEFAULT_CSV_OUTPUT,
         help="Summary CSV output path.",
+    )
+    parser.add_argument(
+        "--xlsx-output",
+        type=Path,
+        default=DEFAULT_XLSX_OUTPUT,
+        help="Summary Excel output path.",
     )
     parser.add_argument(
         "--archive-root",
@@ -198,7 +215,9 @@ def dataset_sort_key(dataset: str) -> int:
         return len(DATASET_ORDER)
 
 
-def parse_svor_npsvor_records(log_path: Path) -> tuple[dict[str, SVORRecord], dict[str, NPSVORRecord], datetime | None]:
+def parse_svor_npsvor_records(
+    log_path: Path,
+) -> tuple[dict[str, SVORRecord], dict[str, NPSVORRecord], dict[str, DatasetSizes], datetime | None]:
     content = log_path.read_text(encoding="utf-8")
     start_time_match = re.search(r"Start time:\s*([^\n]+)", content)
     start_timestamp = parse_timestamp(start_time_match.group(1)) if start_time_match else None
@@ -220,10 +239,24 @@ def parse_svor_npsvor_records(log_path: Path) -> tuple[dict[str, SVORRecord], di
 
     svor_records: dict[str, SVORRecord] = {}
     npsvor_records: dict[str, NPSVORRecord] = {}
+    dataset_sizes: dict[str, DatasetSizes] = {}
 
     for dataset_match in dataset_pattern.finditer(content):
         dataset = dataset_match.group("dataset").strip()
         body = dataset_match.group("body")
+        sizes_match = re.search(
+            r"Dataset Info:\s*"
+            r"\n\s*Training:\s*Class1=(\d+),\s*Class2=(\d+),\s*Class3=(\d+)\s*"
+            r"\n\s*Testing:\s*Class1=(\d+),\s*Class2=(\d+),\s*Class3=(\d+)",
+            body,
+        )
+        if not sizes_match:
+            raise ValueError(f"Missing dataset sizes for {dataset}")
+        dataset_sizes[dataset] = DatasetSizes(
+            dataset=dataset,
+            train_class=[int(sizes_match.group(index)) for index in (1, 2, 3)],
+            test_class=[int(sizes_match.group(index)) for index in (4, 5, 6)],
+        )
 
         svor_section = extract_between(body, "SVOR Results:\n", "\n================================================================================\nTesting NPSVOR on")
         if not svor_section:
@@ -279,7 +312,7 @@ def parse_svor_npsvor_records(log_path: Path) -> tuple[dict[str, SVORRecord], di
             source_timestamp=start_timestamp,
         )
 
-    return svor_records, npsvor_records, start_timestamp
+    return svor_records, npsvor_records, dataset_sizes, start_timestamp
 
 
 def parse_standard_hcesvm_test3(path: Path, text: str) -> list[HCESVMCandidate]:
@@ -545,9 +578,11 @@ def build_summary_rows(
     svor_records: dict[str, SVORRecord],
     npsvor_records: dict[str, NPSVORRecord],
     hcesvm_selections: dict[str, HCESVMSelection],
+    dataset_sizes: dict[str, DatasetSizes],
 ) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for dataset in DATASET_ORDER:
+        sizes = dataset_sizes[dataset]
         svor_record = svor_records[dataset]
         rows.append(
             {
@@ -561,6 +596,12 @@ def build_summary_rows(
                 "Test C1": format_float(svor_record.test_class[0]),
                 "Test C2": format_float(svor_record.test_class[1]),
                 "Test C3": format_float(svor_record.test_class[2]),
+                "Train Size C1": str(sizes.train_class[0]),
+                "Train Size C2": str(sizes.train_class[1]),
+                "Train Size C3": str(sizes.train_class[2]),
+                "Test Size C1": str(sizes.test_class[0]),
+                "Test Size C2": str(sizes.test_class[1]),
+                "Test Size C3": str(sizes.test_class[2]),
                 "Source Timestamp": svor_record.source_timestamp.isoformat(sep=" ") if svor_record.source_timestamp else "",
                 "Source File": relpath(svor_record.source_file),
             }
@@ -579,6 +620,12 @@ def build_summary_rows(
                 "Test C1": format_float(npsvor_record.test_class[0]),
                 "Test C2": format_float(npsvor_record.test_class[1]),
                 "Test C3": format_float(npsvor_record.test_class[2]),
+                "Train Size C1": str(sizes.train_class[0]),
+                "Train Size C2": str(sizes.train_class[1]),
+                "Train Size C3": str(sizes.train_class[2]),
+                "Test Size C1": str(sizes.test_class[0]),
+                "Test Size C2": str(sizes.test_class[1]),
+                "Test Size C3": str(sizes.test_class[2]),
                 "Source Timestamp": npsvor_record.source_timestamp.isoformat(sep=" ") if npsvor_record.source_timestamp else "",
                 "Source File": relpath(npsvor_record.source_file),
             }
@@ -597,6 +644,12 @@ def build_summary_rows(
                 "Test C1": format_float(hcesvm_record.test_class[0]),
                 "Test C2": format_float(hcesvm_record.test_class[1]),
                 "Test C3": format_float(hcesvm_record.test_class[2]),
+                "Train Size C1": str(sizes.train_class[0]),
+                "Train Size C2": str(sizes.train_class[1]),
+                "Train Size C3": str(sizes.train_class[2]),
+                "Test Size C1": str(sizes.test_class[0]),
+                "Test Size C2": str(sizes.test_class[1]),
+                "Test Size C3": str(sizes.test_class[2]),
                 "Source Timestamp": hcesvm_record.source_timestamp.isoformat(sep=" ") if hcesvm_record.source_timestamp else "",
                 "Source File": relpath(hcesvm_record.source_file),
             }
@@ -621,16 +674,18 @@ def render_markdown(
     lines.append("## Summary Table")
     lines.append("")
     lines.append(
-        "| Dataset | Method | Train Acc | Test Acc | Train C1 | Train C2 | Train C3 | Test C1 | Test C2 | Test C3 |"
+        "| Dataset | Method | Train Acc | Test Acc | Train C1 | Train C2 | Train C3 | Test C1 | Test C2 | Test C3 | Train Size C1 | Train Size C2 | Train Size C3 | Test Size C1 | Test Size C2 | Test Size C3 |"
     )
     lines.append(
-        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"
     )
     for row in summary_rows:
         lines.append(
             f"| {row['Dataset']} | {row['Method']} | {row['Train Acc']} | {row['Test Acc']} | "
             f"{row['Train C1']} | {row['Train C2']} | {row['Train C3']} | "
-            f"{row['Test C1']} | {row['Test C2']} | {row['Test C3']} |"
+            f"{row['Test C1']} | {row['Test C2']} | {row['Test C3']} | "
+            f"{row['Train Size C1']} | {row['Train Size C2']} | {row['Train Size C3']} | "
+            f"{row['Test Size C1']} | {row['Test Size C2']} | {row['Test Size C3']} |"
         )
 
     lines.append("")
@@ -717,6 +772,12 @@ def write_summary_csv(output_path: Path, summary_rows: list[dict[str, str]]) -> 
         "Test C1",
         "Test C2",
         "Test C3",
+        "Train Size C1",
+        "Train Size C2",
+        "Train Size C3",
+        "Test Size C1",
+        "Test Size C2",
+        "Test Size C3",
         "Source Timestamp",
         "Source File",
     ]
@@ -724,6 +785,93 @@ def write_summary_csv(output_path: Path, summary_rows: list[dict[str, str]]) -> 
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(summary_rows)
+
+
+def write_summary_xlsx(output_path: Path, summary_rows: list[dict[str, str]]) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "SVOR_NPSVOR_HCESVM_TEST3_COMPAR"
+
+    headers = [
+        "Dataset",
+        "Method",
+        "Train Acc",
+        "Test Acc",
+        "Train C1",
+        "Train C2",
+        "Train C3",
+        "Test C1",
+        "Test C2",
+        "Test C3",
+        "Train Size C1",
+        "Train Size C2",
+        "Train Size C3",
+        "Test Size C1",
+        "Test Size C2",
+        "Test Size C3",
+        "Source Timestamp",
+        "Source File",
+    ]
+    worksheet.append(headers)
+    for cell in worksheet[1]:
+        cell.font = Font(bold=True)
+
+    def excel_value(header: str, value: str) -> object:
+        if value == "":
+            return None
+        if header in {"Train Acc", "Test Acc", "Train C1", "Train C2", "Train C3", "Test C1", "Test C2", "Test C3"}:
+            return float(value)
+        if header in {"Train Size C1", "Train Size C2", "Train Size C3", "Test Size C1", "Test Size C2", "Test Size C3"}:
+            return int(value)
+        if header == "Source Timestamp":
+            return parse_timestamp(value)
+        return value
+
+    last_dataset = None
+    for row in summary_rows:
+        if last_dataset is not None and row["Dataset"] != last_dataset:
+            worksheet.append([None] * len(headers))
+        worksheet.append([excel_value(header, row[header]) for header in headers])
+        last_dataset = row["Dataset"]
+
+    worksheet.freeze_panes = "A2"
+    worksheet.auto_filter.ref = worksheet.dimensions
+
+    width_map = {
+        "A": 18,
+        "B": 16,
+        "C": 10,
+        "D": 10,
+        "E": 10,
+        "F": 10,
+        "G": 10,
+        "H": 10,
+        "I": 10,
+        "J": 10,
+        "K": 12,
+        "L": 12,
+        "M": 12,
+        "N": 12,
+        "O": 12,
+        "P": 12,
+        "Q": 21,
+        "R": 72,
+    }
+    for column_letter, width in width_map.items():
+        worksheet.column_dimensions[column_letter].width = width
+
+    numeric_columns = {"C", "D", "E", "F", "G", "H", "I", "J"}
+    integer_columns = {"K", "L", "M", "N", "O", "P"}
+    for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row):
+        if all(cell.value is None for cell in row):
+            continue
+        for cell in row:
+            if cell.column_letter in numeric_columns and cell.value not in (None, ""):
+                cell.number_format = "0.0000"
+            elif cell.column_letter in integer_columns and cell.value not in (None, ""):
+                cell.number_format = "0"
+    workbook.save(output_path)
 
 
 def render_execution_log(
@@ -735,6 +883,7 @@ def render_execution_log(
     hcesvm_selections: dict[str, HCESVMSelection],
     report_output: Path,
     csv_output: Path,
+    xlsx_output: Path,
 ) -> str:
     lines: list[str] = []
     lines.append("=" * 80)
@@ -746,6 +895,7 @@ def render_execution_log(
     lines.append("")
     lines.append(f"[{end_time.strftime('%Y-%m-%d %H:%M:%S')}] Wrote Markdown report: {relpath(report_output)}")
     lines.append(f"[{end_time.strftime('%Y-%m-%d %H:%M:%S')}] Wrote CSV summary: {relpath(csv_output)}")
+    lines.append(f"[{end_time.strftime('%Y-%m-%d %H:%M:%S')}] Wrote Excel summary: {relpath(xlsx_output)}")
     lines.append("")
     lines.append("HCESVM source selection")
     lines.append("-" * 80)
@@ -767,7 +917,8 @@ def render_execution_log(
     lines.append("-" * 80)
     header = (
         f"{'Dataset':<18} {'Method':<14} {'Train':>8} {'Test':>8} "
-        f"{'Tr C1':>8} {'Tr C2':>8} {'Tr C3':>8} {'Te C1':>8} {'Te C2':>8} {'Te C3':>8}"
+        f"{'Tr C1':>8} {'Tr C2':>8} {'Tr C3':>8} {'Te C1':>8} {'Te C2':>8} {'Te C3':>8} "
+        f"{'TrS1':>6} {'TrS2':>6} {'TrS3':>6} {'TeS1':>6} {'TeS2':>6} {'TeS3':>6}"
     )
     lines.append(header)
     lines.append("-" * len(header))
@@ -775,7 +926,9 @@ def render_execution_log(
         lines.append(
             f"{row['Dataset']:<18} {row['Method']:<14} {row['Train Acc']:>8} {row['Test Acc']:>8} "
             f"{row['Train C1']:>8} {row['Train C2']:>8} {row['Train C3']:>8} "
-            f"{row['Test C1']:>8} {row['Test C2']:>8} {row['Test C3']:>8}"
+            f"{row['Test C1']:>8} {row['Test C2']:>8} {row['Test C3']:>8} "
+            f"{row['Train Size C1']:>6} {row['Train Size C2']:>6} {row['Train Size C3']:>6} "
+            f"{row['Test Size C1']:>6} {row['Test Size C2']:>6} {row['Test Size C3']:>6}"
         )
 
     lines.append("")
@@ -852,11 +1005,11 @@ def main() -> int:
     args = parse_arguments()
     start_time = datetime.now()
 
-    svor_records, npsvor_records, _ = parse_svor_npsvor_records(args.svor_npsvor_log)
+    svor_records, npsvor_records, dataset_sizes, _ = parse_svor_npsvor_records(args.svor_npsvor_log)
     hcesvm_candidates = load_hcesvm_candidates()
     hcesvm_selections = select_latest_complete_hcesvm(hcesvm_candidates)
 
-    summary_rows = build_summary_rows(svor_records, npsvor_records, hcesvm_selections)
+    summary_rows = build_summary_rows(svor_records, npsvor_records, hcesvm_selections, dataset_sizes)
 
     report_output = args.report_output
     report_output.parent.mkdir(parents=True, exist_ok=True)
@@ -865,6 +1018,7 @@ def main() -> int:
         encoding="utf-8",
     )
     write_summary_csv(args.csv_output, summary_rows)
+    write_summary_xlsx(args.xlsx_output, summary_rows)
 
     end_time = datetime.now()
     execution_log = render_execution_log(
@@ -876,11 +1030,13 @@ def main() -> int:
         hcesvm_selections=hcesvm_selections,
         report_output=report_output,
         csv_output=args.csv_output,
+        xlsx_output=args.xlsx_output,
     )
     log_path = write_execution_log(args.archive_root, end_time, execution_log)
 
     print(f"Markdown report: {report_output}")
     print(f"CSV summary: {args.csv_output}")
+    print(f"Excel summary: {args.xlsx_output}")
     print(f"Execution log: {log_path}")
     return 0
 
