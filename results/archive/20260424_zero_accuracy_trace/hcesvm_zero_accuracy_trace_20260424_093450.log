@@ -1,0 +1,10 @@
+[2026-04-24 09:34:50 UTC] Source workbook: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+[2026-04-24 09:34:50 UTC] Source run log: /home/bs10081/Developer/hcesvm-multiclass-eval/results/archive/20260423_three_model_ordinal_regression/three_model_ordinal_regression_all_20260423_190157.log
+[2026-04-24 09:34:50 UTC] Report output: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/HCESVM_ZERO_ACCURACY_TRACE_20260424_093450.md
+[2026-04-24 09:34:50 UTC] Excel output: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/HCESVM_ZERO_ACCURACY_TRACE_20260424_093450.xlsx
+[2026-04-24 09:34:53 UTC] Found 16 zero-accuracy class/split cases.
+[2026-04-24 09:34:53 UTC] Collected 28 blocker trace rows.
+[2026-04-24 09:34:53 UTC] Collected 23 classifier diagnostic rows.
+[2026-04-24 09:34:53 UTC] Wrote Markdown report: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/HCESVM_ZERO_ACCURACY_TRACE_20260424_093450.md
+[2026-04-24 09:34:53 UTC] Wrote Excel trace workbook: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/HCESVM_ZERO_ACCURACY_TRACE_20260424_093450.xlsx
+[2026-04-24 09:34:53 UTC] Wrote execution log: /home/bs10081/Developer/hcesvm-multiclass-eval/results/archive/20260424_zero_accuracy_trace/hcesvm_zero_accuracy_trace_20260424_093450.log
