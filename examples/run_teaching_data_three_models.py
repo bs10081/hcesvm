@@ -28,6 +28,10 @@ from hcesvm.models.npsvor import NPSVORQP
 from hcesvm.models.svor import SVORImplicitQP
 from hcesvm.utils.data_loader import load_csv_ordinal_data
 from hcesvm.utils.evaluator import evaluate_multiclass
+from hcesvm.utils.teaching_data_runtime import (
+    encode_special_limit_metadata,
+    resolve_three_model_hcesvm_time_limit,
+)
 
 
 DATASET_BASE_URL = "https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression"
@@ -47,6 +51,10 @@ DEFAULT_HCESVM_PARAMS = {
     "M": 1000.0,
     "time_limit": 1800,
     "mip_gap": 1e-4,
+    "threads": 2,
+    "soft_mem_limit_gb": 18.0,
+    "retain_raw_solution_arrays": False,
+    "release_solver_resources_after_fit": True,
     "verbose": False,
 }
 DEFAULT_SVOR_PARAMS = {
@@ -281,17 +289,14 @@ def run_hcesvm(bundle: DatasetBundle, tee: TeeStream, hcesvm_params: dict[str, A
     start = utc_now()
 
     try:
-        total_time_limit = int(hcesvm_params["time_limit"])
-        subproblem_count = max(bundle.n_classes - 1, 1)
-        per_classifier_time_limit = max(1, total_time_limit // subproblem_count)
+        per_classifier_time_limit, time_limit_message = resolve_three_model_hcesvm_time_limit(
+            bundle.name,
+            requested_total_time_limit=int(hcesvm_params["time_limit"]),
+            n_classes=bundle.n_classes,
+        )
         actual_params = hcesvm_params.copy()
         actual_params["time_limit"] = per_classifier_time_limit
-        print(
-            f"Total HCESVM time budget: {total_time_limit}s; "
-            f"per binary classifier time limit: {per_classifier_time_limit}s "
-            f"across {subproblem_count} classifiers",
-            file=tee,
-        )
+        print(time_limit_message, file=tee)
 
         model = HierarchicalCESVM(
             cesvm_params=actual_params,
@@ -596,6 +601,10 @@ def main() -> int:
         print(f"Random state: {RANDOM_STATE}", file=tee)
         print(f"Datasets: {', '.join(datasets)}", file=tee)
         print(f"HCESVM params: {json.dumps(hcesvm_params, ensure_ascii=False)}", file=tee)
+        print(
+            f"HCESVM special per-classifier limits: {encode_special_limit_metadata()}",
+            file=tee,
+        )
         print(f"SVOR params: {json.dumps(svor_params, ensure_ascii=False)}", file=tee)
         print(f"NPSVOR params: {json.dumps(npsvor_params, ensure_ascii=False)}", file=tee)
 
@@ -611,6 +620,7 @@ def main() -> int:
             ("split_rule", "Stratified train_test_split with test_size=0.2"),
             ("random_state", RANDOM_STATE),
             ("hcesvm_params", json.dumps(hcesvm_params, ensure_ascii=False)),
+            ("hcesvm_special_per_classifier_limits", encode_special_limit_metadata()),
             ("svor_params", json.dumps(svor_params, ensure_ascii=False)),
             ("npsvor_params", json.dumps(npsvor_params, ensure_ascii=False)),
         ]

@@ -10,6 +10,7 @@ Tests core functionality of the binary CE-SVM classifier including:
 
 import numpy as np
 import pytest
+from gurobipy import GRB
 from hcesvm.models.binary_cesvm import BinaryCESVM
 
 
@@ -223,6 +224,120 @@ class TestBinaryCESVMEdgeCases:
 
         with pytest.raises((ValueError, AssertionError)):
             model.fit(X, y)
+
+
+class TestBinaryCESVMMemorySafety:
+    """Test resource cleanup and lightweight solution retention."""
+
+    def test_fit_releases_solver_resources_after_success(self, monkeypatch):
+        """fit() should dispose model/env once extracted state is enough."""
+
+        class FakeResource:
+            def __init__(self):
+                self.disposed = False
+
+            def dispose(self):
+                self.disposed = True
+
+        def fake_build_model(self, X, y):
+            self.model = FakeResource()
+            self.env = FakeResource()
+            self.n_samples = len(X)
+            self.n_features = X.shape[1]
+            self.s_plus = int(np.sum(y == 1))
+            self.s_minus = int(np.sum(y == -1))
+            return self.model
+
+        def fake_solve(self):
+            self.weights = np.array([1.0, -1.0])
+            self.intercept = 0.5
+            self.selected_features = np.array([True, True])
+            self.solve_time = 0.25
+            self.solution = {
+                'weights': self.weights,
+                'w_plus': np.array([1.0, 0.0]),
+                'w_minus': np.array([0.0, 1.0]),
+                'intercept': self.intercept,
+                'selected_features': self.selected_features,
+                'v': np.array([1.0, 1.0]),
+                'l_p': 0.7,
+                'l_n': 0.8,
+                'objective_value': 1.5,
+                'n_selected_features': 2,
+                'n_support_vectors': 0,
+                'n_margin_errors': 0,
+                'n_samples': self.n_samples,
+                'n_features': self.n_features,
+                'solve_time': self.solve_time,
+                'mip_gap': 0.0,
+                'solver_status': GRB.OPTIMAL,
+            }
+            return True
+
+        monkeypatch.setattr(BinaryCESVM, 'build_model', fake_build_model)
+        monkeypatch.setattr(BinaryCESVM, 'solve', fake_solve)
+
+        model = BinaryCESVM(verbose=False, release_solver_resources_after_fit=True)
+        model.fit(np.array([[0.0, 0.0], [1.0, 1.0]]), np.array([1, -1]))
+
+        assert model.model is None
+        assert model.env is None
+        assert model.predict(np.array([[2.0, 1.0]])).shape == (1,)
+
+    def test_extract_solution_can_skip_large_raw_arrays(self):
+        """retain_raw_solution_arrays=False should avoid storing per-sample arrays."""
+
+        class FakeVar:
+            def __init__(self, name, value):
+                self.VarName = name
+                self.X = value
+
+        class FakeModel:
+            def __init__(self):
+                self.status = GRB.OPTIMAL
+                self.Status = GRB.OPTIMAL
+                self.ObjVal = 3.14
+                self.MIPGap = 0.02
+                self.MemUsed = 1.25
+                self.MaxMemUsed = 2.5
+                self._vars = {
+                    "w_plus[0]": FakeVar("w_plus[0]", 1.0),
+                    "w_plus[1]": FakeVar("w_plus[1]", 0.5),
+                    "w_minus[0]": FakeVar("w_minus[0]", 0.0),
+                    "w_minus[1]": FakeVar("w_minus[1]", 0.25),
+                    "b": FakeVar("b", -0.75),
+                    "l_p": FakeVar("l_p", 0.6),
+                    "l_n": FakeVar("l_n", 0.7),
+                    "v[0]": FakeVar("v[0]", 1.0),
+                    "v[1]": FakeVar("v[1]", 1.0),
+                    "ksi[0]": FakeVar("ksi[0]", 0.0),
+                    "ksi[1]": FakeVar("ksi[1]", 1.5),
+                    "alpha[0]": FakeVar("alpha[0]", 0.0),
+                    "alpha[1]": FakeVar("alpha[1]", 1.0),
+                    "beta[0]": FakeVar("beta[0]", 0.0),
+                    "beta[1]": FakeVar("beta[1]", 1.0),
+                    "rho[0]": FakeVar("rho[0]", 0.0),
+                    "rho[1]": FakeVar("rho[1]", 0.0),
+                }
+
+            def getVars(self):
+                return list(self._vars.values())
+
+            def getVarByName(self, name):
+                return self._vars[name]
+
+        model = BinaryCESVM(verbose=False, retain_raw_solution_arrays=False, release_solver_resources_after_fit=False)
+        model.model = FakeModel()
+        model.n_samples = 2
+        model.n_features = 2
+        model._extract_solution()
+
+        assert 'ksi' not in model.solution
+        assert model.get_solution_summary()['max_mem_used_gb'] == 2.5
+        assert np.allclose(model.get_weight_decomposition()['w_plus'], np.array([1.0, 0.5]))
+
+        with pytest.raises(RuntimeError, match="retain_raw_solution_arrays=True"):
+            model.get_slack_variables()
 
 
 if __name__ == '__main__':

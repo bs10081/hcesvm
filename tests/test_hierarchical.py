@@ -9,6 +9,7 @@ Tests the hierarchical multi-class classifier including:
 
 import numpy as np
 import pytest
+from hcesvm.models.binary_cesvm import BinaryCESVM
 from hcesvm.models.hierarchical import HierarchicalCESVM
 
 
@@ -272,6 +273,114 @@ class TestHierarchicalCESVMPredictionLogic:
         # Check H1 and H2 summaries
         assert 'objective_value' in summary['h1']
         assert 'objective_value' in summary['h2']
+
+
+class TestHierarchicalCESVMIncrementalFit:
+    """Test incremental training behavior for N-class test3."""
+
+    def setup_method(self):
+        """Create 5-class data for incremental-fit tests."""
+        np.random.seed(7)
+        self.X_classes = tuple(
+            np.random.randn(4, 2) + [offset, 0]
+            for offset in [0, 5, 10, 15, 20]
+        )
+        self.X_test = np.array([[0.0, 0.0], [20.0, 0.0]])
+
+    def _patch_binary_fit(self, monkeypatch):
+        """Replace BinaryCESVM.fit with a deterministic fake solver."""
+        call_counter = {'count': 0}
+
+        def fake_fit(self, X, y):
+            call_counter['count'] += 1
+            hk = call_counter['count']
+            n_features = X.shape[1]
+            self.weights = np.full(n_features, float(hk))
+            self.intercept = float(hk)
+            self.selected_features = np.ones(n_features, dtype=bool)
+            self.solution = {
+                'objective_value': float(hk),
+                'n_selected_features': n_features,
+                'l_p': 0.7,
+                'l_n': 0.8,
+                'n_support_vectors': 0,
+                'n_margin_errors': 0,
+                'mip_gap': 0.0,
+                'solver_status': 2,
+            }
+            return self
+
+        monkeypatch.setattr(BinaryCESVM, 'fit', fake_fit)
+        return call_counter
+
+    def test_fit_incremental_trains_all_classifiers_when_callback_continues(self, monkeypatch):
+        """fit_incremental should emit progress for each Hk and finish normally."""
+        self._patch_binary_fit(monkeypatch)
+        progress_rows = []
+
+        model = HierarchicalCESVM(
+            cesvm_params={
+                'C_hyper': 1.0,
+                'M': 1000.0,
+                'time_limit': 120,
+                'verbose': False
+            },
+            strategy='test3',
+            n_classes=5
+        )
+
+        model.fit_incremental(
+            *self.X_classes,
+            after_classifier=lambda progress: progress_rows.append(progress) or True,
+        )
+
+        assert model.is_fully_fitted() is True
+        assert model.completed_classifier_count == 4
+        assert len(model.classifiers) == 4
+        assert [row['hk'] for row in progress_rows] == [1, 2, 3, 4]
+        assert all(row['n_classifiers'] == 4 for row in progress_rows)
+        assert all(row['elapsed_seconds'] >= 0 for row in progress_rows)
+
+        summary = model.get_model_summary()
+        assert summary['status'] == 'fitted'
+        assert summary['completed_classifier_count'] == 4
+        assert len(summary['classifiers']) == 4
+
+    def test_fit_incremental_stops_cleanly_after_callback_requests_stop(self, monkeypatch):
+        """Stopping after an Hk should leave a partial fit that cannot predict."""
+        self._patch_binary_fit(monkeypatch)
+        progress_rows = []
+
+        def stop_after_second(progress):
+            progress_rows.append(progress)
+            return progress['hk'] < 2
+
+        model = HierarchicalCESVM(
+            cesvm_params={
+                'C_hyper': 1.0,
+                'M': 1000.0,
+                'time_limit': 120,
+                'verbose': False
+            },
+            strategy='test3',
+            n_classes=5
+        )
+
+        model.fit_incremental(*self.X_classes, after_classifier=stop_after_second)
+
+        assert model.is_fully_fitted() is False
+        assert model.fit_stopped_early is True
+        assert model.completed_classifier_count == 2
+        assert len(model.classifiers) == 2
+        assert [row['hk'] for row in progress_rows] == [1, 2]
+
+        summary = model.get_model_summary()
+        assert summary['status'] == 'partially_fitted'
+        assert summary['completed_classifier_count'] == 2
+        assert set(summary['classifiers']) == {'h1', 'h2'}
+
+        with pytest.raises(RuntimeError, match="Model not fully fitted"):
+            model.predict(self.X_test)
 
 
 class TestHierarchicalCESVMStrategyComparison:

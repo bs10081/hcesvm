@@ -68,9 +68,14 @@ Four strategies are supported:
     - Implementation: class_weight="balanced"
 """
 
+from datetime import datetime, timezone
 import numpy as np
-from typing import Dict, Optional, Tuple, List
+from typing import Any, Callable, Dict, Optional, Tuple, List
 from .binary_cesvm import BinaryCESVM
+
+
+def _utc_now() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class HierarchicalCESVM:
@@ -108,6 +113,102 @@ class HierarchicalCESVM:
 
         # Class roles for inverted strategy
         self.class_roles = None
+
+        # Training progress state
+        self.expected_classifier_count = None
+        self.completed_classifier_count = 0
+        self.fit_stopped_early = False
+        self.fit_stop_reason = None
+
+    def _reset_training_state(self) -> None:
+        """Reset trained classifier state before starting a new fit."""
+        self.h1 = None
+        self.h2 = None
+        self.classifiers = {}
+        self.n_features = None
+        self.class_roles = None
+        self.expected_classifier_count = None
+        self.completed_classifier_count = 0
+        self.fit_stopped_early = False
+        self.fit_stop_reason = None
+
+    def _prepare_fit(self, X_classes: Tuple[np.ndarray, ...]) -> None:
+        """Validate inputs and initialize shared fit state."""
+        detected_n_classes = len(X_classes)
+
+        if self.n_classes is None:
+            self.n_classes = detected_n_classes
+        elif self.n_classes != detected_n_classes:
+            raise ValueError(f"Expected {self.n_classes} classes, got {detected_n_classes}")
+
+        if self.strategy in ["single_filter", "multiple_filter", "inverted"] and self.n_classes != 3:
+            raise ValueError(f"Strategy '{self.strategy}' only supports 3 classes, got {self.n_classes}")
+
+        self._reset_training_state()
+        self.n_features = X_classes[0].shape[1]
+        self.expected_classifier_count = 2 if self.n_classes == 3 else self.n_classes - 1
+
+        print("=" * 60)
+        print(f"Training Hierarchical CE-SVM (Strategy: {self.strategy})")
+        print("=" * 60)
+        for i, X_k in enumerate(X_classes, 1):
+            print(f"Class {i}: {len(X_k)} samples")
+        print(f"Features: {self.n_features}")
+        print()
+
+    def is_fully_fitted(self) -> bool:
+        """Return whether all expected binary classifiers have been trained."""
+        return (
+            self.expected_classifier_count is not None
+            and self.completed_classifier_count == self.expected_classifier_count
+            and not self.fit_stopped_early
+        )
+
+    def _build_classifier_progress(
+        self,
+        *,
+        hk: int,
+        description: str,
+        classifier: BinaryCESVM,
+        classifier_started_at: datetime,
+        fit_started_at: datetime,
+        positive_sample_count: int,
+        negative_sample_count: int,
+    ) -> Dict[str, Any]:
+        """Build callback progress payload for a completed classifier."""
+        finished_at = _utc_now()
+        summary = classifier.get_solution_summary()
+
+        return {
+            "component": f"h{hk}",
+            "hk": hk,
+            "n_classifiers": self.expected_classifier_count,
+            "description": description,
+            "started_at_utc": classifier_started_at,
+            "finished_at_utc": finished_at,
+            "elapsed_seconds": (finished_at - classifier_started_at).total_seconds(),
+            "cumulative_elapsed_seconds": (finished_at - fit_started_at).total_seconds(),
+            "weights": None if classifier.weights is None else np.asarray(classifier.weights, dtype=float).copy(),
+            "b": None if classifier.intercept is None else float(classifier.intercept),
+            "objective_value": summary.get("objective_value"),
+            "positive_class_accuracy_lb": summary.get("positive_class_accuracy_lb"),
+            "negative_class_accuracy_lb": summary.get("negative_class_accuracy_lb"),
+            "mip_gap": summary.get("mip_gap"),
+            "positive_sample_count": positive_sample_count,
+            "negative_sample_count": negative_sample_count,
+        }
+
+    def _should_continue_after_classifier(
+        self,
+        after_classifier: Callable[[Dict[str, Any]], bool | None] | None,
+        progress: Dict[str, Any],
+    ) -> bool:
+        """Invoke the incremental callback and normalize the return value."""
+        if after_classifier is None:
+            return True
+
+        callback_result = after_classifier(progress)
+        return callback_result is not False
 
     def _prepare_hk_data(
         self,
@@ -303,41 +404,45 @@ class HierarchicalCESVM:
         Returns:
             self
         """
-        # Detect number of classes
-        detected_n_classes = len(X_classes)
+        return self.fit_incremental(*X_classes)
 
-        if self.n_classes is None:
-            self.n_classes = detected_n_classes
-        elif self.n_classes != detected_n_classes:
-            raise ValueError(f"Expected {self.n_classes} classes, got {detected_n_classes}")
+    def fit_incremental(
+        self,
+        *X_classes: np.ndarray,
+        after_classifier: Callable[[Dict[str, Any]], bool | None] | None = None,
+    ) -> 'HierarchicalCESVM':
+        """Fit the hierarchical classifier and emit progress after each classifier."""
+        self._prepare_fit(X_classes)
+        fit_started_at = _utc_now()
 
-        # Validate strategy compatibility
-        if self.strategy in ["single_filter", "multiple_filter", "inverted"] and self.n_classes != 3:
-            raise ValueError(f"Strategy '{self.strategy}' only supports 3 classes, got {self.n_classes}")
-
-        self.n_features = X_classes[0].shape[1]
-
-        print("=" * 60)
-        print(f"Training Hierarchical CE-SVM (Strategy: {self.strategy})")
-        print("=" * 60)
-        for i, X_k in enumerate(X_classes, 1):
-            print(f"Class {i}: {len(X_k)} samples")
-        print(f"Features: {self.n_features}")
-        print()
-
-        # Route to appropriate training method
         if self.n_classes == 3:
-            # Use original 3-class logic
             X1, X2, X3 = X_classes
-            self._fit_3class(X1, X2, X3)
+            self._fit_3class(
+                X1,
+                X2,
+                X3,
+                after_classifier=after_classifier,
+                fit_started_at=fit_started_at,
+            )
         else:
-            # Use N-class logic (test3 only)
             if self.strategy != "test3":
                 raise ValueError(f"N-class (N={self.n_classes}) only supported for test3 strategy")
-            self._fit_nclass(X_classes)
+            self._fit_nclass(
+                X_classes,
+                after_classifier=after_classifier,
+                fit_started_at=fit_started_at,
+            )
 
         print("\n" + "=" * 60)
-        print("Training Complete!")
+        if self.is_fully_fitted():
+            print("Training Complete!")
+        else:
+            print("Training Stopped Early!")
+            print(
+                f"Completed classifiers: {self.completed_classifier_count}/{self.expected_classifier_count}"
+            )
+            if self.fit_stop_reason is not None:
+                print(f"Stop reason: {self.fit_stop_reason}")
         print("=" * 60)
 
         return self
@@ -346,7 +451,10 @@ class HierarchicalCESVM:
         self,
         X1: np.ndarray,
         X2: np.ndarray,
-        X3: np.ndarray
+        X3: np.ndarray,
+        *,
+        after_classifier: Callable[[Dict[str, Any]], bool | None] | None = None,
+        fit_started_at: datetime,
     ) -> None:
         """Fit 3-class hierarchical classifier (original logic).
 
@@ -394,7 +502,9 @@ class HierarchicalCESVM:
         print()
 
         self.h1 = BinaryCESVM(**h1_params)
+        h1_started_at = _utc_now()
         self.h1.fit(X_h1, y_h1)
+        self.completed_classifier_count = 1
 
         print(f"\nH1 Solution:")
         h1_summary = self.h1.get_solution_summary()
@@ -405,6 +515,22 @@ class HierarchicalCESVM:
         print(f"  L1 norm: {h1_summary['l1_norm']:.6f}")
         print(f"  Positive accuracy lb: {h1_summary['positive_class_accuracy_lb']:.4f}")
         print(f"  Negative accuracy lb: {h1_summary['negative_class_accuracy_lb']:.4f}")
+
+        h1_progress = self._build_classifier_progress(
+            hk=1,
+            description=h1_desc,
+            classifier=self.h1,
+            classifier_started_at=h1_started_at,
+            fit_started_at=fit_started_at,
+            positive_sample_count=int(np.sum(y_h1 == 1)),
+            negative_sample_count=int(np.sum(y_h1 == -1)),
+        )
+
+        if not self._should_continue_after_classifier(after_classifier, h1_progress):
+            self.fit_stopped_early = True
+            self.fit_stop_reason = "after_classifier callback requested stop after h1"
+            print("\nStopping after H1 due to after_classifier callback.")
+            return
 
         # Determine H2 description based on strategy
         if self.strategy == "single_filter":
@@ -436,7 +562,9 @@ class HierarchicalCESVM:
         print()
 
         self.h2 = BinaryCESVM(**h2_params)
+        h2_started_at = _utc_now()
         self.h2.fit(X_h2, y_h2)
+        self.completed_classifier_count = 2
 
         print(f"\nH2 Solution:")
         h2_summary = self.h2.get_solution_summary()
@@ -448,9 +576,29 @@ class HierarchicalCESVM:
         print(f"  Positive accuracy lb: {h2_summary['positive_class_accuracy_lb']:.4f}")
         print(f"  Negative accuracy lb: {h2_summary['negative_class_accuracy_lb']:.4f}")
 
+        h2_progress = self._build_classifier_progress(
+            hk=2,
+            description=h2_desc,
+            classifier=self.h2,
+            classifier_started_at=h2_started_at,
+            fit_started_at=fit_started_at,
+            positive_sample_count=int(np.sum(y_h2 == 1)),
+            negative_sample_count=int(np.sum(y_h2 == -1)),
+        )
+
+        if (
+            not self._should_continue_after_classifier(after_classifier, h2_progress)
+            and self.completed_classifier_count < self.expected_classifier_count
+        ):
+            self.fit_stopped_early = True
+            self.fit_stop_reason = "after_classifier callback requested stop after h2"
+
     def _fit_nclass(
         self,
-        X_classes: Tuple[np.ndarray, ...]
+        X_classes: Tuple[np.ndarray, ...],
+        *,
+        after_classifier: Callable[[Dict[str, Any]], bool | None] | None = None,
+        fit_started_at: datetime,
     ) -> None:
         """Fit N-class hierarchical classifier (test3 strategy only).
 
@@ -485,9 +633,11 @@ class HierarchicalCESVM:
             print()
 
             classifier = BinaryCESVM(**hk_params)
+            classifier_started_at = _utc_now()
             classifier.fit(X_hk, y_hk)
 
             self.classifiers[f'h{k}'] = classifier
+            self.completed_classifier_count = len(self.classifiers)
 
             print(f"\nH{k} Solution:")
             hk_summary = classifier.get_solution_summary()
@@ -499,6 +649,23 @@ class HierarchicalCESVM:
             print(f"  Positive accuracy lb: {hk_summary['positive_class_accuracy_lb']:.4f}")
             print(f"  Negative accuracy lb: {hk_summary['negative_class_accuracy_lb']:.4f}")
             print()
+
+            progress = self._build_classifier_progress(
+                hk=k,
+                description=h_desc,
+                classifier=classifier,
+                classifier_started_at=classifier_started_at,
+                fit_started_at=fit_started_at,
+                positive_sample_count=int(np.sum(y_hk == 1)),
+                negative_sample_count=int(np.sum(y_hk == -1)),
+            )
+
+            should_continue = self._should_continue_after_classifier(after_classifier, progress)
+            if not should_continue and self.completed_classifier_count < self.expected_classifier_count:
+                self.fit_stopped_early = True
+                self.fit_stop_reason = f"after_classifier callback requested stop after h{k}"
+                print(f"Stopping after H{k} due to after_classifier callback.")
+                break
 
     
     def predict(self, X: np.ndarray) -> np.ndarray:
@@ -525,6 +692,14 @@ class HierarchicalCESVM:
         Returns:
             Predicted labels (n_samples,), values in {1, 2, ..., N}
         """
+        if not self.is_fully_fitted():
+            if self.completed_classifier_count == 0:
+                raise RuntimeError("Model not fitted. Call fit() first.")
+            raise RuntimeError(
+                f"Model not fully fitted. Completed "
+                f"{self.completed_classifier_count}/{self.expected_classifier_count} classifiers."
+            )
+
         if self.n_classes == 3:
             # Use original 3-class prediction logic
             return self._predict_3class(X)
@@ -651,11 +826,13 @@ class HierarchicalCESVM:
         Returns:
             Dictionary with model information
         """
+        if self.expected_classifier_count is None or self.completed_classifier_count == 0:
+            return {"status": "not_fitted"}
+
+        status = "fitted" if self.is_fully_fitted() else "partially_fitted"
+
         if self.n_classes == 3:
             # Use original 3-class summary logic
-            if self.h1 is None or self.h2 is None:
-                return {"status": "not_fitted"}
-
             # Determine classifier descriptions based on strategy
             if self.strategy == "single_filter":
                 h1_desc = "Class 3 vs {1,2}"
@@ -671,19 +848,25 @@ class HierarchicalCESVM:
                 h2_desc = f"Class {{Class {self.class_roles['medium']}, {self.class_roles['majority']}}} vs Class {self.class_roles['minority']}"
 
             summary = {
-                "status": "fitted",
+                "status": status,
                 "strategy": self.strategy,
                 "n_classes": self.n_classes,
                 "n_features": self.n_features,
-                "h1": {
+                "completed_classifier_count": self.completed_classifier_count,
+                "expected_classifier_count": self.expected_classifier_count,
+                "stop_reason": self.fit_stop_reason,
+            }
+
+            if self.h1 is not None:
+                summary["h1"] = {
                     "description": h1_desc,
                     **self.h1.get_solution_summary()
-                },
-                "h2": {
+                }
+            if self.h2 is not None:
+                summary["h2"] = {
                     "description": h2_desc,
                     **self.h2.get_solution_summary()
-                },
-            }
+                }
 
             # Add class roles info for inverted strategy only
             if self.strategy == "inverted" and self.class_roles is not None:
@@ -697,18 +880,18 @@ class HierarchicalCESVM:
 
         else:
             # N-class summary
-            if len(self.classifiers) == 0:
-                return {"status": "not_fitted"}
-
             summary = {
-                "status": "fitted",
+                "status": status,
                 "strategy": self.strategy,
                 "n_classes": self.n_classes,
                 "n_features": self.n_features,
+                "completed_classifier_count": self.completed_classifier_count,
+                "expected_classifier_count": self.expected_classifier_count,
+                "stop_reason": self.fit_stop_reason,
                 "classifiers": {}
             }
 
-            for k in range(1, self.n_classes):
+            for k in range(1, self.completed_classifier_count + 1):
                 pos_classes = list(range(1, k+1))
                 neg_classes = list(range(k+1, self.n_classes+1))
                 h_desc = f"Class {{{', '.join(map(str, pos_classes))}}} vs Class {{{', '.join(map(str, neg_classes))}}}"
