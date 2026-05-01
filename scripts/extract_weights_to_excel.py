@@ -10,6 +10,8 @@ import re
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
+from openpyxl import load_workbook
+from openpyxl.styles import Font, Border, Side
 
 def extract_svor_weights(log_file: Path, dataset: str) -> Optional[Dict]:
     """提取 SVOR 的 weights 和 thresholds"""
@@ -229,6 +231,56 @@ def create_weights_table(svor_data: Dict, npsvor_data: Dict, hcesvm_data: Dict,
 
     return df
 
+def apply_formatting(file_path: Path):
+    """套用 Excel 格式設定
+
+    規則：
+    - 全部表格無邊框
+    - 最上面的 row（header）有上下邊框
+    - 最下面的 row（b）有下邊框
+    - Title 不粗體
+    - 字體：Times New Roman
+    """
+    wb = load_workbook(file_path)
+
+    # Times New Roman 字體（非粗體）
+    normal_font = Font(name='Times New Roman', size=11, bold=False)
+
+    # 邊框樣式
+    thin_border = Side(style='thin', color='000000')
+    top_bottom_border = Border(top=thin_border, bottom=thin_border)
+    bottom_border = Border(bottom=thin_border)
+
+    for sheet_name in wb.sheetnames:
+        ws = wb[sheet_name]
+
+        # 取得最大行數和列數
+        max_row = ws.max_row
+        max_col = ws.max_column
+
+        # 處理所有儲存格
+        for row_idx, row in enumerate(ws.iter_rows(min_row=1, max_row=max_row,
+                                                     min_col=1, max_col=max_col),
+                                       start=1):
+            for col_idx, cell in enumerate(row, start=1):
+                # 設定字體
+                cell.font = normal_font
+
+                # 設定邊框
+                if row_idx == 1:
+                    # 第一列（header）：上下邊框
+                    cell.border = top_bottom_border
+                elif row_idx == max_row:
+                    # 最後一列（b）：下邊框
+                    cell.border = bottom_border
+                else:
+                    # 其他列：無邊框
+                    cell.border = Border()
+
+    # 儲存
+    wb.save(file_path)
+    print(f"\n✓ 已套用格式設定")
+
 def main():
     # 讀取 CSV 檔案
     csv_path = Path('/home/justin/lab/hcesvm/docs/reports/SVOR_NPSVOR_HCESVM_TEST3_COMPARISON.csv')
@@ -310,6 +362,9 @@ def main():
             # 寫入 Excel sheet
             weights_table.to_excel(writer, sheet_name=dataset)
             print(f"  ✓ 已寫入 sheet: {dataset}")
+
+    # 套用格式設定
+    apply_formatting(output_path)
 
     print("\n" + "=" * 80)
     print(f"✓ 完成！輸出檔案: {output_path}")
