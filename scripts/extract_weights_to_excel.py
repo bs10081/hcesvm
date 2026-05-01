@@ -85,10 +85,29 @@ def extract_npsvor_weights(log_file: Path, dataset: str) -> Optional[Dict]:
 
     return result
 
-def extract_hcesvm_weights(log_file: Path) -> Optional[Dict]:
-    """提取 HCESVM 的 H1 和 H2 weights 和 b"""
+def extract_hcesvm_weights(log_file: Path, dataset: str = None) -> Optional[Dict]:
+    """提取 HCESVM 的 H1 和 H2 weights 和 b
+
+    Args:
+        log_file: 日誌檔案路徑
+        dataset: 如果日誌包含多個 datasets，指定要提取的 dataset 名稱
+    """
     with open(log_file, 'r') as f:
         content = f.read()
+
+    # 如果指定了 dataset，先找到對應的 section
+    if dataset:
+        # 嘗試找到 "Testing Dataset: {dataset}" 的 section
+        dataset_pattern = rf"Testing Dataset: {re.escape(dataset)}.*?(?=Testing Dataset:|$)"
+        dataset_match = re.search(dataset_pattern, content, re.DOTALL)
+        if dataset_match:
+            content = dataset_match.group(0)
+        else:
+            # 如果沒找到，嘗試單一 dataset 的格式 "Dataset: {dataset}"
+            dataset_pattern2 = rf"Dataset: {re.escape(dataset)}.*?(?=Dataset:|$)"
+            dataset_match2 = re.search(dataset_pattern2, content, re.DOTALL)
+            if dataset_match2:
+                content = dataset_match2.group(0)
 
     result = {}
 
@@ -162,10 +181,10 @@ def create_weights_table(svor_data: Dict, npsvor_data: Dict, hcesvm_data: Dict,
                         n_features: int) -> pd.DataFrame:
     """建立 weights 表格"""
 
-    # 建立欄位名稱
+    # 建立欄位名稱（移除 SVORIM_H3）
     columns = [
         'HCESVM_H1', 'HCESVM_H2',
-        'SVORIM_H1', 'SVORIM_H2', 'SVORIM_H3',
+        'SVORIM_H1', 'SVORIM_H2',
         'NPSVOR_H1', 'NPSVOR_H2', 'NPSVOR_H3'
     ]
 
@@ -178,24 +197,24 @@ def create_weights_table(svor_data: Dict, npsvor_data: Dict, hcesvm_data: Dict,
     # 填入 HCESVM 資料
     if hcesvm_data and hcesvm_data.get('H1_weights'):
         for i, w in enumerate(hcesvm_data['H1_weights']):
-            df.loc[f'x{i+1}', 'HCESVM_H1'] = w
-        df.loc['b', 'HCESVM_H1'] = hcesvm_data.get('H1_b')
+            df.loc[f'x{i+1}', 'HCESVM_H1'] = round(w, 4)
+        df.loc['b', 'HCESVM_H1'] = round(hcesvm_data.get('H1_b'), 4)
 
     if hcesvm_data and hcesvm_data.get('H2_weights'):
         for i, w in enumerate(hcesvm_data['H2_weights']):
-            df.loc[f'x{i+1}', 'HCESVM_H2'] = w
-        df.loc['b', 'HCESVM_H2'] = hcesvm_data.get('H2_b')
+            df.loc[f'x{i+1}', 'HCESVM_H2'] = round(w, 4)
+        df.loc['b', 'HCESVM_H2'] = round(hcesvm_data.get('H2_b'), 4)
 
-    # 填入 SVOR 資料
+    # 填入 SVOR 資料（只保留 H1 和 H2）
     if svor_data:
-        for h in [1, 2, 3]:
+        for h in [1, 2]:
             weights = svor_data.get(f'H{h}_weights')
             b = svor_data.get(f'H{h}_b')
 
             if weights:
                 for i, w in enumerate(weights):
-                    df.loc[f'x{i+1}', f'SVORIM_H{h}'] = w
-                df.loc['b', f'SVORIM_H{h}'] = b
+                    df.loc[f'x{i+1}', f'SVORIM_H{h}'] = round(w, 4)
+                df.loc['b', f'SVORIM_H{h}'] = round(b, 4)
 
     # 填入 NPSVOR 資料
     if npsvor_data:
@@ -205,8 +224,8 @@ def create_weights_table(svor_data: Dict, npsvor_data: Dict, hcesvm_data: Dict,
 
             if weights:
                 for i, w in enumerate(weights):
-                    df.loc[f'x{i+1}', f'NPSVOR_H{h}'] = w
-                df.loc['b', f'NPSVOR_H{h}'] = b
+                    df.loc[f'x{i+1}', f'NPSVOR_H{h}'] = round(w, 4)
+                df.loc['b', f'NPSVOR_H{h}'] = round(b, 4)
 
     return df
 
@@ -279,7 +298,7 @@ def main():
             hcesvm_data = None
             if not hcesvm_row.empty:
                 hcesvm_file = Path('/home/justin/lab/hcesvm') / hcesvm_row.iloc[0]['Source File']
-                hcesvm_data = extract_hcesvm_weights(hcesvm_file)
+                hcesvm_data = extract_hcesvm_weights(hcesvm_file, dataset)
                 if hcesvm_data:
                     print(f"  ✓ HCESVM weights 提取成功")
                 else:
