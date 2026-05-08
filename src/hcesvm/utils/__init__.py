@@ -20,10 +20,7 @@ from .deadline_control import (
     parse_deadline,
 )
 from .teaching_data_runtime import (
-    HCESVM_SPECIAL_PER_CLASSIFIER_LIMITS,
-    encode_special_limit_metadata,
-    resolve_deadline_runner_hcesvm_time_limit,
-    resolve_three_model_hcesvm_time_limit,
+    format_hcesvm_time_limit_message,
 )
 from .postrun_analysis import (
     BASELINE_HCESVM_TOTAL_BUDGET_SECONDS,
@@ -66,10 +63,7 @@ __all__ = [
     'estimate_remaining_seconds',
     'evaluate_deadline_policy',
     'parse_deadline',
-    'HCESVM_SPECIAL_PER_CLASSIFIER_LIMITS',
-    'encode_special_limit_metadata',
-    'resolve_deadline_runner_hcesvm_time_limit',
-    'resolve_three_model_hcesvm_time_limit',
+    'format_hcesvm_time_limit_message',
     'BASELINE_HCESVM_TOTAL_BUDGET_SECONDS',
     'FINAL_REPORT_STATUSES',
     'WorkbookRunData',

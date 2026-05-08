@@ -27,10 +27,7 @@ from hcesvm.models.hierarchical import HierarchicalCESVM
 from hcesvm.utils.data_loader import load_csv_ordinal_data
 from hcesvm.utils.deadline_control import evaluate_deadline_policy, parse_deadline
 from hcesvm.utils.evaluator import evaluate_multiclass
-from hcesvm.utils.teaching_data_runtime import (
-    encode_special_limit_metadata,
-    resolve_deadline_runner_hcesvm_time_limit,
-)
+from hcesvm.utils.teaching_data_runtime import format_hcesvm_time_limit_message
 
 
 DATASET_BASE_URL = "https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression"
@@ -97,6 +94,13 @@ def parse_optional_int(value: str) -> int | None:
     return int(value)
 
 
+def parse_optional_float(value: str) -> float | None:
+    """Parse optional floating-point CLI values."""
+    if value.lower() in {"none", "null", "off", "disabled"}:
+        return None
+    return float(value)
+
+
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run HCESVM(test3) on a teaching-data dataset with a deadline-aware stop policy."
@@ -127,7 +131,16 @@ def parse_arguments() -> argparse.Namespace:
         "--time-limit",
         type=parse_optional_int,
         default=None,
-        help="Per-classifier Gurobi time limit in seconds. For skill/californiahousing, the dataset override is 3600s.",
+        help="Per-classifier Gurobi time limit in seconds.",
+    )
+    parser.add_argument(
+        "--heartbeat-interval-seconds",
+        type=parse_optional_float,
+        default=60.0,
+        help=(
+            "Emit solver heartbeats this often while a classifier is still solving. "
+            "Use 'none' to disable. Default: 60."
+        ),
     )
     parser.add_argument(
         "--mip-gap",
@@ -443,10 +456,8 @@ def main() -> int:
     xlsx_path = ROOT / "docs" / "reports" / f"{args.dataset.upper()}_HCESVM_TEST3_DEADLINE_{timestamp}.xlsx"
 
     deadline_local, deadline_utc = parse_deadline(args.deadline_at, args.deadline_tz)
-    resolved_time_limit, resolved_time_limit_message = resolve_deadline_runner_hcesvm_time_limit(
-        args.dataset,
-        requested_time_limit=args.time_limit,
-    )
+    resolved_time_limit = args.time_limit
+    resolved_time_limit_message = format_hcesvm_time_limit_message(resolved_time_limit)
     hcesvm_params = {
         "C_hyper": args.C_hyper,
         "M": args.M,
@@ -454,6 +465,7 @@ def main() -> int:
         "mip_gap": args.mip_gap,
         "threads": args.threads,
         "soft_mem_limit_gb": args.soft_mem_limit_gb,
+        "heartbeat_interval_seconds": args.heartbeat_interval_seconds,
         "retain_raw_solution_arrays": False,
         "release_solver_resources_after_fit": True,
         "verbose": False,
@@ -476,10 +488,6 @@ def main() -> int:
         print(f"Dataset: {args.dataset}", file=tee)
         print(f"HCESVM params: {json.dumps(hcesvm_params, ensure_ascii=False)}", file=tee)
         print(resolved_time_limit_message, file=tee)
-        print(
-            f"HCESVM special per-classifier limits: {encode_special_limit_metadata()}",
-            file=tee,
-        )
         print(f"Deadline local: {deadline_local.isoformat()}", file=tee)
         print(f"Deadline UTC: {deadline_utc.isoformat()}", file=tee)
         print(f"Allowed overrun buffer: {args.overrun_buffer_minutes} minutes", file=tee)
@@ -511,7 +519,6 @@ def main() -> int:
             "model": MODEL_NAME,
             "hcesvm_params": json.dumps(hcesvm_params, ensure_ascii=False),
             "hcesvm_time_limit_message": resolved_time_limit_message,
-            "hcesvm_special_per_classifier_limits": encode_special_limit_metadata(),
             "deadline_local": deadline_local.isoformat(),
             "deadline_utc": deadline_utc.isoformat(),
             "deadline_timezone": args.deadline_tz,

@@ -119,7 +119,7 @@ def historical_three_model_per_classifier_limit(
     *,
     total_budget_seconds: int = BASELINE_HCESVM_TOTAL_BUDGET_SECONDS,
 ) -> int:
-    """Recover the pre-override HCESVM per-classifier limit from the old runner."""
+    """Recover the legacy per-classifier limit implied by the old total-budget split."""
     return max(1, int(total_budget_seconds) // max(int(n_classes) - 1, 1))
 
 

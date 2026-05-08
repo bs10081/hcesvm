@@ -15,7 +15,6 @@ from hcesvm.utils.teaching_data_1000 import (
     derive_dataset_split,
     filter_and_relabel_classes,
 )
-from hcesvm.utils.teaching_data_runtime import resolve_three_model_hcesvm_time_limit
 
 
 def test_filter_and_relabel_classes_remaps_skill_method3_classes():
@@ -95,26 +94,6 @@ def test_derive_dataset_split_is_reproducible_for_same_seed():
     np.testing.assert_array_equal(first.y_test, second.y_test)
     assert first.train_sampled_counts == [6, 5, 5, 4]
     assert first.test_sampled_counts == [4, 3, 3, 2]
-
-
-def test_derived_dataset_labels_do_not_trigger_special_override():
-    skill_limit, skill_message = resolve_three_model_hcesvm_time_limit(
-        SKILL_METHOD3_4CLASS_1000_RECIPE.name,
-        requested_total_time_limit=1800,
-        n_classes=4,
-    )
-    california_limit, california_message = resolve_three_model_hcesvm_time_limit(
-        CALIFORNIAHOUSING_1000_RECIPE.name,
-        requested_total_time_limit=1800,
-        n_classes=6,
-    )
-
-    assert skill_limit == 600
-    assert "override" not in skill_message
-    assert "600s across 3 classifiers" in skill_message
-    assert california_limit == 360
-    assert "override" not in california_message
-    assert "360s across 5 classifiers" in california_message
 
 
 @dataclass(slots=True)

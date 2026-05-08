@@ -96,7 +96,7 @@ hc = HierarchicalCESVM(
     cesvm_params={
         'C_hyper': 1.0,
         'M': 1000.0,
-        'time_limit': 1800
+        'time_limit': 1800  # 1800s for each hyperplane
     },
     strategy='class1_first'  # 可選: single_filter, multiple_filter, inverted, test2, test3
 )
@@ -118,7 +118,7 @@ hc_imbalanced = HierarchicalCESVM(
     cesvm_params={
         'C_hyper': 1.0,
         'M': 1000.0,
-        'time_limit': 1800
+        'time_limit': 1800  # 1800s for each hyperplane
     },
     strategy='test3'  # 樣本加權，適合不平衡資料
 )
@@ -317,7 +317,7 @@ model = HierarchicalCESVM(
     cesvm_params={
         'C_hyper': 1.0,
         'M': 1000.0,
-        'time_limit': 1800
+        'time_limit': 1800  # 1800s for each hyperplane
     },
     strategy='class1_first'  # 固定策略
 )
@@ -335,7 +335,7 @@ model = HierarchicalCESVM(
     cesvm_params={
         'C_hyper': 1.0,
         'M': 1000.0,
-        'time_limit': 1800
+        'time_limit': 1800  # 1800s for each hyperplane
     },
     strategy='test3'  # 動態策略，平衡加權
 )
@@ -352,6 +352,28 @@ predictions = model.predict(X_test)
 所有策略的計算複雜度相似，主要由 MIP 求解時間主導。
 
 **典型求解時間（每個分類器）**: 1-30 分鐘（取決於資料集大小和 `time_limit`）
+
+**`time_limit` 語意**:
+- `BinaryCESVM.time_limit` 是單一 Gurobi solve 的秒數上限。
+- `HierarchicalCESVM` 會對每個 hyperplane 各自建立一個 `BinaryCESVM`，因此 `cesvm_params["time_limit"]` 是 **each hyperplane** 的限制，不是整體總預算。
+- 例如 4-class `test3` 會訓練 3 個 hyperplanes；若 `time_limit=1800`，則最壞情況約為 `1800s * 3`，因為它們是串行訓練。
+
+### Teaching-data Runner CLI
+
+HCESVM runner 現在都使用 **per-classifier** 的 `time_limit` 語意，不會在 runner 端先除以 `n_classes - 1`。
+
+```bash
+source .venv/bin/activate
+
+# HCESVM / SVOR / NPSVOR comparison
+python examples/run_teaching_data_three_models.py --hcesvm-time-limit 1800
+
+# Derived 1000-sample HCESVM validation
+python examples/run_teaching_data_hcesvm_1000.py --time-limit 1800
+
+# Deadline-aware HCESVM runner
+python examples/run_teaching_data_hcesvm_deadline.py --dataset skill --time-limit 1800
+```
 
 **記憶體使用**:
 - **固定策略**: 最小開銷
@@ -448,7 +470,7 @@ min  ||w||₁ + C·Σ(α + β + ρ) - l₊ - l₋
 - `epsilon` (float): 準確率約束容差，預設 0.0001
 - `M` (float): Big-M 常數，預設 1000
 - `enable_selection` (bool): 啟用特徵選擇，預設 True
-- `time_limit` (int): Gurobi 時間限制（秒），預設 600
+- `time_limit` (int): Gurobi 時間限制（秒），預設 600；對 `HierarchicalCESVM` 而言是 each hyperplane 的限制
 - `mip_gap` (float): MIP 最優性差距，預設 1e-4
 - `verbose` (bool): 顯示求解器輸出，預設 True
 
@@ -462,6 +484,7 @@ min  ||w||₁ + C·Σ(α + β + ρ) - l₊ - l₋
 
 **參數**:
 - `cesvm_params` (dict, optional): 傳遞給二元 CE-SVM 的參數
+  - 其中 `cesvm_params["time_limit"]` 會原樣傳給每個 binary classifier，不會在模型內自動拆分成總預算
 
 **方法**:
 - `fit(X1, X2, X3)`: 訓練層次分類器

@@ -146,6 +146,12 @@ def parse_time_limits(log_text: str) -> dict[str, tuple[int | None, int | None]]
             total_budget = int(total_budget_text.removesuffix("s").strip())
             per_classifier = int(suffix.split("s", 1)[0].strip())
             dataset_limits[current_dataset] = (total_budget, per_classifier)
+            continue
+
+        if current_dataset is not None and line.startswith("HCESVM per-classifier time limit:"):
+            value_text = line.split("HCESVM per-classifier time limit:", 1)[1].strip()
+            per_classifier = None if value_text == "none" else int(value_text.removesuffix("s").strip())
+            dataset_limits[current_dataset] = (None, per_classifier)
 
     return dataset_limits
 

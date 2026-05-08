@@ -40,7 +40,7 @@ from hcesvm.utils.teaching_data_1000 import (
     source_dataset_url,
     write_derived_split_artifacts,
 )
-from hcesvm.utils.teaching_data_runtime import resolve_three_model_hcesvm_time_limit
+from hcesvm.utils.teaching_data_runtime import format_hcesvm_time_limit_message
 
 
 MODEL_NAME = "HCESVM(test3)"
@@ -113,10 +113,10 @@ def parse_arguments() -> argparse.Namespace:
         help="Derived datasets to run. Defaults to both 1000-sample validation sets.",
     )
     parser.add_argument(
-        "--total-time-limit",
+        "--time-limit",
         type=int,
         default=1800,
-        help="Total HCESVM time budget in seconds per dataset. Default: 1800.",
+        help="HCESVM per-classifier time limit in seconds. Default: 1800.",
     )
     parser.add_argument(
         "--max-classifiers-per-dataset",
@@ -562,7 +562,7 @@ def main() -> int:
         "excel_path": str(xlsx_path),
         "report_path": str(report_path),
         "datasets": ", ".join(recipe.name for recipe in selected_recipes),
-        "total_time_limit_seconds": args.total_time_limit,
+        "hcesvm_time_limit_seconds": args.time_limit,
         "max_classifiers_per_dataset": args.max_classifiers_per_dataset,
         "threads": args.threads,
         "soft_mem_limit_gb": args.soft_mem_limit_gb,
@@ -575,7 +575,7 @@ def main() -> int:
         print(f"Branch: {metadata['branch']}", file=tee)
         print(f"Commit: {metadata['commit']}", file=tee)
         print(f"Datasets: {metadata['datasets']}", file=tee)
-        print(f"Total HCESVM time budget per dataset: {args.total_time_limit}s", file=tee)
+        print(format_hcesvm_time_limit_message(args.time_limit), file=tee)
         print(f"Threads: {args.threads}", file=tee)
         print(f"SoftMemLimit: {args.soft_mem_limit_gb} GB", file=tee)
         print(f"Heartbeat interval: {args.heartbeat_interval_seconds}", file=tee)
@@ -606,11 +606,8 @@ def main() -> int:
             print(f"Train counts: {split.train_original_counts} -> {split.train_sampled_counts}", file=tee)
             print(f"Test counts: {split.test_original_counts} -> {split.test_sampled_counts}", file=tee)
 
-            per_classifier_time_limit, time_limit_message = resolve_three_model_hcesvm_time_limit(
-                split.name,
-                requested_total_time_limit=args.total_time_limit,
-                n_classes=split.n_classes,
-            )
+            per_classifier_time_limit = int(args.time_limit)
+            time_limit_message = format_hcesvm_time_limit_message(per_classifier_time_limit)
             print(time_limit_message, file=tee)
             hcesvm_params = {
                 "C_hyper": args.C_hyper,
