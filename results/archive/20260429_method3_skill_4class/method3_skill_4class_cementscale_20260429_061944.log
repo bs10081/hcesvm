@@ -1,0 +1,189 @@
+
+====================================================================================================
+[2026-04-29 06:19:44 UTC] Method 3 skill 4-class comparison
+====================================================================================================
+Branch: codex/svor-npsvor-multiclass-eval
+Commit: b32fe03b3554ad87e3a40ee3d886641cda5240d5
+Source dataset: skill
+Method 3 relabel map: 4->1, 5->2, 6->3, 7->4
+Split rule: reuse skill stratified 80/20 split, then proportionally downsample train/test independently
+Sampling seed: 42
+Train counts before/after: [649, 642, 497, 28] -> [285, 282, 219, 12]
+Test counts before/after: [162, 161, 124, 7] -> [71, 71, 55, 3]
+Derived train CSV: /home/bs10081/Developer/hcesvm/results/archive/20260429_method3_skill_4class/skill_method3_4to7_cementscale_train_20260429_061944.csv
+Derived test CSV: /home/bs10081/Developer/hcesvm/results/archive/20260429_method3_skill_4class/skill_method3_4to7_cementscale_test_20260429_061944.csv
+Manifest JSON: /home/bs10081/Developer/hcesvm/results/archive/20260429_method3_skill_4class/skill_method3_4to7_cementscale_manifest_20260429_061944.json
+HCESVM params: {"C_hyper": 1.0, "M": 1000.0, "time_limit": 1800, "mip_gap": 0.0001, "threads": 20, "soft_mem_limit_gb": 56.0, "retain_raw_solution_arrays": false, "release_solver_resources_after_fit": true, "verbose": false}
+SVOR params: {"C": 1.0, "add_order_constraints": true, "solver_params": {"TimeLimit": 1800, "MIPGap": 0.0001, "OutputFlag": 0}}
+NPSVOR params: {"C1": 1.0, "C2": 1.0, "epsilon": 0.2, "prediction_rule": "min_distance", "solver_params": {"TimeLimit": 1800, "MIPGap": 0.0001, "OutputFlag": 0}}
+Checkpoint Excel saved after initialization: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_CEMENTSCALE_20260429_061944.xlsx
+
+====================================================================================================
+[2026-04-29 06:19:44 UTC] Dataset skill_method3_4to7_cementscale
+====================================================================================================
+Source: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/skill.csv
+Classes: 4
+Features: 18
+Train counts: [285, 282, 219, 12]
+Test counts: [71, 71, 55, 3]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-29 06:19:44 UTC] skill_method3_4to7_cementscale | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Total HCESVM time budget: 1800s; per binary classifier time limit: 600s across 3 classifiers
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 285 samples
+Class 2: 282 samples
+Class 3: 219 samples
+Class 4: 12 samples
+Features: 18
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4} (-1)
+============================================================
+H1 Training samples: 798
+  Positive (+1): 285 samples
+  Negative (-1): 513 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 600
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 97.26%)
+
+H1 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 569.998051
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4} (-1)
+============================================================
+H2 Training samples: 798
+  Positive (+1): 567 samples
+  Negative (-1): 231 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 600
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 92.72%)
+
+H2 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 461.998236
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4} (-1)
+============================================================
+H3 Training samples: 798
+  Positive (+1): 786 samples
+  Negative (-1): 12 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 600
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 15.73%)
+
+H3 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 23.998728
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.3534
+  Class 1: 0.0000 (285 samples)
+  Class 2: 1.0000 (282 samples)
+  Class 3: 0.0000 (219 samples)
+  Class 4: 0.0000 (12 samples)
+Testing total accuracy: 0.3550
+  Class 1: 0.0000 (71 samples)
+  Class 2: 1.0000 (71 samples)
+  Class 3: 0.0000 (55 samples)
+  Class 4: 0.0000 (3 samples)
+H1 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H1 b: -1.0000000000
+H2 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H2 b: 1.0000000000
+H3 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H3 b: 1.0000000000
+
+----------------------------------------------------------------------------------------------------
+[2026-04-29 06:49:45 UTC] skill_method3_4to7_cementscale | SVOR
+----------------------------------------------------------------------------------------------------
+Total SVOR time budget: 1800s (single optimization problem)
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Training total accuracy: 0.5075
+  Class 1: 0.4491 (285 samples)
+  Class 2: 0.6631 (282 samples)
+  Class 3: 0.4064 (219 samples)
+  Class 4: 0.0833 (12 samples)
+Testing total accuracy: 0.5150
+  Class 1: 0.4507 (71 samples)
+  Class 2: 0.6620 (71 samples)
+  Class 3: 0.4364 (55 samples)
+  Class 4: 0.0000 (3 samples)
+Weights (w): [-0.0264787337, 0.0183658353, 0.000194233, 0.0063359348, 0.0638775843, 0.0181212001, 0.0904935927, 0.0193962751, -0.0058533131, 0.0101974731, -0.0290525886, -0.0310871978, -0.117166892, 0.0112367488, 0.0406396117, -0.0543621897, -0.0032089781, -0.0110389124]
+Thresholds (b): [-3.142273136, -1.4103709272, 1.0088056163]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-29 06:49:46 UTC] skill_method3_4to7_cementscale | NPSVOR
+----------------------------------------------------------------------------------------------------
+Total NPSVOR time budget: 1800s; per rank time limit: 450s across 4 ranks
+Training total accuracy: 0.5150
+  Class 1: 0.4281 (285 samples)
+  Class 2: 0.7092 (282 samples)
+  Class 3: 0.4018 (219 samples)
+  Class 4: 0.0833 (12 samples)
+Testing total accuracy: 0.5200
+  Class 1: 0.4507 (71 samples)
+  Class 2: 0.6901 (71 samples)
+  Class 3: 0.4182 (55 samples)
+  Class 4: 0.0000 (3 samples)
+Rank 1 weights: [-0.0147049462, 0.0039965914, 0.0001159443, 0.0024196518, 0.0152374075, 0.007056774, 0.03584231, 0.0080047054, -0.008100813, 0.0050658779, -0.0081475268, -0.0115445929, -0.0314785847, 0.0008100118, 0.0202933354, -0.0258832773, -0.0019521584, -0.0075547008]
+Rank 1 b: 1.8358267047
+Rank 2 weights: [-0.0166644777, 0.0113283989, 0.000252996, 0.0049199591, 0.0261524852, 0.0107460839, 0.0599453164, 0.0138862185, -0.0033695617, 0.0040158913, -0.0149949557, -0.0176353894, -0.0952758532, 0.0047748012, 0.0331202106, -0.0345361205, -0.0019515627, -0.0124111159]
+Rank 2 b: 1.1632019545
+Rank 3 weights: [-0.0076560078, 0.0070744138, 0.0001217525, 0.0032999473, 0.0219602784, 0.0112266711, 0.0282543556, 0.0096126037, 0.0044533925, 0.0084961069, -0.0149051358, -0.0095596941, -0.0597113986, 0.0067941026, 0.0199485816, -0.0152705963, -0.0009461173, -0.0039788359]
+Rank 3 b: -0.2633717460
+Rank 4 weights: [2.38e-08, 7.1e-09, 2e-10, -4.95e-08, 0.0002942226, 0.0003687133, 2.7e-09, 0.0011093812, -0.0005292135, 0.0013934112, -5.49e-08, -4.91e-08, 8.014e-07, -2.27e-08, 0.0004720491, 4.33e-08, -0.0001869591, 0.0008634065]
+Rank 4 b: -1.0000039253
+Checkpoint Excel saved after skill_method3_4to7_cementscale / HCESVM(test3): /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_CEMENTSCALE_20260429_061944.xlsx
+Checkpoint Excel saved after skill_method3_4to7_cementscale / SVOR: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_CEMENTSCALE_20260429_061944.xlsx
+Checkpoint Excel saved after skill_method3_4to7_cementscale / NPSVOR: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_CEMENTSCALE_20260429_061944.xlsx
+
+====================================================================================================
+[2026-04-29 06:49:46 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260429_method3_skill_4class/method3_skill_4class_cementscale_20260429_061944.log
+Excel report target: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_CEMENTSCALE_20260429_061944.xlsx
