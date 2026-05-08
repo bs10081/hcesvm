@@ -226,6 +226,90 @@ class TestBinaryCESVMEdgeCases:
             model.fit(X, y)
 
 
+class TestBinaryCESVMHeartbeat:
+    """Test solver heartbeat configuration and formatting."""
+
+    def test_heartbeat_interval_must_be_positive(self):
+        with pytest.raises(ValueError, match="heartbeat_interval_seconds"):
+            BinaryCESVM(verbose=False, heartbeat_interval_seconds=0)
+
+    def test_heartbeat_callback_emits_throttled_progress(self):
+        class FakeCallbackModel:
+            def __init__(self, values):
+                self.values = values
+
+            def cbGet(self, key):
+                return self.values[key]
+
+        messages = []
+        model = BinaryCESVM(verbose=False, heartbeat_interval_seconds=10.0)
+        model.heartbeat_label = "H3"
+        callback = model._build_heartbeat_callback(printer=messages.append)
+
+        fake_model = FakeCallbackModel(
+            {
+                GRB.Callback.RUNTIME: 5.0,
+                GRB.Callback.MIP_NODCNT: 12.0,
+                GRB.Callback.MIP_SOLCNT: 0.0,
+                GRB.Callback.MIP_OBJBST: GRB.INFINITY,
+                GRB.Callback.MIP_OBJBND: 41.25,
+            }
+        )
+        callback(fake_model, GRB.Callback.MIP)
+
+        assert len(messages) == 1
+        assert "H3 heartbeat: stage=mip" in messages[0]
+        assert "runtime=5.0s" in messages[0]
+        assert "nodes=12" in messages[0]
+        assert "solutions=0" in messages[0]
+        assert "gap=<none>" in messages[0]
+
+        fake_model.values[GRB.Callback.RUNTIME] = 12.0
+        fake_model.values[GRB.Callback.MIP_NODCNT] = 18.0
+        callback(fake_model, GRB.Callback.MIP)
+
+        assert len(messages) == 1
+
+        fake_model.values[GRB.Callback.RUNTIME] = 16.0
+        fake_model.values[GRB.Callback.MIP_NODCNT] = 22.0
+        fake_model.values[GRB.Callback.MIP_SOLCNT] = 1.0
+        fake_model.values[GRB.Callback.MIP_OBJBST] = 50.0
+        fake_model.values[GRB.Callback.MIP_OBJBND] = 45.0
+        callback(fake_model, GRB.Callback.MIP)
+
+        assert len(messages) == 2
+        assert "runtime=16.0s" in messages[1]
+        assert "solutions=1" in messages[1]
+        assert "gap=10.00%" in messages[1]
+
+    def test_heartbeat_callback_reports_presolve_stage(self):
+        class FakeCallbackModel:
+            def __init__(self, values):
+                self.values = values
+
+            def cbGet(self, key):
+                return self.values[key]
+
+        messages = []
+        model = BinaryCESVM(verbose=False, heartbeat_interval_seconds=30.0)
+        model.heartbeat_label = "H1"
+        callback = model._build_heartbeat_callback(printer=messages.append)
+
+        fake_model = FakeCallbackModel(
+            {
+                GRB.Callback.RUNTIME: 30.0,
+                GRB.Callback.PRE_ROWDEL: 123.0,
+                GRB.Callback.PRE_COLDEL: 7.0,
+            }
+        )
+        callback(fake_model, GRB.Callback.PRESOLVE)
+
+        assert len(messages) == 1
+        assert "H1 heartbeat: stage=presolve" in messages[0]
+        assert "rows_deleted=123" in messages[0]
+        assert "columns_deleted=7" in messages[0]
+
+
 class TestBinaryCESVMMemorySafety:
     """Test resource cleanup and lightweight solution retention."""
 

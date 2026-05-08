@@ -210,6 +210,18 @@ class HierarchicalCESVM:
         callback_result = after_classifier(progress)
         return callback_result is not False
 
+    def _configure_runtime_monitoring(
+        self,
+        classifier: BinaryCESVM,
+        *,
+        label: str,
+    ) -> None:
+        """Attach per-classifier runtime labels before solve starts."""
+        classifier.heartbeat_label = label
+        heartbeat_interval = classifier.heartbeat_interval_seconds
+        if heartbeat_interval is not None:
+            print(f"  Heartbeat interval: {heartbeat_interval:.1f}s")
+
     def _prepare_hk_data(
         self,
         k: int,
@@ -499,9 +511,10 @@ class HierarchicalCESVM:
             h1_params['accuracy_mode'] = "both"
             print(f"  Class weight: balanced")
             print(f"  Accuracy mode: both")
-        print()
 
         self.h1 = BinaryCESVM(**h1_params)
+        self._configure_runtime_monitoring(self.h1, label="H1")
+        print()
         h1_started_at = _utc_now()
         self.h1.fit(X_h1, y_h1)
         self.completed_classifier_count = 1
@@ -559,9 +572,10 @@ class HierarchicalCESVM:
             h2_params['accuracy_mode'] = "both"
             print(f"  Class weight: balanced")
             print(f"  Accuracy mode: both")
-        print()
 
         self.h2 = BinaryCESVM(**h2_params)
+        self._configure_runtime_monitoring(self.h2, label="H2")
+        print()
         h2_started_at = _utc_now()
         self.h2.fit(X_h2, y_h2)
         self.completed_classifier_count = 2
@@ -630,9 +644,10 @@ class HierarchicalCESVM:
             hk_params['accuracy_mode'] = "both"
             print(f"  Class weight: balanced")
             print(f"  Accuracy mode: both")
-            print()
 
             classifier = BinaryCESVM(**hk_params)
+            self._configure_runtime_monitoring(classifier, label=f"H{k}")
+            print()
             classifier_started_at = _utc_now()
             classifier.fit(X_hk, y_hk)
 

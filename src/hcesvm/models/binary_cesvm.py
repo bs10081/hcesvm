@@ -12,11 +12,13 @@ Features:
 Based on: CEAS_SVM1_SL_Par.lg4 LINGO model (simplified)
 """
 
-import numpy as np
-import gurobipy as gp
-from gurobipy import GRB
+from datetime import datetime, timezone
 from time import perf_counter
-from typing import Dict, Optional
+from typing import Callable, Dict, Optional
+
+import gurobipy as gp
+import numpy as np
+from gurobipy import GRB
 
 
 class BinaryCESVM:
@@ -48,6 +50,7 @@ class BinaryCESVM:
         verbose: bool = True,
         accuracy_mode: str = "both",
         class_weight: str = "none",
+        heartbeat_interval_seconds: Optional[float] = None,
         retain_raw_solution_arrays: bool = True,
         release_solver_resources_after_fit: bool = True,
     ):
@@ -69,6 +72,8 @@ class BinaryCESVM:
                           ("both", "positive_only", "negative_only")
             class_weight: Class weighting for accuracy terms
                          ("none": equal weight (default), "balanced": inverse of sample count)
+            heartbeat_interval_seconds: Emit solver heartbeats this often while optimize()
+                                        is still running (None = disabled)
             retain_raw_solution_arrays: Whether to keep per-sample raw solution arrays
             release_solver_resources_after_fit: Whether to dispose Gurobi model/env after fit
         """
@@ -107,6 +112,16 @@ class BinaryCESVM:
                 f"class_weight must be 'none' or 'balanced', got '{class_weight}'"
             )
 
+        if heartbeat_interval_seconds is not None:
+            heartbeat_interval_seconds = float(heartbeat_interval_seconds)
+            if (
+                not np.isfinite(heartbeat_interval_seconds)
+                or heartbeat_interval_seconds <= 0
+            ):
+                raise ValueError(
+                    "heartbeat_interval_seconds must be a positive number or None"
+                )
+
         # Solution storage
         self.weights = None
         self.intercept = None
@@ -119,6 +134,8 @@ class BinaryCESVM:
         self.s_plus = None
         self.s_minus = None
         self.solve_time = None
+        self.heartbeat_interval_seconds = heartbeat_interval_seconds
+        self.heartbeat_label = None
 
     def build_model(self, X: np.ndarray, y: np.ndarray) -> gp.Model:
         """Build Gurobi optimization model.
@@ -326,6 +343,140 @@ class BinaryCESVM:
         self.model = model
         return model
 
+    @staticmethod
+    def _format_heartbeat_metric(
+        value: float | int | None,
+        *,
+        decimals: int | None = None,
+    ) -> str:
+        """Format optional heartbeat metrics without leaking inf/nan."""
+        if value is None:
+            return "<none>"
+
+        numeric_value = float(value)
+        if (
+            not np.isfinite(numeric_value)
+            or abs(numeric_value) >= GRB.INFINITY / 10
+        ):
+            return "<none>"
+
+        if decimals is None:
+            if numeric_value.is_integer():
+                return str(int(numeric_value))
+            return f"{numeric_value:.6f}"
+
+        return f"{numeric_value:.{decimals}f}"
+
+    def _format_heartbeat_message(
+        self,
+        *,
+        stage: str,
+        runtime_seconds: float,
+        node_count: float | None = None,
+        solution_count: float | None = None,
+        incumbent_objective: float | None = None,
+        best_bound: float | None = None,
+        rows_deleted: float | None = None,
+        columns_deleted: float | None = None,
+    ) -> str:
+        """Build a compact heartbeat line for long-running solves."""
+        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+        label = self.heartbeat_label or "BinaryCESVM"
+        parts = [
+            f"[{timestamp}] {label} heartbeat: stage={stage}",
+            f"runtime={runtime_seconds:.1f}s",
+        ]
+
+        if stage == "presolve":
+            parts.append(
+                f"rows_deleted={self._format_heartbeat_metric(rows_deleted)}"
+            )
+            parts.append(
+                f"columns_deleted={self._format_heartbeat_metric(columns_deleted)}"
+            )
+            return ", ".join(parts)
+
+        parts.append(f"nodes={self._format_heartbeat_metric(node_count)}")
+        parts.append(f"solutions={self._format_heartbeat_metric(solution_count)}")
+        parts.append(
+            f"incumbent={self._format_heartbeat_metric(incumbent_objective, decimals=6)}"
+        )
+        parts.append(
+            f"best_bound={self._format_heartbeat_metric(best_bound, decimals=6)}"
+        )
+
+        gap = None
+        if (
+            solution_count is not None
+            and float(solution_count) > 0
+            and incumbent_objective is not None
+            and best_bound is not None
+            and np.isfinite(float(incumbent_objective))
+            and np.isfinite(float(best_bound))
+            and abs(float(incumbent_objective)) < GRB.INFINITY / 10
+            and abs(float(best_bound)) < GRB.INFINITY / 10
+        ):
+            denominator = max(abs(float(incumbent_objective)), 1e-10)
+            gap = abs(float(incumbent_objective) - float(best_bound)) / denominator
+
+        if gap is None:
+            parts.append("gap=<none>")
+        else:
+            parts.append(f"gap={gap:.2%}")
+
+        return ", ".join(parts)
+
+    def _build_heartbeat_callback(
+        self,
+        printer: Callable[[str], None] | None = None,
+    ) -> Callable[[gp.Model, int], None] | None:
+        """Create a throttled Gurobi callback for long-running solve heartbeats."""
+        if self.heartbeat_interval_seconds is None:
+            return None
+
+        interval_seconds = float(self.heartbeat_interval_seconds)
+        emit = print if printer is None else printer
+        last_reported_runtime = -interval_seconds
+
+        def callback(callback_model: gp.Model, where: int) -> None:
+            nonlocal last_reported_runtime
+
+            if where == GRB.Callback.PRESOLVE:
+                runtime_seconds = float(callback_model.cbGet(GRB.Callback.RUNTIME))
+                if runtime_seconds - last_reported_runtime < interval_seconds:
+                    return
+                last_reported_runtime = runtime_seconds
+                emit(
+                    self._format_heartbeat_message(
+                        stage="presolve",
+                        runtime_seconds=runtime_seconds,
+                        rows_deleted=callback_model.cbGet(GRB.Callback.PRE_ROWDEL),
+                        columns_deleted=callback_model.cbGet(GRB.Callback.PRE_COLDEL),
+                    )
+                )
+                return
+
+            if where != GRB.Callback.MIP:
+                return
+
+            runtime_seconds = float(callback_model.cbGet(GRB.Callback.RUNTIME))
+            if runtime_seconds - last_reported_runtime < interval_seconds:
+                return
+
+            last_reported_runtime = runtime_seconds
+            emit(
+                self._format_heartbeat_message(
+                    stage="mip",
+                    runtime_seconds=runtime_seconds,
+                    node_count=callback_model.cbGet(GRB.Callback.MIP_NODCNT),
+                    solution_count=callback_model.cbGet(GRB.Callback.MIP_SOLCNT),
+                    incumbent_objective=callback_model.cbGet(GRB.Callback.MIP_OBJBST),
+                    best_bound=callback_model.cbGet(GRB.Callback.MIP_OBJBND),
+                )
+            )
+
+        return callback
+
     def solve(self) -> bool:
         """Solve the CE-SVM optimization model.
         
@@ -336,7 +487,11 @@ class BinaryCESVM:
             raise RuntimeError("Model not built. Call build_model() first.")
 
         solve_started_at = perf_counter()
-        self.model.optimize()
+        heartbeat_callback = self._build_heartbeat_callback()
+        if heartbeat_callback is None:
+            self.model.optimize()
+        else:
+            self.model.optimize(heartbeat_callback)
         self.solve_time = perf_counter() - solve_started_at
 
         if self.model.status == GRB.OPTIMAL:

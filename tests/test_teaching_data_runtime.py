@@ -26,6 +26,17 @@ def test_three_model_runner_splits_total_budget_for_normal_dataset():
     assert "per binary classifier time limit: 450s across 4 classifiers" in message
 
 
+def test_three_model_runner_splits_total_budget_for_method3_dataset_label():
+    limit, message = resolve_three_model_hcesvm_time_limit(
+        "skill_method3_4to7_cementscale",
+        requested_total_time_limit=1800,
+        n_classes=4,
+    )
+
+    assert limit == 600
+    assert "per binary classifier time limit: 600s across 3 classifiers" in message
+
+
 def test_deadline_runner_keeps_none_when_time_limit_is_unset_even_for_override_dataset():
     limit, message = resolve_deadline_runner_hcesvm_time_limit("californiahousing", requested_time_limit=None)
 
