@@ -1,0 +1,79 @@
+
+====================================================================================================
+[2026-05-09 07:39:20 UTC] SKILL Method3 4-class 1000 split baselines
+====================================================================================================
+Branch: codex/svor-npsvor-multiclass-eval
+Commit: e01dcec20369940c4cb8c00ab22a01846ee8b7db
+Manifest: /home/bs10081/Developer/hcesvm/results/archive/20260509_test3_teaching_data_1000/skill_method3_4class_1000/skill_method3_4class_1000_manifest_20260509_055457.json
+Source dataset: skill
+Train CSV: /home/bs10081/Developer/hcesvm/results/archive/20260509_test3_teaching_data_1000/skill_method3_4class_1000/skill_method3_4class_1000_train_20260509_055457.csv
+Test CSV: /home/bs10081/Developer/hcesvm/results/archive/20260509_test3_teaching_data_1000/skill_method3_4class_1000/skill_method3_4class_1000_test_20260509_055457.csv
+Target column: response
+Features inferred from CSV; manifest listed 18 feature columns
+Train counts: [286, 283, 219, 12]
+Test counts: [71, 71, 55, 3]
+Relabel map: 4->1, 5->2, 6->3, 7->4
+SVOR params: {"C": 1.0, "add_order_constraints": true, "solver_params": {"TimeLimit": 1800, "MIPGap": 0.0001, "OutputFlag": 0}}
+NPSVOR params: {"C1": 1.0, "C2": 1.0, "epsilon": 0.2, "prediction_rule": "min_distance", "solver_params": {"TimeLimit": 1800, "MIPGap": 0.0001, "OutputFlag": 0}}
+HCESVM comparison workbook: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_055457.xlsx (train=0.3538, test=0.3550)
+Checkpoint saved after initialization: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_1000_SVOR_NPSVOR_20260509_073920.xlsx
+Checkpoint markdown after initialization: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_1000_SVOR_NPSVOR_20260509_073920.md
+
+----------------------------------------------------------------------------------------------------
+[2026-05-09 07:39:20 UTC] skill_method3_4class_1000 | SVOR
+----------------------------------------------------------------------------------------------------
+Total SVOR time budget: 1800s (single optimization problem)
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Training total accuracy: 0.5375
+  Class 1: 0.5175 (286 samples)
+  Class 2: 0.6784 (283 samples)
+  Class 3: 0.4110 (219 samples)
+  Class 4: 0.0000 (12 samples)
+Testing total accuracy: 0.5100
+  Class 1: 0.4789 (71 samples)
+  Class 2: 0.6338 (71 samples)
+  Class 3: 0.4182 (55 samples)
+  Class 4: 0.0000 (3 samples)
+SVOR status: optimal
+Weights (w): [-0.0012208341, 0.01603433, -2.193e-06, 0.0113154138, 0.0968945044, 0.0167677313, 0.1169640878, 0.0139530283, 0.0013973555, 0.0143796995, -0.0242983528, -0.024055001, -0.1738672084, -0.000323583, 0.0527965383, -0.0728812528, 0.0007746372, 0.0049525081]
+Thresholds (b): [-2.0748430409, -0.4138010926, 1.9883473612]
+Checkpoint saved after SVOR: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_1000_SVOR_NPSVOR_20260509_073920.xlsx
+Checkpoint markdown after SVOR: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_1000_SVOR_NPSVOR_20260509_073920.md
+
+----------------------------------------------------------------------------------------------------
+[2026-05-09 07:39:20 UTC] skill_method3_4class_1000 | NPSVOR
+----------------------------------------------------------------------------------------------------
+Total NPSVOR time budget: 1800s; per rank time limit: 450s across 4 ranks
+Training total accuracy: 0.5450
+  Class 1: 0.5315 (286 samples)
+  Class 2: 0.6926 (283 samples)
+  Class 3: 0.4018 (219 samples)
+  Class 4: 0.0000 (12 samples)
+Testing total accuracy: 0.4900
+  Class 1: 0.4366 (71 samples)
+  Class 2: 0.6338 (71 samples)
+  Class 3: 0.4000 (55 samples)
+  Class 4: 0.0000 (3 samples)
+Rank 1 status: optimal
+Rank 1 weights: [0.0032956151, 0.0008880157, 0.0003454825, 0.0058170331, -0.0080194672, 0.0049122684, 0.054468295, 0.0072194529, -0.0013570706, 0.0130536507, -0.0052740326, -0.0075500504, -0.0439296832, -0.0004589444, 0.0317261398, -0.0391106989, 7.01387e-05, 0.003692047]
+Rank 1 b: 0.6713784946
+Rank 2 status: optimal
+Rank 2 weights: [0.0088695731, 0.0100668665, -1.5701e-06, 0.0099412153, 0.0604264114, 0.0083464357, 0.0664711263, 0.0080432537, -0.0049098767, 0.0085909507, -0.0115659776, -0.0123288673, -0.1295106375, -0.0018150399, 0.0384979663, -0.0506479835, -0.0010319909, 0.0011141419]
+Rank 2 b: 0.1222985432
+Rank 3 status: optimal
+Rank 3 weights: [-0.001964419, 0.0067359048, -1.1467e-06, 0.0059910058, 0.0555730071, 0.0114531655, 0.0308788244, 0.0049906187, -0.0012079339, 0.0064476983, -0.0111567374, -0.0045317102, -0.1281670976, 0.0014343287, 0.0150324033, -0.0351994811, 0.0014653156, -0.0002714252]
+Rank 3 b: -0.4243507260
+Rank 4 status: suboptimal_with_solution
+Rank 4 weights: [2.75e-06, 7.388e-07, 0.0, -1.291e-07, 0.0005218562, 0.001198146, 7.1088e-06, 0.0017104998, 0.0016183918, 0.0008779085, -9.84e-07, -2.1542e-06, -7.5049e-06, 8.467e-07, 0.0008150398, -6.6425e-06, -1.8147e-06, 0.0004531831]
+Rank 4 b: -0.9999549252
+Checkpoint saved after NPSVOR: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_1000_SVOR_NPSVOR_20260509_073920.xlsx
+Checkpoint markdown after NPSVOR: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_1000_SVOR_NPSVOR_20260509_073920.md
+
+====================================================================================================
+[2026-05-09 07:39:21 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260509_svor_npsvor_skill_1000/svor_npsvor_skill_method3_4class_1000_20260509_073920.log
+Workbook saved to: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_1000_SVOR_NPSVOR_20260509_073920.xlsx
+Markdown saved to: /home/bs10081/Developer/hcesvm/docs/reports/SKILL_METHOD3_4CLASS_1000_SVOR_NPSVOR_20260509_073920.md
