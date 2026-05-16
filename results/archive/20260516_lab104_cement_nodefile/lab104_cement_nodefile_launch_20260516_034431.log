@@ -1,0 +1,546 @@
+[2026-05-16 03:44:31 UTC] Local launch setup
+branch=experiment/lab104-cement-nodefile
+commit=871d49013c9dd102320e3d83c6c45728dec0283a
+log_path=results/archive/20260516_lab104_cement_nodefile/lab104_cement_nodefile_launch_20260516_034431.log
+
+[2026-05-16 03:44:31 UTC] Local staged current-task files
+examples/run_teaching_data_hcesvm_full.py
+src/hcesvm/models/binary_cesvm.py
+src/hcesvm/utils/teaching_data_1000.py
+tests/test_teaching_data_hcesvm_full_runner.py
+
+[2026-05-16 03:44:31 UTC] Local validation gate
+...........                                                              [100%]
+11 passed in 0.94s
+
+[2026-05-16 03:44:32 UTC] SSH ControlMaster check/start
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+sign_and_send_pubkey: signing failed for ED25519 "SSH Key" from agent: communication with agent failed
+bs10081@100.119.75.44: Permission denied (publickey).
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+
+[2026-05-16 03:45:32 UTC] Remote identity
+
+[2026-05-16 03:46:18 UTC] SSH retry with timeout
+256 SHA256:qBmEr8C7oH6EcfpkIVkr4Q7nnjx3K0qriwxSXYq1+eA SSH Key (ED25519)
+sign_and_send_pubkey: signing failed for ED25519 "SSH Key" from agent: agent refused operation
+bs10081@100.119.75.44: Permission denied (publickey).
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+
+[2026-05-16 03:47:15 UTC] Local SSH agent socket inventory
+
+SOCK=/home/bs10081/.1password/agent.sock
+256 SHA256:qBmEr8C7oH6EcfpkIVkr4Q7nnjx3K0qriwxSXYq1+eA SSH Key (ED25519)
+
+SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
+The agent has no identities.
+
+SOCK=/home/bs10081/.bitwarden-ssh-agent.sock
+Error connecting to agent: Connection refused
+
+SOCK=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.4ef9Llsnsc
+Error connecting to agent: Connection refused
+
+SOCK=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.6knlgKqku3
+Error connecting to agent: Connection refused
+
+SOCK=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.QGCuiZfoil
+Error connecting to agent: Connection refused
+
+SOCK=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.XIyFUaidU4
+256 SHA256:qBmEr8C7oH6EcfpkIVkr4Q7nnjx3K0qriwxSXYq1+eA SSH Key (ED25519)
+
+SOCK=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.kuV8gdTTfa
+Error connecting to agent: Connection refused
+
+SOCK=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.sn4h6zJUgr
+Error connecting to agent: Connection refused
+
+SOCK=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.wA3yM37T22
+Error connecting to agent: Connection refused
+
+SOCK=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.wPvnMJyOaI
+Error connecting to agent: Connection refused
+
+[2026-05-16 03:47:21 UTC] SSH retry with alternate live agent socket
+256 SHA256:qBmEr8C7oH6EcfpkIVkr4Q7nnjx3K0qriwxSXYq1+eA SSH Key (ED25519)
+Master running (pid=645350)
+lab104-gpuboost
+/home/bs10081
+repo_exists
+
+[2026-05-16 03:47:46 UTC] Remote repo status before sync
+## codex/svor-npsvor-multiclass...origin/codex/svor-npsvor-multiclass [ahead 2, behind 7]
+?? docs/reports/SKILL_CLASS4_7_HCESVM_TEST3_20260426_110406.xlsx
+?? docs/reports/SKILL_CLASS4_7_HCESVM_TEST3_20260426_131233.xlsx
+?? docs/reports/SKILL_FULL_HCESVM_TEST3_NOTIMELIMIT_20260426_110410.xlsx
+?? docs/reports/SKILL_METHOD3_4CLASS_1000_SKILL_REDUCE_TRAIN_ONLY_ALLCPU_HCESVM_TEST3_20260508_120718.xlsx
+?? docs/reports/SKILL_METHOD3_4CLASS_1000_SKILL_REDUCE_TRAIN_ONLY_HCESVM_TEST3_20260508_120050.xlsx
+?? docs/reports/SKILL_SKILL_SMOKE_5_7_HCESVM_TEST3_20260426_110334.xlsx
+?? examples/run_contraceptive_pca_test.py
+?? examples/run_parallel_tests.sh
+?? examples/run_test3_validation.py
+?? results/SESSION_SUMMARY_20260226.txt
+?? results/archive/20260426_test3_skill_class4_7/
+?? results/archive/20260426_test3_skill_full_notimelimit/
+?? results/archive/20260426_test3_skill_smoke_5_7/
+?? results/archive/20260508_test3_skill_reduce_train_only/
+?? results/archive/20260508_test3_skill_reduce_train_only_allcpu/
+?? results/contraceptive_pca_test3_20260305_030326.log
+?? results/contraceptive_test3_20260226_052553.log
+?? results/svor_npsvor_all_datasets_20260323_035436.log
+?? results/svor_npsvor_all_datasets_20260323_035552.log
+?? results/svor_npsvor_execution_20260323_035436.log
+?? results/test3_new_datasets_20260226_115744.log
+?? results/test3_refactor_validation_20260226_011203.log
+?? results/test3_refactor_validation_20260226_011431.log
+?? results/test3_refactor_validation_20260226_011617.log
+?? results/test3_validation_20260225_062132.log
+?? results/test3_validation_20260225_062310.log
+?? results/test3_validation_20260225_072708.log
+
+[2026-05-16 03:47:46 UTC] Sync current-task files to remote
+sending incremental file list
+examples/
+examples/run_teaching_data_hcesvm_full.py
+src/
+src/hcesvm/
+src/hcesvm/models/
+src/hcesvm/models/binary_cesvm.py
+src/hcesvm/utils/
+src/hcesvm/utils/teaching_data_1000.py
+tests/
+tests/test_teaching_data_hcesvm_full_runner.py
+
+sent 92,691 bytes  received 378 bytes  186,138.00 bytes/sec
+total size is 101,791  speedup is 1.09
+
+[2026-05-16 03:47:46 UTC] Remote validation gate
+
+no tests ran in 0.00s
+ERROR: file or directory not found: tests/test_teaching_data_runtime.py
+
+
+[2026-05-16 03:47:46 UTC] Remote repo status after sync
+## codex/svor-npsvor-multiclass...origin/codex/svor-npsvor-multiclass [ahead 2, behind 7]
+ M src/hcesvm/models/binary_cesvm.py
+ M src/hcesvm/utils/teaching_data_1000.py
+?? docs/reports/SKILL_CLASS4_7_HCESVM_TEST3_20260426_110406.xlsx
+?? docs/reports/SKILL_CLASS4_7_HCESVM_TEST3_20260426_131233.xlsx
+?? docs/reports/SKILL_FULL_HCESVM_TEST3_NOTIMELIMIT_20260426_110410.xlsx
+?? docs/reports/SKILL_METHOD3_4CLASS_1000_SKILL_REDUCE_TRAIN_ONLY_ALLCPU_HCESVM_TEST3_20260508_120718.xlsx
+?? docs/reports/SKILL_METHOD3_4CLASS_1000_SKILL_REDUCE_TRAIN_ONLY_HCESVM_TEST3_20260508_120050.xlsx
+?? docs/reports/SKILL_SKILL_SMOKE_5_7_HCESVM_TEST3_20260426_110334.xlsx
+?? examples/run_contraceptive_pca_test.py
+?? examples/run_parallel_tests.sh
+?? examples/run_teaching_data_hcesvm_full.py
+?? examples/run_test3_validation.py
+?? results/SESSION_SUMMARY_20260226.txt
+?? results/archive/20260426_test3_skill_class4_7/
+?? results/archive/20260426_test3_skill_full_notimelimit/
+?? results/archive/20260426_test3_skill_smoke_5_7/
+?? results/archive/20260508_test3_skill_reduce_train_only/
+?? results/archive/20260508_test3_skill_reduce_train_only_allcpu/
+?? results/contraceptive_pca_test3_20260305_030326.log
+?? results/contraceptive_test3_20260226_052553.log
+?? results/svor_npsvor_all_datasets_20260323_035436.log
+?? results/svor_npsvor_all_datasets_20260323_035552.log
+?? results/svor_npsvor_execution_20260323_035436.log
+?? results/test3_new_datasets_20260226_115744.log
+?? results/test3_refactor_validation_20260226_011203.log
+?? results/test3_refactor_validation_20260226_011431.log
+?? results/test3_refactor_validation_20260226_011617.log
+?? results/test3_validation_20260225_062132.log
+?? results/test3_validation_20260225_062310.log
+?? results/test3_validation_20260225_072708.log
+?? tests/test_teaching_data_hcesvm_full_runner.py
+
+[2026-05-16 03:47:57 UTC] Sync missing remote test helper files
+sending incremental file list
+src/hcesvm/utils/teaching_data_runtime.py
+tests/test_teaching_data_runtime.py
+
+sent 1,265 bytes  received 58 bytes  2,646.00 bytes/sec
+total size is 923  speedup is 0.70
+
+[2026-05-16 03:47:57 UTC] Remote validation gate retry
+...........                                                              [100%]
+11 passed in 0.98s
+
+[2026-05-16 03:48:14 UTC] Remote preflight and tmux launch
+timestamp=2026-05-16 03:48:14 UTC
+hostname=lab104-gpuboost
+
+tmux ls:
+error connecting to /tmp/tmux-1000/default (No such file or directory)
+
+hcesvm/gurobi processes:
+
+free -h:
+               total        used        free      shared  buff/cache   available
+Mem:            27Gi       1.7Gi        20Gi       1.8Mi       5.7Gi        25Gi
+Swap:          8.0Gi          0B       8.0Gi
+
+df -h HOME:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  284G  194G  60% /
+
+findmnt -T HOME:
+TARGET SOURCE    FSTYPE OPTIONS
+/      /dev/sda2 ext4   rw,relatime
+computed_soft_mem_limit_gb=21
+session=hcesvm-cement-nodefile-soft21-20260516_034814
+command=cd "/home/bs10081/Developer/hcesvm" && source .venv/bin/activate && if [ -f "/home/bs10081/gurobi.lic" ]; then export GRB_LICENSE_FILE="/home/bs10081/gurobi.lic"; fi && python examples/run_teaching_data_hcesvm_full.py --datasets cement_strength --time-limit none --threads 0 --soft-mem-limit-gb 21 --nodefile-start-gb 0.5 --nodefile-dir auto --heartbeat-interval-seconds 60
+no server running on /tmp/tmux-1000/default
+
+[2026-05-16 03:48:27 UTC] Remote tmux launch retry with TMUX unset
+computed_soft_mem_limit_gb=21
+session=hcesvm-cement-nodefile-soft21-20260516_034827
+tmux sessions:
+no server running on /tmp/hcesvm-lab104-tmux
+
+[2026-05-16 03:48:48 UTC] Remote tmux sanity and runner CLI check
+hcesvm-tmux-sanity: 1 windows (created Sat May 16 03:48:48 2026)
+usage: run_teaching_data_hcesvm_full.py [-h]
+                                        [--datasets {bostonhousing_ord,hayes_roth,new_thyroid,car_evaluation,balance,thyroid,cement_strength,stock_ord} [{bostonhousing_ord,hayes_roth,new_thyroid,car_evaluation,balance,thyroid,cement_strength,stock_ord} ...]]
+                                        [--time-limit TIME_LIMIT]
+                                        [--max-classifiers-per-dataset MAX_CLASSIFIERS_PER_DATASET]
+                                        [--heartbeat-interval-seconds HEARTBEAT_INTERVAL_SECONDS]
+                                        [--threads THREADS]
+                                        [--soft-mem-limit-gb SOFT_MEM_LIMIT_GB]
+                                        [--nodefile-start-gb NODEFILE_START_GB]
+                                        [--nodefile-dir NODEFILE_DIR]
+                                        [--mip-gap MIP_GAP]
+                                        [--C-hyper C_HYPER] [--M M]
+                                        [--feat-lower-bound FEAT_LOWER_BOUND]
+
+Run HCESVM(test3) on full teaching-data ordinal datasets.
+
+options:
+  -h, --help            show this help message and exit
+  --datasets {bostonhousing_ord,hayes_roth,new_thyroid,car_evaluation,balance,thyroid,cement_strength,stock_ord} [{bostonhousing_ord,hayes_roth,new_thyroid,car_evaluation,balance,thyroid,cement_strength,stock_ord} ...]
+                        Datasets to run. Default: bostonhousing_ord.
+  --time-limit TIME_LIMIT
+                        HCESVM per-classifier time limit in seconds. Use
+                        'none' for no Gurobi TimeLimit. Default: 5400.
+  --max-classifiers-per-dataset MAX_CLASSIFIERS_PER_DATASET
+                        Stop after this many classifiers per dataset. Useful
+                        for smoke runs.
+  --heartbeat-interval-seconds HEARTBEAT_INTERVAL_SECONDS
+                        Emit solver heartbeats this often. Use 'none' to
+                        disable. Default: 60.
+  --threads THREADS     Gurobi thread count. Default: 20.
+  --soft-mem-limit-gb SOFT_MEM_LIMIT_GB
+                        Gurobi SoftMemLimit in GB. Default: 56.
+  --nodefile-start-gb NODEFILE_START_GB
+                        Gurobi NodeFileStart in GB. Use 'none' to keep Gurobi
+                        default. Default: none.
+  --nodefile-dir NODEFILE_DIR
+                        Gurobi NodeFileDir path, 'auto' for $HOME/hcesvm-
+                        gurobi-nodefiles/<dataset>_<timestamp>, or 'none'.
+                        Used when --nodefile-start-gb is set. Default: auto.
+  --mip-gap MIP_GAP     Gurobi MIP gap tolerance.
+  --C-hyper C_HYPER     Binary CE-SVM slack penalty.
+  --M M                 Binary CE-SVM big-M constant.
+  --feat-lower-bound FEAT_LOWER_BOUND
+                        Binary CE-SVM lower bound for active features.
+                        Default: 1e-7.
+
+[2026-05-16 03:49:13 UTC] Remote launch via archived wrapper script
+computed_soft_mem_limit_gb=21
+session=hcesvm-cement-nodefile-soft21-20260516_034913
+wrapper=/home/bs10081/Developer/hcesvm/results/archive/20260516_lab104_cement_nodefile_tmux/launch_hcesvm-cement-nodefile-soft21-20260516_034913.sh
+tmux_log=/home/bs10081/Developer/hcesvm/results/archive/20260516_lab104_cement_nodefile_tmux/tmux_hcesvm-cement-nodefile-soft21-20260516_034913.log
+tmux sessions:
+hcesvm-cement-nodefile-soft21-20260516_034913: 1 windows (created Sat May 16 03:49:13 2026)
+
+post-launch processes:
+
+tmux log tail:
+[2026-05-16 03:49:13 UTC] Starting cement_strength nodefile run
+soft_mem_limit_gb=21
+nodefile_start_gb=0.5
+nodefile_dir=auto
+threads=0
+time_limit=none
+
+====================================================================================================
+[2026-05-16 03:49:14 UTC] HCESVM(test3) full teaching-data validation
+====================================================================================================
+Branch: codex/svor-npsvor-multiclass
+Commit: fdee74313b70165a5904be8a7296b1c9ebd89547
+Datasets: cement_strength
+HCESVM per-classifier time limit: none
+Threads: 0
+SoftMemLimit: 21.0 GB
+NodeFileStart: 0.5
+NodeFileDir: /home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034914
+Heartbeat interval: 60.0
+Feature lower bound: 1e-07
+Split rule: per-dataset; see <dataset>_split_rule
+Source [cement_strength]: teaching_csv | https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Loaded CSV data: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+  Total samples: 998
+  Features: 8
+  Classes: 5 (values: [1, 2, 3, 4, 5])
+  Class 1 (train): 157 samples
+  Class 2 (train): 248 samples
+  Class 3 (train): 195 samples
+  Class 4 (train): 121 samples
+  Class 5 (train): 77 samples
+  Class 1 (test): 39 samples
+  Class 2 (test): 62 samples
+  Class 3 (test): 49 samples
+  Class 4 (test): 31 samples
+  Class 5 (test): 19 samples
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034914.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-16 03:49:14 UTC] cement_strength | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Split rule: Stratified train_test_split with test_size=0.2
+Features: 8
+Train counts: [157, 248, 195, 121, 77]
+Test counts: [39, 62, 49, 31, 19]
+HCESVM per-classifier time limit: none
+Feature lower bound: 1e-07
+Traceback (most recent call last):
+  File "/home/bs10081/Developer/hcesvm/examples/run_teaching_data_hcesvm_full.py", line 945, in main
+    model.fit_incremental(*split.train_classes, after_classifier=after_classifier)
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'HierarchicalCESVM' object has no attribute 'fit_incremental'
+
+Checkpoint Excel saved after cement_strength failure: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034914.xlsx
+
+====================================================================================================
+[2026-05-16 03:49:14 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260516_test3_no_time_limit_full/test3_cement_strength_20260516_034914.log
+Excel saved to: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034914.xlsx
+Markdown report target: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034914.md
+[2026-05-16 03:49:14 UTC] Runner exited with status 1
+
+[2026-05-16 03:49:28 UTC] Sync remote incremental hierarchical support and close failed tmux session
+sending incremental file list
+src/hcesvm/models/hierarchical.py
+
+sent 35,147 bytes  received 192 bytes  70,678.00 bytes/sec
+total size is 34,927  speedup is 0.99
+has_fit_incremental True
+...........                                                              [100%]
+11 passed in 0.62s
+
+[2026-05-16 03:49:42 UTC] Remote relaunch via archived wrapper script
+computed_soft_mem_limit_gb=21
+session=hcesvm-cement-nodefile-soft21-20260516_034942
+wrapper=/home/bs10081/Developer/hcesvm/results/archive/20260516_lab104_cement_nodefile_tmux/launch_hcesvm-cement-nodefile-soft21-20260516_034942.sh
+tmux_log=/home/bs10081/Developer/hcesvm/results/archive/20260516_lab104_cement_nodefile_tmux/tmux_hcesvm-cement-nodefile-soft21-20260516_034942.log
+tmux sessions:
+hcesvm-cement-nodefile-soft21-20260516_034942: 1 windows (created Sat May 16 03:49:42 2026)
+
+post-launch processes:
+  75560 bs10081  python          798812      00:10 python examples/run_teaching_data_hcesvm_full.py --datasets cement_strength --time-limit none --threads 0 --soft-mem-limit-gb 21 --nodefile-start-gb 0.5 --nodefile-dir auto --heartbeat-interval-seconds 60
+
+tmux log tail:
+[2026-05-16 03:49:42 UTC] Starting cement_strength nodefile run
+soft_mem_limit_gb=21
+nodefile_start_gb=0.5
+nodefile_dir=auto
+threads=0
+time_limit=none
+
+====================================================================================================
+[2026-05-16 03:49:43 UTC] HCESVM(test3) full teaching-data validation
+====================================================================================================
+Branch: codex/svor-npsvor-multiclass
+Commit: fdee74313b70165a5904be8a7296b1c9ebd89547
+Datasets: cement_strength
+HCESVM per-classifier time limit: none
+Threads: 0
+SoftMemLimit: 21.0 GB
+NodeFileStart: 0.5
+NodeFileDir: /home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+Heartbeat interval: 60.0
+Feature lower bound: 1e-07
+Split rule: per-dataset; see <dataset>_split_rule
+Source [cement_strength]: teaching_csv | https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Loaded CSV data: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+  Total samples: 998
+  Features: 8
+  Classes: 5 (values: [1, 2, 3, 4, 5])
+  Class 1 (train): 157 samples
+  Class 2 (train): 248 samples
+  Class 3 (train): 195 samples
+  Class 4 (train): 121 samples
+  Class 5 (train): 77 samples
+  Class 1 (test): 39 samples
+  Class 2 (test): 62 samples
+  Class 3 (test): 49 samples
+  Class 4 (test): 31 samples
+  Class 5 (test): 19 samples
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034943.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-16 03:49:43 UTC] cement_strength | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Split rule: Stratified train_test_split with test_size=0.2
+Features: 8
+Train counts: [157, 248, 195, 121, 77]
+Test counts: [39, 62, 49, 31, 19]
+HCESVM per-classifier time limit: none
+Feature lower bound: 1e-07
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 157 samples
+Class 2: 248 samples
+Class 3: 195 samples
+Class 4: 121 samples
+Class 5: 77 samples
+Features: 8
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 798
+  Positive (+1): 157 samples
+  Negative (-1): 641 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2749150
+Academic license - for non-commercial use only - expires 2026-12-03
+Set parameter MIPGap to value 0.0001
+[2026-05-16 03:49:43 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+
+[2026-05-16 03:51:08 UTC] Remote first monitoring sample
+timestamp=2026-05-16 03:51:08 UTC
+tmux sessions:
+hcesvm-cement-nodefile-soft21-20260516_034942: 1 windows (created Sat May 16 03:49:42 2026)
+
+process sample:
+    PID    PPID USER     COMMAND         %CPU %MEM   RSS    VSZ     ELAPSED COMMAND
+  75560   75557 bs10081  python          1939  5.4 1569880 4320436    01:25 python examples/run_teaching_data_hcesvm_full.py --datasets cement_strength --time-limit none --threads 0 --soft-mem-limit-gb 21 --nodefile-start-gb 0.5 --nodefile-dir auto --heartbeat-interval-seconds 60
+
+free -h:
+               total        used        free      shared  buff/cache   available
+Mem:            27Gi       3.0Gi        19Gi       1.8Mi       5.7Gi        24Gi
+Swap:          8.0Gi          0B       8.0Gi
+
+nodefile size:
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+nodefile filesystem:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  284G  194G  60% /
+
+runner log tail:
+Threads: 0
+SoftMemLimit: 21.0 GB
+NodeFileStart: 0.5
+NodeFileDir: /home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+Heartbeat interval: 60.0
+Feature lower bound: 1e-07
+Split rule: per-dataset; see <dataset>_split_rule
+Source [cement_strength]: teaching_csv | https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Loaded CSV data: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+  Total samples: 998
+  Features: 8
+  Classes: 5 (values: [1, 2, 3, 4, 5])
+  Class 1 (train): 157 samples
+  Class 2 (train): 248 samples
+  Class 3 (train): 195 samples
+  Class 4 (train): 121 samples
+  Class 5 (train): 77 samples
+  Class 1 (test): 39 samples
+  Class 2 (test): 62 samples
+  Class 3 (test): 49 samples
+  Class 4 (test): 31 samples
+  Class 5 (test): 19 samples
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034943.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-16 03:49:43 UTC] cement_strength | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Split rule: Stratified train_test_split with test_size=0.2
+Features: 8
+Train counts: [157, 248, 195, 121, 77]
+Test counts: [39, 62, 49, 31, 19]
+HCESVM per-classifier time limit: none
+Feature lower bound: 1e-07
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 157 samples
+Class 2: 248 samples
+Class 3: 195 samples
+Class 4: 121 samples
+Class 5: 77 samples
+Features: 8
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 798
+  Positive (+1): 157 samples
+  Negative (-1): 641 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2749150
+Academic license - for non-commercial use only - expires 2026-12-03
+Set parameter MIPGap to value 0.0001
+[2026-05-16 03:49:43 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-16 03:50:43 UTC] H1 heartbeat: stage=mip, runtime=60.3s, nodes=251037, solutions=38, incumbent=127.088151, best_bound=13.020746, gap=89.75%
+
+tmux log tail:
+  Class 4 (test): 31 samples
+  Class 5 (test): 19 samples
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034943.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-16 03:49:43 UTC] cement_strength | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Split rule: Stratified train_test_split with test_size=0.2
+Features: 8
+Train counts: [157, 248, 195, 121, 77]
+Test counts: [39, 62, 49, 31, 19]
+HCESVM per-classifier time limit: none
+Feature lower bound: 1e-07
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 157 samples
+Class 2: 248 samples
+Class 3: 195 samples
+Class 4: 121 samples
+Class 5: 77 samples
+Features: 8
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 798
+  Positive (+1): 157 samples
+  Negative (-1): 641 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2749150
+Academic license - for non-commercial use only - expires 2026-12-03
+Set parameter MIPGap to value 0.0001
+[2026-05-16 03:49:43 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-16 03:50:43 UTC] H1 heartbeat: stage=mip, runtime=60.3s, nodes=251037, solutions=38, incumbent=127.088151, best_bound=13.020746, gap=89.75%
+
+[2026-05-16 03:51:17 UTC] SSH ControlMaster shutdown after successful launch
+Exit request sent.

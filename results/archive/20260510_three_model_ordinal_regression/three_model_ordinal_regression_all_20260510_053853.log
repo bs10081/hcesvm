@@ -1,0 +1,51 @@
+
+====================================================================================================
+[2026-05-10 05:38:53 UTC] Teaching-data ordinal regression comparison
+====================================================================================================
+Branch: codex/model-trace
+Commit: e56b41323472960b230159f0f1cc36d1e8cc85d0
+Split rule: Stratified 80/20 train/test split
+Random state: 42
+Datasets: bostonhousing_ord
+HCESVM params: {"C_hyper": 1.0, "M": 1000.0, "time_limit": 5400, "mip_gap": 0.0001, "threads": 2, "soft_mem_limit_gb": 18.0, "retain_raw_solution_arrays": false, "release_solver_resources_after_fit": true, "verbose": false}
+SVOR params: {"C": 1.0, "add_order_constraints": true, "solver_params": {"TimeLimit": 5400, "MIPGap": 0.0001, "OutputFlag": 0}}
+NPSVOR params: {"C1": 1.0, "C2": 1.0, "epsilon": 0.2, "prediction_rule": "min_distance", "solver_params": {"TimeLimit": 5400, "MIPGap": 0.0001, "OutputFlag": 0}}
+Checkpoint Excel saved after initialization: /home/bs10081/Developer/hcesvm/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260510_053853.xlsx
+
+====================================================================================================
+[2026-05-10 05:38:53 UTC] Dataset bostonhousing_ord
+====================================================================================================
+Source: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/bostonhousing_ord.csv
+Classes: 5
+Features: 13
+Train counts: [61, 191, 98, 29, 25]
+Test counts: [16, 48, 25, 7, 6]
+
+----------------------------------------------------------------------------------------------------
+[2026-05-10 05:38:53 UTC] bostonhousing_ord | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+HCESVM per-classifier time limit: 5400s
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 61 samples
+Class 2: 191 samples
+Class 3: 98 samples
+Class 4: 29 samples
+Class 5: 25 samples
+Features: 13
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 404
+  Positive (+1): 61 samples
+  Negative (-1): 343 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 5400
+Set parameter MIPGap to value 0.0001

@@ -1,0 +1,205 @@
+
+====================================================================================================
+[2026-05-09 12:03:29 UTC] HCESVM(test3,no_feat_lower) derived 1000-sample validation
+====================================================================================================
+Branch: codex/model-trace
+Commit: e56b41323472960b230159f0f1cc36d1e8cc85d0
+Datasets: skill_method3_4class_1000
+HCESVM per-classifier time limit: 1800s
+Threads: 20
+SoftMemLimit: 56.0 GB
+Heartbeat interval: 60.0
+Feature lower bound input (unused by no_feat_lower variant): 1e-12
+Checkpoint Excel saved after skill_method3_4class_1000 dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-09 12:03:30 UTC] skill_method3_4class_1000 | HCESVM(test3,no_feat_lower)
+----------------------------------------------------------------------------------------------------
+Source dataset: skill
+Train counts: [649, 642, 497, 28] -> [286, 283, 219, 12]
+Test counts: [162, 161, 124, 7] -> [71, 71, 55, 3]
+HCESVM per-classifier time limit: 1800s
+Feature lower bound input (unused by no_feat_lower variant): 1e-12
+Feature lower bound usage: recorded input only; no feat_lower_* constraints are active in this variant
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 286 samples
+Class 2: 283 samples
+Class 3: 219 samples
+Class 4: 12 samples
+Features: 18
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4} (-1)
+============================================================
+H1 Training samples: 800
+  Positive (+1): 286 samples
+  Negative (-1): 514 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+[2026-05-09 12:03:30 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-09 12:04:30 UTC] H1 heartbeat: stage=mip, runtime=60.0s, nodes=13572, solutions=3, incumbent=799.994558, best_bound=8.074626, gap=98.99%
+[2026-05-09 12:05:31 UTC] H1 heartbeat: stage=mip, runtime=120.7s, nodes=50295, solutions=21, incumbent=619.061670, best_bound=19.504051, gap=96.85%
+[2026-05-09 12:06:31 UTC] H1 heartbeat: stage=mip, runtime=181.2s, nodes=77951, solutions=24, incumbent=571.998054, best_bound=24.567156, gap=95.71%
+[2026-05-09 12:07:33 UTC] H1 heartbeat: stage=mip, runtime=243.5s, nodes=109731, solutions=24, incumbent=571.998054, best_bound=26.042611, gap=95.45%
+[2026-05-09 12:08:35 UTC] H1 heartbeat: stage=mip, runtime=305.6s, nodes=165751, solutions=24, incumbent=571.998054, best_bound=28.302688, gap=95.05%
+[2026-05-09 12:09:36 UTC] H1 heartbeat: stage=mip, runtime=366.3s, nodes=209902, solutions=24, incumbent=571.998054, best_bound=29.230244, gap=94.89%
+[2026-05-09 12:10:37 UTC] H1 heartbeat: stage=mip, runtime=427.1s, nodes=245912, solutions=24, incumbent=571.998054, best_bound=30.144592, gap=94.73%
+[2026-05-09 12:11:39 UTC] H1 heartbeat: stage=mip, runtime=489.7s, nodes=282425, solutions=24, incumbent=571.998054, best_bound=30.764232, gap=94.62%
+[2026-05-09 12:12:42 UTC] H1 heartbeat: stage=mip, runtime=552.5s, nodes=315993, solutions=24, incumbent=571.998054, best_bound=31.133779, gap=94.56%
+[2026-05-09 12:13:48 UTC] H1 heartbeat: stage=mip, runtime=618.7s, nodes=338568, solutions=24, incumbent=571.998054, best_bound=31.595367, gap=94.48%
+[2026-05-09 12:14:56 UTC] H1 heartbeat: stage=mip, runtime=686.2s, nodes=361874, solutions=24, incumbent=571.998054, best_bound=31.963402, gap=94.41%
+[2026-05-09 12:15:59 UTC] H1 heartbeat: stage=mip, runtime=749.6s, nodes=378084, solutions=24, incumbent=571.998054, best_bound=32.299562, gap=94.35%
+[2026-05-09 12:17:01 UTC] H1 heartbeat: stage=mip, runtime=810.9s, nodes=381639, solutions=24, incumbent=571.998054, best_bound=32.586402, gap=94.30%
+[2026-05-09 12:18:09 UTC] H1 heartbeat: stage=mip, runtime=878.9s, nodes=395954, solutions=24, incumbent=571.998054, best_bound=32.750939, gap=94.27%
+[2026-05-09 12:19:14 UTC] H1 heartbeat: stage=mip, runtime=944.4s, nodes=417004, solutions=24, incumbent=571.998054, best_bound=32.988426, gap=94.23%
+[2026-05-09 12:20:17 UTC] H1 heartbeat: stage=mip, runtime=1007.2s, nodes=428126, solutions=24, incumbent=571.998054, best_bound=33.032702, gap=94.23%
+[2026-05-09 12:21:25 UTC] H1 heartbeat: stage=mip, runtime=1075.7s, nodes=444718, solutions=24, incumbent=571.998054, best_bound=33.363335, gap=94.17%
+[2026-05-09 12:22:28 UTC] H1 heartbeat: stage=mip, runtime=1138.3s, nodes=466761, solutions=24, incumbent=571.998054, best_bound=33.497508, gap=94.14%
+[2026-05-09 12:23:34 UTC] H1 heartbeat: stage=mip, runtime=1204.4s, nodes=479897, solutions=24, incumbent=571.998054, best_bound=33.497893, gap=94.14%
+[2026-05-09 12:24:44 UTC] H1 heartbeat: stage=mip, runtime=1274.1s, nodes=497054, solutions=24, incumbent=571.998054, best_bound=33.940003, gap=94.07%
+[2026-05-09 12:25:45 UTC] H1 heartbeat: stage=mip, runtime=1335.2s, nodes=510473, solutions=24, incumbent=571.998054, best_bound=34.213639, gap=94.02%
+[2026-05-09 12:26:48 UTC] H1 heartbeat: stage=mip, runtime=1398.0s, nodes=520612, solutions=24, incumbent=571.998054, best_bound=34.260559, gap=94.01%
+[2026-05-09 12:27:59 UTC] H1 heartbeat: stage=mip, runtime=1468.8s, nodes=532820, solutions=24, incumbent=571.998054, best_bound=34.562623, gap=93.96%
+[2026-05-09 12:29:00 UTC] H1 heartbeat: stage=mip, runtime=1529.9s, nodes=547518, solutions=24, incumbent=571.998054, best_bound=34.613216, gap=93.95%
+[2026-05-09 12:30:10 UTC] H1 heartbeat: stage=mip, runtime=1599.9s, nodes=560607, solutions=24, incumbent=571.998054, best_bound=34.628050, gap=93.95%
+[2026-05-09 12:31:10 UTC] H1 heartbeat: stage=mip, runtime=1660.5s, nodes=568134, solutions=24, incumbent=571.998054, best_bound=34.854922, gap=93.91%
+[2026-05-09 12:32:18 UTC] H1 heartbeat: stage=mip, runtime=1728.3s, nodes=579467, solutions=24, incumbent=571.998054, best_bound=35.030948, gap=93.88%
+[2026-05-09 12:33:30 UTC] H1 heartbeat: stage=mip, runtime=1800.0s, nodes=590056, solutions=24, incumbent=571.998054, best_bound=35.060925, gap=93.87%
+Time limit reached. Using best solution found (gap: 93.87%)
+
+H1 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 571.998054
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+H1 status: time_limit_with_solution (code=9), elapsed=1800.46s
+Checkpoint Excel saved after skill_method3_4class_1000 / H1: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.xlsx
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4} (-1)
+============================================================
+H2 Training samples: 800
+  Positive (+1): 569 samples
+  Negative (-1): 231 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+[2026-05-09 12:33:30 UTC] H2 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-09 12:34:30 UTC] H2 heartbeat: stage=mip, runtime=60.2s, nodes=23108, solutions=32, incumbent=461.998243, best_bound=11.446492, gap=97.52%
+[2026-05-09 12:35:31 UTC] H2 heartbeat: stage=mip, runtime=121.0s, nodes=62631, solutions=32, incumbent=461.998243, best_bound=13.752826, gap=97.02%
+[2026-05-09 12:36:33 UTC] H2 heartbeat: stage=mip, runtime=182.4s, nodes=84626, solutions=32, incumbent=461.998243, best_bound=14.089837, gap=96.95%
+[2026-05-09 12:37:33 UTC] H2 heartbeat: stage=mip, runtime=243.2s, nodes=181969, solutions=32, incumbent=461.998243, best_bound=14.089837, gap=96.95%
+[2026-05-09 12:38:34 UTC] H2 heartbeat: stage=mip, runtime=303.9s, nodes=287643, solutions=32, incumbent=461.998243, best_bound=15.413921, gap=96.66%
+[2026-05-09 12:39:35 UTC] H2 heartbeat: stage=mip, runtime=364.3s, nodes=412286, solutions=32, incumbent=461.998243, best_bound=16.304815, gap=96.47%
+[2026-05-09 12:40:36 UTC] H2 heartbeat: stage=mip, runtime=425.4s, nodes=494565, solutions=32, incumbent=461.998243, best_bound=16.677873, gap=96.39%
+[2026-05-09 12:41:36 UTC] H2 heartbeat: stage=mip, runtime=485.9s, nodes=610050, solutions=32, incumbent=461.998243, best_bound=17.244217, gap=96.27%
+[2026-05-09 12:42:37 UTC] H2 heartbeat: stage=mip, runtime=547.2s, nodes=695152, solutions=32, incumbent=461.998243, best_bound=17.563761, gap=96.20%
+[2026-05-09 12:43:38 UTC] H2 heartbeat: stage=mip, runtime=607.4s, nodes=816242, solutions=32, incumbent=461.998243, best_bound=18.018428, gap=96.10%
+[2026-05-09 12:44:38 UTC] H2 heartbeat: stage=mip, runtime=667.6s, nodes=911047, solutions=32, incumbent=461.998243, best_bound=18.317717, gap=96.04%
+[2026-05-09 12:45:38 UTC] H2 heartbeat: stage=mip, runtime=727.7s, nodes=1018242, solutions=32, incumbent=461.998243, best_bound=18.634075, gap=95.97%
+[2026-05-09 12:46:38 UTC] H2 heartbeat: stage=mip, runtime=788.2s, nodes=1124386, solutions=32, incumbent=461.998243, best_bound=18.947267, gap=95.90%
+[2026-05-09 12:47:41 UTC] H2 heartbeat: stage=mip, runtime=850.4s, nodes=1180303, solutions=32, incumbent=461.998243, best_bound=19.078621, gap=95.87%
+[2026-05-09 12:48:41 UTC] H2 heartbeat: stage=mip, runtime=910.6s, nodes=1278794, solutions=32, incumbent=461.998243, best_bound=19.315217, gap=95.82%
+[2026-05-09 12:49:42 UTC] H2 heartbeat: stage=mip, runtime=971.6s, nodes=1390839, solutions=32, incumbent=461.998243, best_bound=19.546363, gap=95.77%
+[2026-05-09 12:50:42 UTC] H2 heartbeat: stage=mip, runtime=1031.8s, nodes=1497183, solutions=32, incumbent=461.998243, best_bound=19.796036, gap=95.72%
+[2026-05-09 12:51:45 UTC] H2 heartbeat: stage=mip, runtime=1095.1s, nodes=1587557, solutions=32, incumbent=461.998243, best_bound=19.971755, gap=95.68%
+[2026-05-09 12:52:48 UTC] H2 heartbeat: stage=mip, runtime=1157.4s, nodes=1676995, solutions=32, incumbent=461.998243, best_bound=20.142915, gap=95.64%
+[2026-05-09 12:53:48 UTC] H2 heartbeat: stage=mip, runtime=1218.2s, nodes=1766623, solutions=32, incumbent=461.998243, best_bound=20.297744, gap=95.61%
+[2026-05-09 12:54:49 UTC] H2 heartbeat: stage=mip, runtime=1278.7s, nodes=1859366, solutions=32, incumbent=461.998243, best_bound=20.482175, gap=95.57%
+[2026-05-09 12:55:50 UTC] H2 heartbeat: stage=mip, runtime=1339.7s, nodes=1936260, solutions=32, incumbent=461.998243, best_bound=20.618217, gap=95.54%
+[2026-05-09 12:56:51 UTC] H2 heartbeat: stage=mip, runtime=1400.9s, nodes=2007706, solutions=32, incumbent=461.998243, best_bound=20.743714, gap=95.51%
+[2026-05-09 12:57:51 UTC] H2 heartbeat: stage=mip, runtime=1461.0s, nodes=2108031, solutions=32, incumbent=461.998243, best_bound=20.918869, gap=95.47%
+[2026-05-09 12:58:52 UTC] H2 heartbeat: stage=mip, runtime=1521.4s, nodes=2206439, solutions=32, incumbent=461.998243, best_bound=21.084230, gap=95.44%
+[2026-05-09 12:59:52 UTC] H2 heartbeat: stage=mip, runtime=1581.9s, nodes=2303603, solutions=32, incumbent=461.998243, best_bound=21.239510, gap=95.40%
+[2026-05-09 13:00:54 UTC] H2 heartbeat: stage=mip, runtime=1643.4s, nodes=2378437, solutions=32, incumbent=461.998243, best_bound=21.351642, gap=95.38%
+[2026-05-09 13:01:55 UTC] H2 heartbeat: stage=mip, runtime=1704.4s, nodes=2429480, solutions=32, incumbent=461.998243, best_bound=21.430595, gap=95.36%
+[2026-05-09 13:02:55 UTC] H2 heartbeat: stage=mip, runtime=1765.2s, nodes=2535618, solutions=32, incumbent=461.998243, best_bound=21.584178, gap=95.33%
+Time limit reached. Using best solution found (gap: 95.31%)
+
+H2 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 461.998243
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+H2 status: time_limit_with_solution (code=9), elapsed=1801.83s
+Checkpoint Excel saved after skill_method3_4class_1000 / H2: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.xlsx
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4} (-1)
+============================================================
+H3 Training samples: 800
+  Positive (+1): 788 samples
+  Negative (-1): 12 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 1800
+Set parameter MIPGap to value 0.0001
+[2026-05-09 13:03:32 UTC] H3 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-09 13:04:32 UTC] H3 heartbeat: stage=mip, runtime=60.1s, nodes=20588, solutions=3, incumbent=23.998731, best_bound=11.757494, gap=51.01%
+[2026-05-09 13:05:35 UTC] H3 heartbeat: stage=mip, runtime=122.8s, nodes=48570, solutions=3, incumbent=23.998731, best_bound=14.077710, gap=41.34%
+[2026-05-09 13:06:36 UTC] H3 heartbeat: stage=mip, runtime=184.1s, nodes=81320, solutions=3, incumbent=23.998731, best_bound=15.561368, gap=35.16%
+[2026-05-09 13:07:37 UTC] H3 heartbeat: stage=mip, runtime=245.3s, nodes=118037, solutions=3, incumbent=23.998731, best_bound=16.748555, gap=30.21%
+[2026-05-09 13:08:38 UTC] H3 heartbeat: stage=mip, runtime=305.4s, nodes=155291, solutions=3, incumbent=23.998731, best_bound=17.675228, gap=26.35%
+[2026-05-09 13:09:40 UTC] H3 heartbeat: stage=mip, runtime=367.7s, nodes=197595, solutions=3, incumbent=23.998731, best_bound=18.559061, gap=22.67%
+[2026-05-09 13:10:42 UTC] H3 heartbeat: stage=mip, runtime=429.6s, nodes=241270, solutions=3, incumbent=23.998731, best_bound=19.425887, gap=19.05%
+[2026-05-09 13:11:43 UTC] H3 heartbeat: stage=mip, runtime=491.2s, nodes=288400, solutions=3, incumbent=23.998731, best_bound=20.376538, gap=15.09%
+[2026-05-09 13:12:44 UTC] H3 heartbeat: stage=mip, runtime=552.3s, nodes=336667, solutions=3, incumbent=23.998731, best_bound=21.691139, gap=9.62%
+
+H3 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 23.998731
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+H3 status: optimal (code=2), elapsed=574.42s
+Checkpoint Excel saved after skill_method3_4class_1000 / H3: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.xlsx
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.3538
+  Class 1: 0.0000 (286 samples)
+  Class 2: 1.0000 (283 samples)
+  Class 3: 0.0000 (219 samples)
+  Class 4: 0.0000 (12 samples)
+Testing total accuracy: 0.3550
+  Class 1: 0.0000 (71 samples)
+  Class 2: 1.0000 (71 samples)
+  Class 3: 0.0000 (55 samples)
+  Class 4: 0.0000 (3 samples)
+Checkpoint Excel saved after skill_method3_4class_1000 finalization: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.xlsx
+
+====================================================================================================
+[2026-05-09 13:13:06 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260509_test3_no_feat_lower_teaching_data_1000/test3_no_feat_lower_teaching_data_1000_20260509_120329.log
+Excel saved to: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.xlsx

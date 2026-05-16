@@ -1,0 +1,279 @@
+[2026-05-16 03:32:53 UTC] Local branch and validation
+experiment/lab104-cement-nodefile
+871d49013c9dd102320e3d83c6c45728dec0283a
+
+[2026-05-16 03:32:53 UTC] Targeted pytest gate rerun
+...........                                                              [100%]
+11 passed in 0.96s
+
+[2026-05-16 03:33:02 UTC] SSH ControlMaster check/start
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+bs10081@100.119.75.44: Permission denied (publickey).
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+
+[2026-05-16 03:33:02 UTC] Remote identity
+bs10081@100.119.75.44: Permission denied (publickey).
+
+[2026-05-16 03:33:08 UTC] Current git branch/status after implementation
+
+[2026-05-16 03:33:08 UTC] Local SSH alias diagnostics
+## experiment/lab104-cement-nodefile
+ M examples/run_teaching_data_hcesvm_1000.py
+ M src/hcesvm/models/binary_cesvm.py
+ M src/hcesvm/utils/teaching_data_1000.py
+ M tests/test_runner_time_limit_semantics.py
+?? docs/reports/ALL_HCESVM_TEST3_FULL_20260515_074700.md
+?? docs/reports/ALL_HCESVM_TEST3_FULL_20260515_074700.xlsx
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_121655.xlsx
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_121741.md
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_121741.xlsx
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_122003.md
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_122003.xlsx
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.md
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.xlsx
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033755.md
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033755.xlsx
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260512_125305.xlsx
+?? docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151610.md
+?? docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151610.xlsx
+?? docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151633.md
+?? docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151633.xlsx
+?? docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103342.md
+?? docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103342.xlsx
+?? docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103704.md
+?? docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103704.xlsx
+?? docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120011.md
+?? docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120011.xlsx
+?? docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.md
+?? docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.xlsx
+?? docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260510_053853.xlsx
+?? examples/run_teaching_data_hcesvm_1000_no_feat_lower.py
+?? examples/run_teaching_data_hcesvm_full.py
+?? results/archive/20260509_test3_no_feat_lower_teaching_data_1000/
+?? results/archive/20260509_test3_teaching_data_1000/
+?? results/archive/20260510_three_model_ordinal_regression/
+?? results/archive/20260511_test3_teaching_data_full/
+?? results/archive/20260512_test3_no_time_limit_full/
+?? results/archive/20260514_test3_no_time_limit_full/test3_balance_20260514_121655.log
+?? results/archive/20260514_test3_no_time_limit_full/test3_balance_20260514_121741.log
+?? results/archive/20260514_test3_no_time_limit_full/test3_balance_20260514_122003.log
+?? results/archive/20260514_test3_no_time_limit_full/test3_hayes_roth_20260514_151610.log
+?? results/archive/20260514_test3_no_time_limit_full/test3_hayes_roth_20260514_151633.log
+?? results/archive/20260515_test3_no_time_limit_full/
+?? results/archive/20260516_lab104_cement_nodefile/
+?? results/archive/test3_balance_20260514_201654.log
+?? results/archive/test3_balance_20260514_201740.log
+?? results/archive/test3_balance_20260514_202001.log
+?? results/archive/test3_balance_20260514_202014.log
+?? results/archive/test3_hayes_roth_20260514_231610.log
+?? results/archive/test3_hayes_roth_20260514_231632.log
+?? results/archive/test3_hayes_roth_20260514_231659.log
+?? results/archive/test3_new_thyroid_20260514_231610.log
+?? results/archive/test3_new_thyroid_20260514_231632.log
+?? results/archive/test3_new_thyroid_20260514_231701.log
+?? results/archive/test3_new_thyroid_20260514_231716.log
+?? src/hcesvm/models/binary_cesvm_no_feat_lower.py
+?? src/hcesvm/models/hierarchical_no_feat_lower.py
+?? tests/test_binary_cesvm_no_feat_lower.py
+?? tests/test_runner_no_feat_lower_time_limit_semantics.py
+?? tests/test_teaching_data_hcesvm_full_runner.py
+host lab104-gpu-boost
+user bs10081
+hostname 100.119.75.44
+port 22
+addressfamily any
+batchmode no
+canonicalizefallbacklocal yes
+canonicalizehostname false
+checkhostip no
+compression no
+controlmaster false
+enablesshkeysign no
+clearallforwardings no
+exitonforwardfailure no
+fingerprinthash SHA256
+forwardx11 no
+forwardx11trusted no
+gatewayports no
+gssapiauthentication no
+gssapidelegatecredentials no
+hashknownhosts yes
+hostbasedauthentication no
+identitiesonly no
+kbdinteractiveauthentication yes
+nohostauthenticationforlocalhost no
+passwordauthentication yes
+permitlocalcommand no
+proxyusefdpass no
+pubkeyauthentication true
+requesttty auto
+sessiontype default
+stdinnull no
+forkafterauthentication no
+streamlocalbindunlink no
+stricthostkeychecking ask
+tcpkeepalive yes
+tunnel false
+verifyhostkeydns false
+visualhostkey no
+updatehostkeys true
+enableescapecommandline no
+warnweakcrypto yes
+canonicalizemaxdots 1
+connectionattempts 1
+forwardx11timeout 1200
+numberofpasswordprompts 3
+serveralivecountmax 3
+serveraliveinterval 0
+requiredrsasize 1024
+obscurekeystroketiming yes
+ciphers chacha20-poly1305@openssh.com,aes128-gcm@openssh.com,aes256-gcm@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr
+hostkeyalgorithms ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,webauthn-sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,webauthn-sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256
+hostbasedacceptedalgorithms ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,webauthn-sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,webauthn-sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256
+kexalgorithms mlkem768x25519-sha256,sntrup761x25519-sha512,sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256
+casignaturealgorithms ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,webauthn-sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256
+loglevel INFO
+macs umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512,hmac-sha1
+securitykeyprovider internal
+pubkeyacceptedalgorithms ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,webauthn-sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,webauthn-sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256
+xauthlocation /usr/bin/xauth
+identityfile ~/.ssh/id_rsa
+identityfile ~/.ssh/id_ecdsa
+identityfile ~/.ssh/id_ecdsa_sk
+identityfile ~/.ssh/id_ed25519
+identityfile ~/.ssh/id_ed25519_sk
+canonicaldomains none
+globalknownhostsfile /etc/ssh/ssh_known_hosts /etc/ssh/ssh_known_hosts2
+userknownhostsfile /home/bs10081/.ssh/known_hosts /home/bs10081/.ssh/known_hosts2
+revokedhostkeys none
+logverbose none
+channeltimeout none
+permitremoteopen any
+addkeystoagent false
+forwardagent yes
+connecttimeout none
+tunneldevice any:any
+canonicalizePermittedcnames none
+controlpersist no
+escapechar ~
+ipqos ef cs0
+rekeylimit 0 0
+streamlocalbindmask 0177
+syslogfacility USER
+
+SSH_AUTH_SOCK=~/.1password/agent.sock
+srw------- 1 bs10081 bs10081 0 May 15 18:41 /home/bs10081/.1password/agent.sock
+Error connecting to agent: No such file or directory
+
+[2026-05-16 03:33:14 UTC] SSH ControlMaster retry with expanded 1Password SSH_AUTH_SOCK
+SSH_AUTH_SOCK=/home/bs10081/.1password/agent.sock
+256 SHA256:qBmEr8C7oH6EcfpkIVkr4Q7nnjx3K0qriwxSXYq1+eA SSH Key (ED25519)
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+Master running (pid=637955)
+
+[2026-05-16 03:33:20 UTC] Remote identity
+lab104-gpuboost
+/home/bs10081
+Linux lab104-gpuboost 6.8.0-111-generic #111-Ubuntu SMP PREEMPT_DYNAMIC Sat Apr 11 23:16:02 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+[2026-05-16 03:33:29 UTC] Remote preflight
+repo_check:
+/home/bs10081/Developer/hcesvm exists
+
+tmux ls:
+error connecting to /tmp/tmux-1000/default (No such file or directory)
+
+matching processes:
+1064 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+73457 zsh -c set -u     echo "repo_check:"; if [ -d "$HOME/Developer/hcesvm" ]; then echo "$HOME/Developer/hcesvm exists"; else echo "$HOME/Developer/hcesvm missing"; fi     echo; echo "tmux ls:"; tmux ls 2>&1 || true     echo; echo "matching processes:"; pgrep -af "run_teaching_data_hcesvm_full|gurobi|python" || true     echo; echo "free -h:"; free -h     echo; echo "df -h HOME:"; df -h "$HOME"     echo; echo "findmnt -T HOME:"; findmnt -T "$HOME"     echo; echo "soft mem calculation:"; awk '/MemTotal/ {total=$2} /MemAvailable/ {avail=$2} END {total_gib=total/1048576; avail_gib=avail/1048576; reserve=0.10*total_gib; reserve_int=int(reserve); if (reserve > reserve_int) reserve_int += 1; if (reserve_int < 8) reserve_int=8; soft=int(avail_gib - reserve_int); printf "MemTotalGiB=%.2f MemAvailableGiB=%.2f reserveGiB=%d softMemLimitGiB=%d\n", total_gib, avail_gib, reserve_int, soft}' /proc/meminfo
+
+free -h:
+               total        used        free      shared  buff/cache   available
+Mem:            27Gi       1.6Gi        20Gi       1.8Mi       5.6Gi        25Gi
+Swap:          8.0Gi          0B       8.0Gi
+
+df -h HOME:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  284G  194G  60% /
+
+findmnt -T HOME:
+TARGET SOURCE    FSTYPE OPTIONS
+/      /dev/sda2 ext4   rw,relatime
+
+soft mem calculation:
+MemTotalGiB=27.38 MemAvailableGiB=25.78 reserveGiB=8 softMemLimitGiB=17
+
+[2026-05-16 03:33:43 UTC] Launch decision
+Not launching cement_strength nodefile run: computed SoftMemLimit is 17 GiB, below required 24 GiB threshold.
+Remote HOME filesystem is ext4 on /dev/sda2 with 194G available; no existing tmux HCESVM/Gurobi long run was detected.
+
+[2026-05-16 03:33:43 UTC] Staged current-task files
+examples/run_teaching_data_hcesvm_full.py
+src/hcesvm/models/binary_cesvm.py
+src/hcesvm/utils/teaching_data_1000.py
+tests/test_teaching_data_hcesvm_full_runner.py
+
+[2026-05-16 03:33:43 UTC] Working tree summary
+## experiment/lab104-cement-nodefile
+ M examples/run_teaching_data_hcesvm_1000.py
+A  examples/run_teaching_data_hcesvm_full.py
+M  src/hcesvm/models/binary_cesvm.py
+M  src/hcesvm/utils/teaching_data_1000.py
+ M tests/test_runner_time_limit_semantics.py
+A  tests/test_teaching_data_hcesvm_full_runner.py
+?? docs/reports/ALL_HCESVM_TEST3_FULL_20260515_074700.md
+?? docs/reports/ALL_HCESVM_TEST3_FULL_20260515_074700.xlsx
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_121655.xlsx
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_121741.md
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_121741.xlsx
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_122003.md
+?? docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_122003.xlsx
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.md
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.xlsx
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033755.md
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033755.xlsx
+?? docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260512_125305.xlsx
+?? docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151610.md
+?? docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151610.xlsx
+?? docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151633.md
+?? docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151633.xlsx
+?? docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103342.md
+?? docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103342.xlsx
+?? docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103704.md
+?? docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103704.xlsx
+?? docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120011.md
+?? docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120011.xlsx
+?? docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.md
+?? docs/reports/HCESVM_TEST3_NO_FEAT_LOWER_1000_VALIDATION_20260509_120329.xlsx
+?? docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260510_053853.xlsx
+?? examples/run_teaching_data_hcesvm_1000_no_feat_lower.py
+?? results/archive/20260509_test3_no_feat_lower_teaching_data_1000/
+?? results/archive/20260509_test3_teaching_data_1000/
+?? results/archive/20260510_three_model_ordinal_regression/
+?? results/archive/20260511_test3_teaching_data_full/
+?? results/archive/20260512_test3_no_time_limit_full/
+?? results/archive/20260514_test3_no_time_limit_full/test3_balance_20260514_121655.log
+?? results/archive/20260514_test3_no_time_limit_full/test3_balance_20260514_121741.log
+?? results/archive/20260514_test3_no_time_limit_full/test3_balance_20260514_122003.log
+?? results/archive/20260514_test3_no_time_limit_full/test3_hayes_roth_20260514_151610.log
+?? results/archive/20260514_test3_no_time_limit_full/test3_hayes_roth_20260514_151633.log
+?? results/archive/20260515_test3_no_time_limit_full/
+?? results/archive/20260516_lab104_cement_nodefile/
+?? results/archive/test3_balance_20260514_201654.log
+?? results/archive/test3_balance_20260514_201740.log
+?? results/archive/test3_balance_20260514_202001.log
+?? results/archive/test3_balance_20260514_202014.log
+?? results/archive/test3_hayes_roth_20260514_231610.log
+?? results/archive/test3_hayes_roth_20260514_231632.log
+?? results/archive/test3_hayes_roth_20260514_231659.log
+?? results/archive/test3_new_thyroid_20260514_231610.log
+?? results/archive/test3_new_thyroid_20260514_231632.log
+?? results/archive/test3_new_thyroid_20260514_231701.log
+?? results/archive/test3_new_thyroid_20260514_231716.log
+?? src/hcesvm/models/binary_cesvm_no_feat_lower.py
+?? src/hcesvm/models/hierarchical_no_feat_lower.py
+?? tests/test_binary_cesvm_no_feat_lower.py
+?? tests/test_runner_no_feat_lower_time_limit_semantics.py
+
+[2026-05-16 03:34:07 UTC] SSH ControlMaster shutdown
+Exit request sent.

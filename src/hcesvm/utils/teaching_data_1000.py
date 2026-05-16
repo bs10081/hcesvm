@@ -427,6 +427,8 @@ def build_classifier_diagnostics_row(
         "mip_gap": format_scalar(solution.get("mip_gap")),
         "solver_status_code": status_code,
         "solver_status_label": status_label,
+        "mem_used_gb": format_scalar(solution.get("mem_used_gb")),
+        "max_mem_used_gb": format_scalar(solution.get("max_mem_used_gb")),
         "elapsed_seconds": format_scalar(progress.get("elapsed_seconds")),
         "cumulative_elapsed_seconds": format_scalar(
             progress.get("cumulative_elapsed_seconds")

@@ -1,0 +1,281 @@
+[2026-05-16 08:37:52 UTC] Lab104 storage detail check
+log_path=results/archive/20260516_lab104_storage_check/lab104_storage_detail_20260516_083752.log
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+Master running (pid=752649)
+timestamp=2026-05-16 08:37:54 UTC
+hostname=lab104-gpuboost
+active_nodefile_dir=/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  300G  177G  63% /
+
+top HOME children:
+94G	/home/bs10081
+25G	/home/bs10081/miniconda3
+22G	/home/bs10081/hcesvm-gurobi-nodefiles
+19G	/home/bs10081/.cache
+13G	/home/bs10081/.local
+11G	/home/bs10081/Developer
+1.9G	/home/bs10081/.npm
+1.4G	/home/bs10081/.nvm
+957M	/home/bs10081/.happy
+705M	/home/bs10081/.bun
+281M	/home/bs10081/.claude
+197M	/home/bs10081/.opencode
+163M	/home/bs10081/.mempalace
+85M	/home/bs10081/.zed_server
+76M	/home/bs10081/.codex
+58M	/home/bs10081/.config
+16M	/home/bs10081/logbert_output_backup
+4.8M	/home/bs10081/.zsh
+3.6M	/home/bs10081/.tmux
+3.2M	/home/bs10081/powerlevel10k
+2.2M	/home/bs10081/.flex_gemm
+532K	/home/bs10081/.docker
+56K	/home/bs10081/.nv
+36K	/home/bs10081/.conda
+28K	/home/bs10081/Host
+16K	/home/bs10081/.terminfo
+16K	/home/bs10081/.ssh
+16K	/home/bs10081/.cloudflared
+8.0K	/home/bs10081/.vim
+4.0K	/home/bs10081/workspace
+
+top .cache children depth2:
+19G	/home/bs10081/.cache
+9.4G	/home/bs10081/.cache/uv/archive-v0
+9.4G	/home/bs10081/.cache/uv
+8.4G	/home/bs10081/.cache/pip/http-v2
+8.4G	/home/bs10081/.cache/pip
+980M	/home/bs10081/.cache/opencode
+973M	/home/bs10081/.cache/opencode/packages
+167M	/home/bs10081/.cache/chroma/onnx_models
+167M	/home/bs10081/.cache/chroma
+43M	/home/bs10081/.cache/oh-my-opencode
+42M	/home/bs10081/.cache/oh-my-opencode/bin
+28M	/home/bs10081/.cache/uv/simple-v18
+5.5M	/home/bs10081/.cache/claude-cli-nodejs
+5.2M	/home/bs10081/.cache/opencode/bin
+2.8M	/home/bs10081/.cache/claude-cli-nodejs/-home-bs10081-Developer-NSVORA
+2.7M	/home/bs10081/.cache/pip/wheels
+2.1M	/home/bs10081/.cache/gitstatus
+1.5M	/home/bs10081/.cache/claude-cli-nodejs/-opt-contriner-services-steam-headless
+1.4M	/home/bs10081/.cache/uv/wheels-v5
+692K	/home/bs10081/.cache/claude-cli-nodejs/-home-bs10081
+416K	/home/bs10081/.cache/nvim
+412K	/home/bs10081/.cache/nvim/luac
+180K	/home/bs10081/.cache/claude-cli-nodejs/-home-bs10081-Developer-TRELLIS-2
+116K	/home/bs10081/.cache/claude-cli-nodejs/-home-bs10081-Developer-translategemma
+116K	/home/bs10081/.cache/claude-cli-nodejs/-home-bs10081-Developer
+104K	/home/bs10081/.cache/claude-cli-nodejs/-home-bs10081-Developer-ai-auto-debug-system
+76K	/home/bs10081/.cache/rclone
+52K	/home/bs10081/.cache/rclone/bisync
+48K	/home/bs10081/.cache/uv/interpreter-v4
+28K	/home/bs10081/.cache/uv/sdists-v9
+28K	/home/bs10081/.cache/claude-cli-nodejs/-home-bs10081--mempalace
+20K	/home/bs10081/.cache/rclone/vfs
+20K	/home/bs10081/.cache/p10k-bs10081
+16K	/home/bs10081/.cache/pip/selfcheck
+12K	/home/bs10081/.cache/fastfetch
+12K	/home/bs10081/.cache/conda-anaconda-tos
+8.0K	/home/bs10081/.cache/pipx
+8.0K	/home/bs10081/.cache/fastfetch/packages
+8.0K	/home/bs10081/.cache/conda
+8.0K	/home/bs10081/.cache/claude
+4.0K	/home/bs10081/.cache/zed
+4.0K	/home/bs10081/.cache/uv/builds-v0
+4.0K	/home/bs10081/.cache/conda/notices
+4.0K	/home/bs10081/.cache/claude/staging
+4.0K	/home/bs10081/.cache/claude-cli-nodejs/-home-bs10081-Developer-hcesvm
+
+top .local children depth2:
+13G	/home/bs10081/.local/share
+13G	/home/bs10081/.local
+11G	/home/bs10081/.local/share/containers
+919M	/home/bs10081/.local/share/claude
+659M	/home/bs10081/.local/share/zed
+436M	/home/bs10081/.local/share/pipx
+97M	/home/bs10081/.local/share/uv
+53M	/home/bs10081/.local/bin
+45M	/home/bs10081/.local/share/bob
+11M	/home/bs10081/.local/share/nvim
+9.9M	/home/bs10081/.local/share/fonts
+6.6M	/home/bs10081/.local/share/opencode
+5.0M	/home/bs10081/.local/share/bob_bin
+356K	/home/bs10081/.local/share/tmux
+84K	/home/bs10081/.local/state
+32K	/home/bs10081/.local/state/nvim
+28K	/home/bs10081/.local/state/pipx
+12K	/home/bs10081/.local/state/opencode
+8.0K	/home/bs10081/.local/state/claude
+8.0K	/home/bs10081/.local/share/oh-my-opencode
+8.0K	/home/bs10081/.local/share/applications
+4.0K	/home/bs10081/.local/share/man
+
+top Developer children depth2:
+16G	/home/bs10081/Developer
+5.4G	/home/bs10081/Developer/ai-auto-debug-system/layer2-analyzer
+5.4G	/home/bs10081/Developer/ai-auto-debug-system
+5.1G	/home/bs10081/Developer/NSVORA/.venv
+5.1G	/home/bs10081/Developer/NSVORA
+3.5G	/home/bs10081/Developer/Grafana/logbert
+3.5G	/home/bs10081/Developer/Grafana
+816M	/home/bs10081/Developer/TRELLIS.2
+773M	/home/bs10081/Developer/TRELLIS.2/.git
+501M	/home/bs10081/Developer/lingo-to-cuopt-parser
+426M	/home/bs10081/Developer/hcesvm-no-limit-rerun
+419M	/home/bs10081/Developer/hcesvm-no-limit-rerun/.venv
+320M	/home/bs10081/Developer/hcesvm
+308M	/home/bs10081/Developer/hcesvm/.venv
+298M	/home/bs10081/Developer/lingo-to-cuopt-parser/datasets
+145M	/home/bs10081/Developer/lingo-to-cuopt-parser/.git
+56M	/home/bs10081/Developer/lingo-to-cuopt-parser/results
+39M	/home/bs10081/Developer/everything-claude-code
+24M	/home/bs10081/Developer/TRELLIS.2/o-voxel
+20M	/home/bs10081/Developer/TRELLIS.2/assets
+18M	/home/bs10081/Developer/everything-claude-code/.git
+18M	/home/bs10081/Developer/ai-auto-debug-system/logbert
+13M	/home/bs10081/Developer/everything-claude-code/assets
+11M	/home/bs10081/Developer/NSVORA/datasets
+7.4M	/home/bs10081/Developer/NSVORA/.git
+5.9M	/home/bs10081/Developer/hcesvm-gurobi-nodefile-spill-run
+5.8M	/home/bs10081/Developer/hcesvm/.git
+5.7M	/home/bs10081/Developer/hcesvm-multiclass-eval
+4.9M	/home/bs10081/Developer/hcesvm/results
+4.8M	/home/bs10081/Developer/ai-auto-debug-system/docs
+4.5M	/home/bs10081/Developer/hcesvm-no-limit-rerun/.git
+4.2M	/home/bs10081/Developer/NSVORA/Archive
+3.9M	/home/bs10081/Developer/everything-claude-code/docs
+3.6M	/home/bs10081/Developer/hcesvm-gurobi-nodefile-spill-run/results
+3.3M	/home/bs10081/Developer/hcesvm-multiclass-eval/results
+3.2M	/home/bs10081/Developer/hcesvm-gurobi-nodefile-spill
+2.7M	/home/bs10081/Developer/ai-auto-debug-system/.git
+1.9M	/home/bs10081/Developer/lingo-to-cuopt-parser/python
+1.9M	/home/bs10081/Developer/everything-claude-code/skills
+1.5M	/home/bs10081/Developer/NSVORA/lp_translator
+1.1M	/home/bs10081/Developer/hcesvm-no-limit-rerun/results
+972K	/home/bs10081/Developer/hcesvm-gurobi-nodefile-spill/results
+924K	/home/bs10081/Developer/everything-claude-code/tests
+824K	/home/bs10081/Developer/TRELLIS.2/trellis2
+604K	/home/bs10081/Developer/NSVORA/Archive_backup
+584K	/home/bs10081/Developer/hcesvm-gurobi-nodefile-spill-run/examples
+584K	/home/bs10081/Developer/hcesvm-gurobi-nodefile-spill/examples
+580K	/home/bs10081/Developer/hcesvm-no-limit-rerun/examples
+568K	/home/bs10081/Developer/hcesvm/src
+564K	/home/bs10081/Developer/dotfiles
+
+top hcesvm children depth2:
+354M	/home/bs10081/Developer/hcesvm
+341M	/home/bs10081/Developer/hcesvm/.venv/lib
+341M	/home/bs10081/Developer/hcesvm/.venv
+6.0M	/home/bs10081/Developer/hcesvm/.git
+5.6M	/home/bs10081/Developer/hcesvm/.git/objects
+4.9M	/home/bs10081/Developer/hcesvm/results
+3.7M	/home/bs10081/Developer/hcesvm/results/archive
+568K	/home/bs10081/Developer/hcesvm/src
+564K	/home/bs10081/Developer/hcesvm/src/hcesvm
+472K	/home/bs10081/Developer/hcesvm/examples
+432K	/home/bs10081/Developer/hcesvm/results/20260204_test2
+328K	/home/bs10081/Developer/hcesvm/docs
+296K	/home/bs10081/Developer/hcesvm/tests
+264K	/home/bs10081/Developer/hcesvm/data
+256K	/home/bs10081/Developer/hcesvm/docs/reports
+208K	/home/bs10081/Developer/hcesvm/tests/__pycache__
+128K	/home/bs10081/Developer/hcesvm/.git/worktrees
+116K	/home/bs10081/Developer/hcesvm/examples/__pycache__
+100K	/home/bs10081/Developer/hcesvm/data/npsvor
+96K	/home/bs10081/Developer/hcesvm/.claude
+88K	/home/bs10081/Developer/hcesvm/data/parkinsons
+72K	/home/bs10081/Developer/hcesvm/.venv/bin
+72K	/home/bs10081/Developer/hcesvm/.git/logs
+72K	/home/bs10081/Developer/hcesvm/data/svor
+68K	/home/bs10081/Developer/hcesvm/.git/hooks
+60K	/home/bs10081/Developer/hcesvm/.git/refs
+36K	/home/bs10081/Developer/hcesvm/.pytest_cache
+32K	/home/bs10081/Developer/hcesvm/scripts
+24K	/home/bs10081/Developer/hcesvm/.claude/rules
+20K	/home/bs10081/Developer/hcesvm/.pytest_cache/v
+20K	/home/bs10081/Developer/hcesvm/.claude/commands
+16K	/home/bs10081/Developer/hcesvm/.claude/agents
+12K	/home/bs10081/Developer/hcesvm/docs/strategies
+12K	/home/bs10081/Developer/hcesvm/.claude/skills
+12K	/home/bs10081/Developer/hcesvm/.claude/hooks
+8.0K	/home/bs10081/Developer/hcesvm/.git/info
+4.0K	/home/bs10081/Developer/hcesvm/.git/branches
+
+top hcesvm results children depth2:
+4.9M	/home/bs10081/Developer/hcesvm/results
+3.7M	/home/bs10081/Developer/hcesvm/results/archive
+980K	/home/bs10081/Developer/hcesvm/results/archive/20260426_test3_skill_class4_7
+808K	/home/bs10081/Developer/hcesvm/results/archive/20260210_comparison
+436K	/home/bs10081/Developer/hcesvm/results/archive/20260131_inverted
+432K	/home/bs10081/Developer/hcesvm/results/20260204_test2
+356K	/home/bs10081/Developer/hcesvm/results/archive/20260130_inverted
+328K	/home/bs10081/Developer/hcesvm/results/archive/20260201_test2
+180K	/home/bs10081/Developer/hcesvm/results/archive/20260508_test3_skill_reduce_train_only_allcpu
+180K	/home/bs10081/Developer/hcesvm/results/archive/20260508_test3_skill_reduce_train_only
+164K	/home/bs10081/Developer/hcesvm/results/archive/20260203_test2_fixed
+84K	/home/bs10081/Developer/hcesvm/results/archive/20260211_test3
+68K	/home/bs10081/Developer/hcesvm/results/archive/20260516_test3_no_time_limit_full
+68K	/home/bs10081/Developer/hcesvm/results/archive/20260516_lab104_cement_nodefile_tmux
+28K	/home/bs10081/Developer/hcesvm/results/archive/20260426_test3_skill_full_notimelimit
+16K	/home/bs10081/Developer/hcesvm/results/archive/20260426_test3_skill_smoke_5_7
+12K	/home/bs10081/Developer/hcesvm/results/archive/20260224_class1_first
+12K	/home/bs10081/Developer/hcesvm/results/archive/20260213_class1_first
+
+top hcesvm archive children:
+3.7M	/home/bs10081/Developer/hcesvm/results/archive
+980K	/home/bs10081/Developer/hcesvm/results/archive/20260426_test3_skill_class4_7
+808K	/home/bs10081/Developer/hcesvm/results/archive/20260210_comparison
+436K	/home/bs10081/Developer/hcesvm/results/archive/20260131_inverted
+356K	/home/bs10081/Developer/hcesvm/results/archive/20260130_inverted
+328K	/home/bs10081/Developer/hcesvm/results/archive/20260201_test2
+180K	/home/bs10081/Developer/hcesvm/results/archive/20260508_test3_skill_reduce_train_only_allcpu
+180K	/home/bs10081/Developer/hcesvm/results/archive/20260508_test3_skill_reduce_train_only
+164K	/home/bs10081/Developer/hcesvm/results/archive/20260203_test2_fixed
+84K	/home/bs10081/Developer/hcesvm/results/archive/20260211_test3
+68K	/home/bs10081/Developer/hcesvm/results/archive/20260516_test3_no_time_limit_full
+68K	/home/bs10081/Developer/hcesvm/results/archive/20260516_lab104_cement_nodefile_tmux
+28K	/home/bs10081/Developer/hcesvm/results/archive/20260426_test3_skill_full_notimelimit
+16K	/home/bs10081/Developer/hcesvm/results/archive/20260426_test3_skill_smoke_5_7
+12K	/home/bs10081/Developer/hcesvm/results/archive/20260224_class1_first
+12K	/home/bs10081/Developer/hcesvm/results/archive/20260213_class1_first
+
+top nodefile dirs:
+22G	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+22G	/home/bs10081/hcesvm-gurobi-nodefiles
+
+largest files under HOME excluding Dropbox:
+1633.83 MiB  /home/bs10081/.local/share/containers/storage/volumes/immich-ml-cache-1/_data/clip/nllb-clip-large-siglip__v1/visual/model.onnx
+1000.80 MiB  /home/bs10081/.local/share/containers/storage/volumes/immich-ml-cache-1/_data/clip/nllb-clip-large-siglip__v1/textual/text.transformer.embed_tokens.weight
+994.43 MiB  /home/bs10081/miniconda3/envs/trellis2/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so
+937.58 MiB  /home/bs10081/miniconda3/envs/trellis2/lib/python3.10/site-packages/xformers/flash_attn_3/_C.so
+874.22 MiB  /home/bs10081/.cache/pip/http-v2/1/4/6/f/d/146fd796765e6edf3dbfb74b4c7f07b83ffa36dc982e274c7f8e3cd9.body
+873.55 MiB  /home/bs10081/.cache/pip/http-v2/a/4/5/0/5/a45056614f135586af735bc76d7e683fcbc5cae5d75f3f67428ba5ec.body
+716.95 MiB  /home/bs10081/miniconda3/envs/trellis2/lib/python3.10/site-packages/nvidia/cublas/lib/libcublasLt.so.12
+714.50 MiB  /home/bs10081/miniconda3/envs/nsvora/lib/python3.11/site-packages/nvidia/cublas/lib/libcublasLt.so.12
+660.27 MiB  /home/bs10081/Developer/TRELLIS.2/.git/objects/pack/pack-fe96c77f84269112b1942ebd92c39fc58b3dd95b.pack
+617.66 MiB  /home/bs10081/.cache/pip/http-v2/4/1/2/a/a/412aaa65cff2bae5cf177cc2b976fa481abd62272779719ea7df2bb0.body
+573.91 MiB  /home/bs10081/.local/share/containers/storage/overlay/d0f7b58c70af47d2cee8932180b479b400261dc01c12b0c8d73a691edd54226a/diff/opt/venv/lib/python3.11/site-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so
+554.32 MiB  /home/bs10081/.cache/pip/http-v2/4/3/e/4/4/43e4401d3b03cb30d813816df43e1ae8ff58957fed1cb57e29e10c9e.body
+553.90 MiB  /home/bs10081/miniconda3/pkgs/libcuvs-25.10.00-cuda13_251008_f245c152.conda
+522.03 MiB  /home/bs10081/miniconda3/envs/trellis2/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_engines_precompiled.so.9
+521.22 MiB  /home/bs10081/.local/share/containers/storage/overlay/71abb0e01a9c37c59ad4b31175052e45e31f50d59918b195cd4cd08917877df1/diff/usr/lib/x86_64-linux-gnu/libcudnn_engines_precompiled.so.9.10.2
+516.51 MiB  /home/bs10081/miniconda3/pkgs/libcublas-13.1.0.3-hf83d1bd_0/targets/x86_64-linux/lib/libcublasLt.so.13.1.0.3
+516.51 MiB  /home/bs10081/miniconda3/envs/cuopt/targets/x86_64-linux/lib/libcublasLt.so.13.1.0.3
+516.51 MiB  /home/bs10081/Developer/ai-auto-debug-system/layer2-analyzer/venv/lib/python3.12/site-packages/nvidia/cu13/lib/libcublasLt.so.13
+513.87 MiB  /home/bs10081/Developer/NSVORA/.venv/lib/python3.11/site-packages/nvidia/cu13/lib/libcublasLt.so.13
+513.87 MiB  /home/bs10081/.cache/uv/archive-v0/B8HOk6v-P2pmOTbjs_TS1/nvidia/cu13/lib/libcublasLt.so.13
+513.87 MiB  /home/bs10081/.cache/uv/archive-v0/-0wMe9CxHYmzZl6ZIZkIw/nvidia/cu13/lib/libcublasLt.so.13
+506.13 MiB  /home/bs10081/.cache/pip/http-v2/2/8/d/c/5/28dc5f4a1f20c9b4587753cbb0bc48d4411665276486798e7de0bedd.body
+501.48 MiB  /home/bs10081/.local/share/containers/storage/overlay/fa66f816f9e8027a4a4077960f7bd6441393cb7c8e6b403f5128a0bf492c1b75/diff/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcublasLt.so.12.2.5.6
+480.03 MiB  /home/bs10081/miniconda3/envs/nsvora/lib/python3.11/site-packages/nvidia/cudnn/lib/libcudnn_engines_precompiled.so.9
+464.02 MiB  /home/bs10081/miniconda3/envs/nsvora/lib/python3.11/site-packages/nvidia/cusparse/lib/libcusparse.so.12
+455.90 MiB  /home/bs10081/miniconda3/pkgs/libcuvs-25.10.00-cuda13_251008_f245c152/lib/libcuvs.so
+455.90 MiB  /home/bs10081/miniconda3/envs/cuopt/lib/libcuvs.so
+446.64 MiB  /home/bs10081/Developer/NSVORA/.venv/lib/python3.11/site-packages/libcuvs/lib64/libcuvs.so
+446.64 MiB  /home/bs10081/.cache/uv/archive-v0/J2awB1hEWRM95hVCFqiEt/libcuvs/lib64/libcuvs.so
+446.64 MiB  /home/bs10081/.cache/uv/archive-v0/62sXiv5GNsabD2NLB9UXb/libcuvs/lib64/libcuvs.so
+
+[2026-05-16 08:38:01 UTC] SSH ControlMaster shutdown
+Exit request sent.

@@ -1,0 +1,47 @@
+
+====================================================================================================
+[2026-05-14 12:16:55 UTC] HCESVM(test3) full teaching-data validation
+====================================================================================================
+Branch: codex/model-trace
+Commit: e56b41323472960b230159f0f1cc36d1e8cc85d0
+Datasets: balance
+HCESVM per-classifier time limit: none
+Threads: 0
+SoftMemLimit: 18.0 GB
+Heartbeat interval: 60.0
+Feature lower bound: 1e-07
+Source [balance]: lingo_workbook_combined_80_20 | /home/bs10081/Developer/hcesvm/data/svor/SVOR_balance_split.xlsx
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/BALANCE_HCESVM_TEST3_FULL_20260514_121655.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-14 12:16:55 UTC] balance | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: /home/bs10081/Developer/hcesvm/data/svor/SVOR_balance_split.xlsx
+Features: 4
+Train counts: [230, 39, 231]
+Test counts: [58, 10, 57]
+HCESVM per-classifier time limit: none
+Feature lower bound: 1e-07
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 230 samples
+Class 2: 39 samples
+Class 3: 231 samples
+Features: 4
+
+============================================================
+Training H1: Class 1 (+1) vs {Class 2, 3} (-1)
+============================================================
+H1 Training samples: 500
+  Positive (+1): 230 samples
+  Negative (-1): 270 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter MIPGap to value 0.0001
+[2026-05-14 12:16:55 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0

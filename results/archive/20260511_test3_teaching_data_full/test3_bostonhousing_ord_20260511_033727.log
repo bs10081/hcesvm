@@ -1,0 +1,92 @@
+
+====================================================================================================
+[2026-05-11 03:37:27 UTC] HCESVM(test3) full teaching-data validation
+====================================================================================================
+Branch: codex/model-trace
+Commit: e56b41323472960b230159f0f1cc36d1e8cc85d0
+Datasets: bostonhousing_ord
+HCESVM per-classifier time limit: 5s
+Threads: 1
+SoftMemLimit: 4.0 GB
+Heartbeat interval: None
+Feature lower bound: 1e-07
+Loaded CSV data: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/bostonhousing_ord.csv
+  Total samples: 506
+  Features: 13
+  Classes: 5 (values: [np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5)])
+  Class 1 (train): 61 samples
+  Class 2 (train): 191 samples
+  Class 3 (train): 98 samples
+  Class 4 (train): 29 samples
+  Class 5 (train): 25 samples
+  Class 1 (test): 16 samples
+  Class 2 (test): 48 samples
+  Class 3 (test): 25 samples
+  Class 4 (test): 7 samples
+  Class 5 (test): 6 samples
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-11 03:37:27 UTC] bostonhousing_ord | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/bostonhousing_ord.csv
+Features: 13
+Train counts: [61, 191, 98, 29, 25]
+Test counts: [16, 48, 25, 7, 6]
+HCESVM per-classifier time limit: 5s
+Feature lower bound: 1e-07
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 61 samples
+Class 2: 191 samples
+Class 3: 98 samples
+Class 4: 29 samples
+Class 5: 25 samples
+Features: 13
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 404
+  Positive (+1): 61 samples
+  Negative (-1): 343 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 5
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 89.48%)
+
+H1 Solution:
+  Weights (w): [ 0.06965711  0.         -0.31384662  0.07252314  0.          0.89688133
+  0.11265037 -1.85275506 -0.18015084  0.01664503  0.97095459 -0.01657162
+  0.82028503]
+  Intercept (b): -43.32401711888327
+  Objective: 74.305898
+  Selected features: 13/13
+  L1 norm: 5.322921
+  Positive accuracy lb: 0.8689
+  Negative accuracy lb: 0.9534
+
+H1 status: time_limit_with_solution (code=9), elapsed=5.05s
+Checkpoint Excel saved after bostonhousing_ord / H1: /home/bs10081/Developer/hcesvm/docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.xlsx
+Stopping after H1 due to after_classifier callback.
+
+============================================================
+Training Stopped Early!
+Completed classifiers: 1/4
+Stop reason: after_classifier callback requested stop after h1
+============================================================
+Run stopped before all classifiers completed: requested stop after 1 classifiers
+Checkpoint Excel saved after bostonhousing_ord finalization: /home/bs10081/Developer/hcesvm/docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.xlsx
+
+====================================================================================================
+[2026-05-11 03:37:32 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260511_test3_teaching_data_full/test3_bostonhousing_ord_20260511_033727.log
+Excel saved to: /home/bs10081/Developer/hcesvm/docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.xlsx
+Markdown report target: /home/bs10081/Developer/hcesvm/docs/reports/BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_20260511_033727.md

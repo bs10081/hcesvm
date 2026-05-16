@@ -1,0 +1,208 @@
+[2026-05-16 08:24:17 UTC] Lab104 cement nodefile monitoring
+local_branch=experiment/lab104-cement-nodefile
+local_commit=871d49013c9dd102320e3d83c6c45728dec0283a
+log_path=results/archive/20260516_lab104_cement_nodefile_monitor/lab104_cement_monitor_20260516_082417.log
+ssh_auth_sock=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.XIyFUaidU4
+
+[2026-05-16 08:24:17 UTC] SSH ControlMaster check/start
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+Master running (pid=750717)
+
+[2026-05-16 08:24:18 UTC] Remote status snapshot
+timestamp=2026-05-16 08:24:19 UTC
+hostname=lab104-gpuboost
+
+tmux sessions:
+hcesvm-cement-nodefile-soft21-20260516_034942: 1 windows (created Sat May 16 03:49:42 2026)
+
+process sample:
+    PID    PPID USER     COMMAND         %CPU %MEM   RSS    VSZ     ELAPSED COMMAND
+  75560   75557 bs10081  python          1994 15.1 4341756 6954172 04:34:36 python examples/run_teaching_data_hcesvm_full.py --datasets cement_strength --time-limit none --threads 0 --soft-mem-limit-gb 21 --nodefile-start-gb 0.5 --nodefile-dir auto --heartbeat-interval-seconds 60
+  79455   79450 bs10081  awk              0.0  0.0  4128   9348       00:00 awk NR==1 || /run_teaching_data_hcesvm_full|gurobi/
+
+free -h:
+               total        used        free      shared  buff/cache   available
+Mem:            27Gi       5.8Gi       387Mi       1.8Mi        21Gi        21Gi
+Swap:          8.0Gi       268Ki       8.0Gi
+
+nodefile size:
+21G	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+nodefile files top:
+
+nodefile filesystem:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  304G  173G  64% /
+
+artifact mtimes:
+ls: cannot access '/home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034943.md': No such file or directory
+-rw-rw-r-- 1 bs10081 bs10081 8.6K 2026-05-16 03:49 /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260516_034943.xlsx
+-rw-rw-r-- 1 bs10081 bs10081  44K 2026-05-16 08:23 /home/bs10081/Developer/hcesvm/results/archive/20260516_lab104_cement_nodefile_tmux/tmux_hcesvm-cement-nodefile-soft21-20260516_034942.log
+-rw-rw-r-- 1 bs10081 bs10081  44K 2026-05-16 08:23 /home/bs10081/Developer/hcesvm/results/archive/20260516_test3_no_time_limit_full/test3_cement_strength_20260516_034943.log
+
+latest heartbeat/status lines:
+[2026-05-16 07:04:20 UTC] H1 heartbeat: stage=mip, runtime=11677.5s, nodes=59419091, solutions=42, incumbent=127.088143, best_bound=27.073403, gap=78.70%
+[2026-05-16 07:05:21 UTC] H1 heartbeat: stage=mip, runtime=11737.7s, nodes=59724737, solutions=42, incumbent=127.088143, best_bound=27.092301, gap=78.68%
+[2026-05-16 07:06:21 UTC] H1 heartbeat: stage=mip, runtime=11797.7s, nodes=60033644, solutions=42, incumbent=127.088143, best_bound=27.109482, gap=78.67%
+[2026-05-16 07:07:21 UTC] H1 heartbeat: stage=mip, runtime=11858.0s, nodes=60317276, solutions=42, incumbent=127.088143, best_bound=27.123852, gap=78.66%
+[2026-05-16 07:08:21 UTC] H1 heartbeat: stage=mip, runtime=11918.1s, nodes=60602874, solutions=42, incumbent=127.088143, best_bound=27.138152, gap=78.65%
+[2026-05-16 07:09:21 UTC] H1 heartbeat: stage=mip, runtime=11978.2s, nodes=60926810, solutions=42, incumbent=127.088143, best_bound=27.156664, gap=78.63%
+[2026-05-16 07:10:21 UTC] H1 heartbeat: stage=mip, runtime=12038.4s, nodes=61222227, solutions=42, incumbent=127.088143, best_bound=27.171627, gap=78.62%
+[2026-05-16 07:11:22 UTC] H1 heartbeat: stage=mip, runtime=12098.8s, nodes=61524618, solutions=42, incumbent=127.088143, best_bound=27.189006, gap=78.61%
+[2026-05-16 07:12:22 UTC] H1 heartbeat: stage=mip, runtime=12159.1s, nodes=61834856, solutions=42, incumbent=127.088143, best_bound=27.205974, gap=78.59%
+[2026-05-16 07:13:22 UTC] H1 heartbeat: stage=mip, runtime=12219.3s, nodes=62142065, solutions=42, incumbent=127.088143, best_bound=27.221945, gap=78.58%
+[2026-05-16 07:14:22 UTC] H1 heartbeat: stage=mip, runtime=12279.3s, nodes=62439020, solutions=42, incumbent=127.088143, best_bound=27.237414, gap=78.57%
+[2026-05-16 07:15:22 UTC] H1 heartbeat: stage=mip, runtime=12339.6s, nodes=62713217, solutions=42, incumbent=127.088143, best_bound=27.251867, gap=78.56%
+[2026-05-16 07:16:23 UTC] H1 heartbeat: stage=mip, runtime=12399.9s, nodes=63020302, solutions=42, incumbent=127.088143, best_bound=27.269415, gap=78.54%
+[2026-05-16 07:17:23 UTC] H1 heartbeat: stage=mip, runtime=12460.2s, nodes=63323284, solutions=42, incumbent=127.088143, best_bound=27.287611, gap=78.53%
+[2026-05-16 07:18:23 UTC] H1 heartbeat: stage=mip, runtime=12520.5s, nodes=63616977, solutions=42, incumbent=127.088143, best_bound=27.303382, gap=78.52%
+[2026-05-16 07:19:23 UTC] H1 heartbeat: stage=mip, runtime=12580.7s, nodes=63914598, solutions=42, incumbent=127.088143, best_bound=27.319050, gap=78.50%
+[2026-05-16 07:20:24 UTC] H1 heartbeat: stage=mip, runtime=12640.7s, nodes=64212996, solutions=42, incumbent=127.088143, best_bound=27.333528, gap=78.49%
+[2026-05-16 07:21:24 UTC] H1 heartbeat: stage=mip, runtime=12701.1s, nodes=64511073, solutions=42, incumbent=127.088143, best_bound=27.349199, gap=78.48%
+[2026-05-16 07:22:24 UTC] H1 heartbeat: stage=mip, runtime=12761.4s, nodes=64808868, solutions=42, incumbent=127.088143, best_bound=27.364636, gap=78.47%
+[2026-05-16 07:23:24 UTC] H1 heartbeat: stage=mip, runtime=12821.5s, nodes=65115445, solutions=42, incumbent=127.088143, best_bound=27.381971, gap=78.45%
+[2026-05-16 07:24:24 UTC] H1 heartbeat: stage=mip, runtime=12881.5s, nodes=65415158, solutions=42, incumbent=127.088143, best_bound=27.398879, gap=78.44%
+[2026-05-16 07:25:25 UTC] H1 heartbeat: stage=mip, runtime=12942.0s, nodes=65697684, solutions=42, incumbent=127.088143, best_bound=27.411798, gap=78.43%
+[2026-05-16 07:26:25 UTC] H1 heartbeat: stage=mip, runtime=13002.2s, nodes=65999277, solutions=42, incumbent=127.088143, best_bound=27.426319, gap=78.42%
+[2026-05-16 07:27:25 UTC] H1 heartbeat: stage=mip, runtime=13062.4s, nodes=66299985, solutions=42, incumbent=127.088143, best_bound=27.441260, gap=78.41%
+[2026-05-16 07:28:25 UTC] H1 heartbeat: stage=mip, runtime=13122.4s, nodes=66612419, solutions=42, incumbent=127.088143, best_bound=27.456853, gap=78.40%
+[2026-05-16 07:29:25 UTC] H1 heartbeat: stage=mip, runtime=13182.5s, nodes=66914530, solutions=42, incumbent=127.088143, best_bound=27.472623, gap=78.38%
+[2026-05-16 07:30:25 UTC] H1 heartbeat: stage=mip, runtime=13242.6s, nodes=67212321, solutions=42, incumbent=127.088143, best_bound=27.488801, gap=78.37%
+[2026-05-16 07:31:26 UTC] H1 heartbeat: stage=mip, runtime=13302.7s, nodes=67481244, solutions=42, incumbent=127.088143, best_bound=27.503783, gap=78.36%
+[2026-05-16 07:32:26 UTC] H1 heartbeat: stage=mip, runtime=13363.0s, nodes=67788325, solutions=42, incumbent=127.088143, best_bound=27.518094, gap=78.35%
+[2026-05-16 07:33:26 UTC] H1 heartbeat: stage=mip, runtime=13423.3s, nodes=68086444, solutions=42, incumbent=127.088143, best_bound=27.532899, gap=78.34%
+[2026-05-16 07:34:26 UTC] H1 heartbeat: stage=mip, runtime=13483.6s, nodes=68376657, solutions=42, incumbent=127.088143, best_bound=27.547545, gap=78.32%
+[2026-05-16 07:35:26 UTC] H1 heartbeat: stage=mip, runtime=13543.6s, nodes=68674393, solutions=42, incumbent=127.088143, best_bound=27.561828, gap=78.31%
+[2026-05-16 07:36:27 UTC] H1 heartbeat: stage=mip, runtime=13604.1s, nodes=68983091, solutions=42, incumbent=127.088143, best_bound=27.577179, gap=78.30%
+[2026-05-16 07:37:27 UTC] H1 heartbeat: stage=mip, runtime=13664.4s, nodes=69283565, solutions=42, incumbent=127.088143, best_bound=27.593011, gap=78.29%
+[2026-05-16 07:38:27 UTC] H1 heartbeat: stage=mip, runtime=13724.7s, nodes=69580683, solutions=42, incumbent=127.088143, best_bound=27.607302, gap=78.28%
+[2026-05-16 07:39:28 UTC] H1 heartbeat: stage=mip, runtime=13785.0s, nodes=69876723, solutions=42, incumbent=127.088143, best_bound=27.623486, gap=78.26%
+[2026-05-16 07:40:28 UTC] H1 heartbeat: stage=mip, runtime=13845.3s, nodes=70164932, solutions=42, incumbent=127.088143, best_bound=27.635487, gap=78.25%
+[2026-05-16 07:41:28 UTC] H1 heartbeat: stage=mip, runtime=13905.3s, nodes=70452808, solutions=42, incumbent=127.088143, best_bound=27.648511, gap=78.24%
+[2026-05-16 07:42:28 UTC] H1 heartbeat: stage=mip, runtime=13965.4s, nodes=70762251, solutions=42, incumbent=127.088143, best_bound=27.662944, gap=78.23%
+[2026-05-16 07:43:28 UTC] H1 heartbeat: stage=mip, runtime=14025.6s, nodes=71072284, solutions=42, incumbent=127.088143, best_bound=27.679492, gap=78.22%
+[2026-05-16 07:44:29 UTC] H1 heartbeat: stage=mip, runtime=14085.9s, nodes=71359292, solutions=42, incumbent=127.088143, best_bound=27.693279, gap=78.21%
+[2026-05-16 07:45:29 UTC] H1 heartbeat: stage=mip, runtime=14146.1s, nodes=71648365, solutions=42, incumbent=127.088143, best_bound=27.706853, gap=78.20%
+[2026-05-16 07:46:29 UTC] H1 heartbeat: stage=mip, runtime=14206.5s, nodes=71965770, solutions=42, incumbent=127.088143, best_bound=27.722309, gap=78.19%
+[2026-05-16 07:47:29 UTC] H1 heartbeat: stage=mip, runtime=14266.6s, nodes=72273554, solutions=42, incumbent=127.088143, best_bound=27.737305, gap=78.17%
+[2026-05-16 07:48:30 UTC] H1 heartbeat: stage=mip, runtime=14326.8s, nodes=72572082, solutions=42, incumbent=127.088143, best_bound=27.751179, gap=78.16%
+[2026-05-16 07:49:30 UTC] H1 heartbeat: stage=mip, runtime=14387.1s, nodes=72878655, solutions=42, incumbent=127.088143, best_bound=27.765993, gap=78.15%
+[2026-05-16 07:50:30 UTC] H1 heartbeat: stage=mip, runtime=14447.3s, nodes=73184179, solutions=42, incumbent=127.088143, best_bound=27.781230, gap=78.14%
+[2026-05-16 07:51:31 UTC] H1 heartbeat: stage=mip, runtime=14507.8s, nodes=73493797, solutions=42, incumbent=127.088143, best_bound=27.796938, gap=78.13%
+[2026-05-16 07:52:31 UTC] H1 heartbeat: stage=mip, runtime=14567.8s, nodes=73770994, solutions=42, incumbent=127.088143, best_bound=27.810544, gap=78.12%
+[2026-05-16 07:53:31 UTC] H1 heartbeat: stage=mip, runtime=14628.2s, nodes=74070427, solutions=42, incumbent=127.088143, best_bound=27.825106, gap=78.11%
+[2026-05-16 07:54:31 UTC] H1 heartbeat: stage=mip, runtime=14688.3s, nodes=74364239, solutions=42, incumbent=127.088143, best_bound=27.838610, gap=78.10%
+[2026-05-16 07:55:31 UTC] H1 heartbeat: stage=mip, runtime=14748.6s, nodes=74667527, solutions=42, incumbent=127.088143, best_bound=27.852061, gap=78.08%
+[2026-05-16 07:56:32 UTC] H1 heartbeat: stage=mip, runtime=14808.8s, nodes=74954800, solutions=42, incumbent=127.088143, best_bound=27.866425, gap=78.07%
+[2026-05-16 07:57:32 UTC] H1 heartbeat: stage=mip, runtime=14868.9s, nodes=75261612, solutions=42, incumbent=127.088143, best_bound=27.879369, gap=78.06%
+[2026-05-16 07:58:32 UTC] H1 heartbeat: stage=mip, runtime=14929.2s, nodes=75564437, solutions=42, incumbent=127.088143, best_bound=27.894653, gap=78.05%
+[2026-05-16 07:59:32 UTC] H1 heartbeat: stage=mip, runtime=14989.4s, nodes=75841009, solutions=42, incumbent=127.088143, best_bound=27.906123, gap=78.04%
+[2026-05-16 08:00:32 UTC] H1 heartbeat: stage=mip, runtime=15049.6s, nodes=76137834, solutions=42, incumbent=127.088143, best_bound=27.919455, gap=78.03%
+[2026-05-16 08:01:33 UTC] H1 heartbeat: stage=mip, runtime=15109.9s, nodes=76431916, solutions=42, incumbent=127.088143, best_bound=27.931982, gap=78.02%
+[2026-05-16 08:02:33 UTC] H1 heartbeat: stage=mip, runtime=15170.1s, nodes=76731885, solutions=42, incumbent=127.088143, best_bound=27.944586, gap=78.01%
+[2026-05-16 08:03:33 UTC] H1 heartbeat: stage=mip, runtime=15230.5s, nodes=77034204, solutions=42, incumbent=127.088143, best_bound=27.958588, gap=78.00%
+[2026-05-16 08:04:34 UTC] H1 heartbeat: stage=mip, runtime=15290.8s, nodes=77340066, solutions=42, incumbent=127.088143, best_bound=27.973407, gap=77.99%
+[2026-05-16 08:05:34 UTC] H1 heartbeat: stage=mip, runtime=15350.8s, nodes=77636768, solutions=42, incumbent=127.088143, best_bound=27.985865, gap=77.98%
+[2026-05-16 08:06:34 UTC] H1 heartbeat: stage=mip, runtime=15410.9s, nodes=77941187, solutions=42, incumbent=127.088143, best_bound=27.999238, gap=77.97%
+[2026-05-16 08:07:34 UTC] H1 heartbeat: stage=mip, runtime=15471.3s, nodes=78205588, solutions=42, incumbent=127.088143, best_bound=28.010207, gap=77.96%
+[2026-05-16 08:08:34 UTC] H1 heartbeat: stage=mip, runtime=15531.4s, nodes=78510597, solutions=42, incumbent=127.088143, best_bound=28.024370, gap=77.95%
+[2026-05-16 08:09:34 UTC] H1 heartbeat: stage=mip, runtime=15591.5s, nodes=78817309, solutions=42, incumbent=127.088143, best_bound=28.037738, gap=77.94%
+[2026-05-16 08:10:34 UTC] H1 heartbeat: stage=mip, runtime=15651.7s, nodes=79111775, solutions=43, incumbent=127.088116, best_bound=28.050182, gap=77.93%
+[2026-05-16 08:11:35 UTC] H1 heartbeat: stage=mip, runtime=15712.0s, nodes=79410593, solutions=43, incumbent=127.088116, best_bound=28.063873, gap=77.92%
+[2026-05-16 08:12:35 UTC] H1 heartbeat: stage=mip, runtime=15772.1s, nodes=79714938, solutions=43, incumbent=127.088116, best_bound=28.077692, gap=77.91%
+[2026-05-16 08:13:35 UTC] H1 heartbeat: stage=mip, runtime=15832.4s, nodes=80012869, solutions=43, incumbent=127.088116, best_bound=28.089781, gap=77.90%
+[2026-05-16 08:14:35 UTC] H1 heartbeat: stage=mip, runtime=15892.6s, nodes=80306006, solutions=43, incumbent=127.088116, best_bound=28.102778, gap=77.89%
+[2026-05-16 08:15:36 UTC] H1 heartbeat: stage=mip, runtime=15952.8s, nodes=80609630, solutions=43, incumbent=127.088116, best_bound=28.114970, gap=77.88%
+[2026-05-16 08:16:36 UTC] H1 heartbeat: stage=mip, runtime=16013.0s, nodes=80910729, solutions=43, incumbent=127.088116, best_bound=28.127013, gap=77.87%
+[2026-05-16 08:17:36 UTC] H1 heartbeat: stage=mip, runtime=16073.0s, nodes=81205376, solutions=43, incumbent=127.088116, best_bound=28.139288, gap=77.86%
+[2026-05-16 08:18:36 UTC] H1 heartbeat: stage=mip, runtime=16133.2s, nodes=81506572, solutions=43, incumbent=127.088116, best_bound=28.152698, gap=77.85%
+[2026-05-16 08:19:36 UTC] H1 heartbeat: stage=mip, runtime=16193.6s, nodes=81790274, solutions=43, incumbent=127.088116, best_bound=28.163504, gap=77.84%
+[2026-05-16 08:20:37 UTC] H1 heartbeat: stage=mip, runtime=16253.8s, nodes=82080287, solutions=43, incumbent=127.088116, best_bound=28.175727, gap=77.83%
+[2026-05-16 08:21:37 UTC] H1 heartbeat: stage=mip, runtime=16314.2s, nodes=82381994, solutions=43, incumbent=127.088116, best_bound=28.189618, gap=77.82%
+[2026-05-16 08:22:37 UTC] H1 heartbeat: stage=mip, runtime=16374.4s, nodes=82688131, solutions=43, incumbent=127.088116, best_bound=28.202982, gap=77.81%
+[2026-05-16 08:23:38 UTC] H1 heartbeat: stage=mip, runtime=16434.8s, nodes=82998148, solutions=43, incumbent=127.088116, best_bound=28.216021, gap=77.80%
+
+runner log tail:
+[2026-05-16 07:04:20 UTC] H1 heartbeat: stage=mip, runtime=11677.5s, nodes=59419091, solutions=42, incumbent=127.088143, best_bound=27.073403, gap=78.70%
+[2026-05-16 07:05:21 UTC] H1 heartbeat: stage=mip, runtime=11737.7s, nodes=59724737, solutions=42, incumbent=127.088143, best_bound=27.092301, gap=78.68%
+[2026-05-16 07:06:21 UTC] H1 heartbeat: stage=mip, runtime=11797.7s, nodes=60033644, solutions=42, incumbent=127.088143, best_bound=27.109482, gap=78.67%
+[2026-05-16 07:07:21 UTC] H1 heartbeat: stage=mip, runtime=11858.0s, nodes=60317276, solutions=42, incumbent=127.088143, best_bound=27.123852, gap=78.66%
+[2026-05-16 07:08:21 UTC] H1 heartbeat: stage=mip, runtime=11918.1s, nodes=60602874, solutions=42, incumbent=127.088143, best_bound=27.138152, gap=78.65%
+[2026-05-16 07:09:21 UTC] H1 heartbeat: stage=mip, runtime=11978.2s, nodes=60926810, solutions=42, incumbent=127.088143, best_bound=27.156664, gap=78.63%
+[2026-05-16 07:10:21 UTC] H1 heartbeat: stage=mip, runtime=12038.4s, nodes=61222227, solutions=42, incumbent=127.088143, best_bound=27.171627, gap=78.62%
+[2026-05-16 07:11:22 UTC] H1 heartbeat: stage=mip, runtime=12098.8s, nodes=61524618, solutions=42, incumbent=127.088143, best_bound=27.189006, gap=78.61%
+[2026-05-16 07:12:22 UTC] H1 heartbeat: stage=mip, runtime=12159.1s, nodes=61834856, solutions=42, incumbent=127.088143, best_bound=27.205974, gap=78.59%
+[2026-05-16 07:13:22 UTC] H1 heartbeat: stage=mip, runtime=12219.3s, nodes=62142065, solutions=42, incumbent=127.088143, best_bound=27.221945, gap=78.58%
+[2026-05-16 07:14:22 UTC] H1 heartbeat: stage=mip, runtime=12279.3s, nodes=62439020, solutions=42, incumbent=127.088143, best_bound=27.237414, gap=78.57%
+[2026-05-16 07:15:22 UTC] H1 heartbeat: stage=mip, runtime=12339.6s, nodes=62713217, solutions=42, incumbent=127.088143, best_bound=27.251867, gap=78.56%
+[2026-05-16 07:16:23 UTC] H1 heartbeat: stage=mip, runtime=12399.9s, nodes=63020302, solutions=42, incumbent=127.088143, best_bound=27.269415, gap=78.54%
+[2026-05-16 07:17:23 UTC] H1 heartbeat: stage=mip, runtime=12460.2s, nodes=63323284, solutions=42, incumbent=127.088143, best_bound=27.287611, gap=78.53%
+[2026-05-16 07:18:23 UTC] H1 heartbeat: stage=mip, runtime=12520.5s, nodes=63616977, solutions=42, incumbent=127.088143, best_bound=27.303382, gap=78.52%
+[2026-05-16 07:19:23 UTC] H1 heartbeat: stage=mip, runtime=12580.7s, nodes=63914598, solutions=42, incumbent=127.088143, best_bound=27.319050, gap=78.50%
+[2026-05-16 07:20:24 UTC] H1 heartbeat: stage=mip, runtime=12640.7s, nodes=64212996, solutions=42, incumbent=127.088143, best_bound=27.333528, gap=78.49%
+[2026-05-16 07:21:24 UTC] H1 heartbeat: stage=mip, runtime=12701.1s, nodes=64511073, solutions=42, incumbent=127.088143, best_bound=27.349199, gap=78.48%
+[2026-05-16 07:22:24 UTC] H1 heartbeat: stage=mip, runtime=12761.4s, nodes=64808868, solutions=42, incumbent=127.088143, best_bound=27.364636, gap=78.47%
+[2026-05-16 07:23:24 UTC] H1 heartbeat: stage=mip, runtime=12821.5s, nodes=65115445, solutions=42, incumbent=127.088143, best_bound=27.381971, gap=78.45%
+[2026-05-16 07:24:24 UTC] H1 heartbeat: stage=mip, runtime=12881.5s, nodes=65415158, solutions=42, incumbent=127.088143, best_bound=27.398879, gap=78.44%
+[2026-05-16 07:25:25 UTC] H1 heartbeat: stage=mip, runtime=12942.0s, nodes=65697684, solutions=42, incumbent=127.088143, best_bound=27.411798, gap=78.43%
+[2026-05-16 07:26:25 UTC] H1 heartbeat: stage=mip, runtime=13002.2s, nodes=65999277, solutions=42, incumbent=127.088143, best_bound=27.426319, gap=78.42%
+[2026-05-16 07:27:25 UTC] H1 heartbeat: stage=mip, runtime=13062.4s, nodes=66299985, solutions=42, incumbent=127.088143, best_bound=27.441260, gap=78.41%
+[2026-05-16 07:28:25 UTC] H1 heartbeat: stage=mip, runtime=13122.4s, nodes=66612419, solutions=42, incumbent=127.088143, best_bound=27.456853, gap=78.40%
+[2026-05-16 07:29:25 UTC] H1 heartbeat: stage=mip, runtime=13182.5s, nodes=66914530, solutions=42, incumbent=127.088143, best_bound=27.472623, gap=78.38%
+[2026-05-16 07:30:25 UTC] H1 heartbeat: stage=mip, runtime=13242.6s, nodes=67212321, solutions=42, incumbent=127.088143, best_bound=27.488801, gap=78.37%
+[2026-05-16 07:31:26 UTC] H1 heartbeat: stage=mip, runtime=13302.7s, nodes=67481244, solutions=42, incumbent=127.088143, best_bound=27.503783, gap=78.36%
+[2026-05-16 07:32:26 UTC] H1 heartbeat: stage=mip, runtime=13363.0s, nodes=67788325, solutions=42, incumbent=127.088143, best_bound=27.518094, gap=78.35%
+[2026-05-16 07:33:26 UTC] H1 heartbeat: stage=mip, runtime=13423.3s, nodes=68086444, solutions=42, incumbent=127.088143, best_bound=27.532899, gap=78.34%
+[2026-05-16 07:34:26 UTC] H1 heartbeat: stage=mip, runtime=13483.6s, nodes=68376657, solutions=42, incumbent=127.088143, best_bound=27.547545, gap=78.32%
+[2026-05-16 07:35:26 UTC] H1 heartbeat: stage=mip, runtime=13543.6s, nodes=68674393, solutions=42, incumbent=127.088143, best_bound=27.561828, gap=78.31%
+[2026-05-16 07:36:27 UTC] H1 heartbeat: stage=mip, runtime=13604.1s, nodes=68983091, solutions=42, incumbent=127.088143, best_bound=27.577179, gap=78.30%
+[2026-05-16 07:37:27 UTC] H1 heartbeat: stage=mip, runtime=13664.4s, nodes=69283565, solutions=42, incumbent=127.088143, best_bound=27.593011, gap=78.29%
+[2026-05-16 07:38:27 UTC] H1 heartbeat: stage=mip, runtime=13724.7s, nodes=69580683, solutions=42, incumbent=127.088143, best_bound=27.607302, gap=78.28%
+[2026-05-16 07:39:28 UTC] H1 heartbeat: stage=mip, runtime=13785.0s, nodes=69876723, solutions=42, incumbent=127.088143, best_bound=27.623486, gap=78.26%
+[2026-05-16 07:40:28 UTC] H1 heartbeat: stage=mip, runtime=13845.3s, nodes=70164932, solutions=42, incumbent=127.088143, best_bound=27.635487, gap=78.25%
+[2026-05-16 07:41:28 UTC] H1 heartbeat: stage=mip, runtime=13905.3s, nodes=70452808, solutions=42, incumbent=127.088143, best_bound=27.648511, gap=78.24%
+[2026-05-16 07:42:28 UTC] H1 heartbeat: stage=mip, runtime=13965.4s, nodes=70762251, solutions=42, incumbent=127.088143, best_bound=27.662944, gap=78.23%
+[2026-05-16 07:43:28 UTC] H1 heartbeat: stage=mip, runtime=14025.6s, nodes=71072284, solutions=42, incumbent=127.088143, best_bound=27.679492, gap=78.22%
+[2026-05-16 07:44:29 UTC] H1 heartbeat: stage=mip, runtime=14085.9s, nodes=71359292, solutions=42, incumbent=127.088143, best_bound=27.693279, gap=78.21%
+[2026-05-16 07:45:29 UTC] H1 heartbeat: stage=mip, runtime=14146.1s, nodes=71648365, solutions=42, incumbent=127.088143, best_bound=27.706853, gap=78.20%
+[2026-05-16 07:46:29 UTC] H1 heartbeat: stage=mip, runtime=14206.5s, nodes=71965770, solutions=42, incumbent=127.088143, best_bound=27.722309, gap=78.19%
+[2026-05-16 07:47:29 UTC] H1 heartbeat: stage=mip, runtime=14266.6s, nodes=72273554, solutions=42, incumbent=127.088143, best_bound=27.737305, gap=78.17%
+[2026-05-16 07:48:30 UTC] H1 heartbeat: stage=mip, runtime=14326.8s, nodes=72572082, solutions=42, incumbent=127.088143, best_bound=27.751179, gap=78.16%
+[2026-05-16 07:49:30 UTC] H1 heartbeat: stage=mip, runtime=14387.1s, nodes=72878655, solutions=42, incumbent=127.088143, best_bound=27.765993, gap=78.15%
+[2026-05-16 07:50:30 UTC] H1 heartbeat: stage=mip, runtime=14447.3s, nodes=73184179, solutions=42, incumbent=127.088143, best_bound=27.781230, gap=78.14%
+[2026-05-16 07:51:31 UTC] H1 heartbeat: stage=mip, runtime=14507.8s, nodes=73493797, solutions=42, incumbent=127.088143, best_bound=27.796938, gap=78.13%
+[2026-05-16 07:52:31 UTC] H1 heartbeat: stage=mip, runtime=14567.8s, nodes=73770994, solutions=42, incumbent=127.088143, best_bound=27.810544, gap=78.12%
+[2026-05-16 07:53:31 UTC] H1 heartbeat: stage=mip, runtime=14628.2s, nodes=74070427, solutions=42, incumbent=127.088143, best_bound=27.825106, gap=78.11%
+[2026-05-16 07:54:31 UTC] H1 heartbeat: stage=mip, runtime=14688.3s, nodes=74364239, solutions=42, incumbent=127.088143, best_bound=27.838610, gap=78.10%
+[2026-05-16 07:55:31 UTC] H1 heartbeat: stage=mip, runtime=14748.6s, nodes=74667527, solutions=42, incumbent=127.088143, best_bound=27.852061, gap=78.08%
+[2026-05-16 07:56:32 UTC] H1 heartbeat: stage=mip, runtime=14808.8s, nodes=74954800, solutions=42, incumbent=127.088143, best_bound=27.866425, gap=78.07%
+[2026-05-16 07:57:32 UTC] H1 heartbeat: stage=mip, runtime=14868.9s, nodes=75261612, solutions=42, incumbent=127.088143, best_bound=27.879369, gap=78.06%
+[2026-05-16 07:58:32 UTC] H1 heartbeat: stage=mip, runtime=14929.2s, nodes=75564437, solutions=42, incumbent=127.088143, best_bound=27.894653, gap=78.05%
+[2026-05-16 07:59:32 UTC] H1 heartbeat: stage=mip, runtime=14989.4s, nodes=75841009, solutions=42, incumbent=127.088143, best_bound=27.906123, gap=78.04%
+[2026-05-16 08:00:32 UTC] H1 heartbeat: stage=mip, runtime=15049.6s, nodes=76137834, solutions=42, incumbent=127.088143, best_bound=27.919455, gap=78.03%
+[2026-05-16 08:01:33 UTC] H1 heartbeat: stage=mip, runtime=15109.9s, nodes=76431916, solutions=42, incumbent=127.088143, best_bound=27.931982, gap=78.02%
+[2026-05-16 08:02:33 UTC] H1 heartbeat: stage=mip, runtime=15170.1s, nodes=76731885, solutions=42, incumbent=127.088143, best_bound=27.944586, gap=78.01%
+[2026-05-16 08:03:33 UTC] H1 heartbeat: stage=mip, runtime=15230.5s, nodes=77034204, solutions=42, incumbent=127.088143, best_bound=27.958588, gap=78.00%
+[2026-05-16 08:04:34 UTC] H1 heartbeat: stage=mip, runtime=15290.8s, nodes=77340066, solutions=42, incumbent=127.088143, best_bound=27.973407, gap=77.99%
+[2026-05-16 08:05:34 UTC] H1 heartbeat: stage=mip, runtime=15350.8s, nodes=77636768, solutions=42, incumbent=127.088143, best_bound=27.985865, gap=77.98%
+[2026-05-16 08:06:34 UTC] H1 heartbeat: stage=mip, runtime=15410.9s, nodes=77941187, solutions=42, incumbent=127.088143, best_bound=27.999238, gap=77.97%
+[2026-05-16 08:07:34 UTC] H1 heartbeat: stage=mip, runtime=15471.3s, nodes=78205588, solutions=42, incumbent=127.088143, best_bound=28.010207, gap=77.96%
+[2026-05-16 08:08:34 UTC] H1 heartbeat: stage=mip, runtime=15531.4s, nodes=78510597, solutions=42, incumbent=127.088143, best_bound=28.024370, gap=77.95%
+[2026-05-16 08:09:34 UTC] H1 heartbeat: stage=mip, runtime=15591.5s, nodes=78817309, solutions=42, incumbent=127.088143, best_bound=28.037738, gap=77.94%
+[2026-05-16 08:10:34 UTC] H1 heartbeat: stage=mip, runtime=15651.7s, nodes=79111775, solutions=43, incumbent=127.088116, best_bound=28.050182, gap=77.93%
+[2026-05-16 08:11:35 UTC] H1 heartbeat: stage=mip, runtime=15712.0s, nodes=79410593, solutions=43, incumbent=127.088116, best_bound=28.063873, gap=77.92%
+[2026-05-16 08:12:35 UTC] H1 heartbeat: stage=mip, runtime=15772.1s, nodes=79714938, solutions=43, incumbent=127.088116, best_bound=28.077692, gap=77.91%
+[2026-05-16 08:13:35 UTC] H1 heartbeat: stage=mip, runtime=15832.4s, nodes=80012869, solutions=43, incumbent=127.088116, best_bound=28.089781, gap=77.90%
+[2026-05-16 08:14:35 UTC] H1 heartbeat: stage=mip, runtime=15892.6s, nodes=80306006, solutions=43, incumbent=127.088116, best_bound=28.102778, gap=77.89%
+[2026-05-16 08:15:36 UTC] H1 heartbeat: stage=mip, runtime=15952.8s, nodes=80609630, solutions=43, incumbent=127.088116, best_bound=28.114970, gap=77.88%
+[2026-05-16 08:16:36 UTC] H1 heartbeat: stage=mip, runtime=16013.0s, nodes=80910729, solutions=43, incumbent=127.088116, best_bound=28.127013, gap=77.87%
+[2026-05-16 08:17:36 UTC] H1 heartbeat: stage=mip, runtime=16073.0s, nodes=81205376, solutions=43, incumbent=127.088116, best_bound=28.139288, gap=77.86%
+[2026-05-16 08:18:36 UTC] H1 heartbeat: stage=mip, runtime=16133.2s, nodes=81506572, solutions=43, incumbent=127.088116, best_bound=28.152698, gap=77.85%
+[2026-05-16 08:19:36 UTC] H1 heartbeat: stage=mip, runtime=16193.6s, nodes=81790274, solutions=43, incumbent=127.088116, best_bound=28.163504, gap=77.84%
+[2026-05-16 08:20:37 UTC] H1 heartbeat: stage=mip, runtime=16253.8s, nodes=82080287, solutions=43, incumbent=127.088116, best_bound=28.175727, gap=77.83%
+[2026-05-16 08:21:37 UTC] H1 heartbeat: stage=mip, runtime=16314.2s, nodes=82381994, solutions=43, incumbent=127.088116, best_bound=28.189618, gap=77.82%
+[2026-05-16 08:22:37 UTC] H1 heartbeat: stage=mip, runtime=16374.4s, nodes=82688131, solutions=43, incumbent=127.088116, best_bound=28.202982, gap=77.81%
+[2026-05-16 08:23:38 UTC] H1 heartbeat: stage=mip, runtime=16434.8s, nodes=82998148, solutions=43, incumbent=127.088116, best_bound=28.216021, gap=77.80%
+
+[2026-05-16 08:24:19 UTC] SSH ControlMaster shutdown
+Exit request sent.

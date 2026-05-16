@@ -47,6 +47,8 @@ class BinaryCESVM:
         mip_gap: float = 1e-4,
         threads: int = 0,
         soft_mem_limit_gb: Optional[float] = None,
+        nodefile_start: Optional[float] = None,
+        nodefile_dir: Optional[str] = None,
         verbose: bool = True,
         accuracy_mode: str = "both",
         class_weight: str = "none",
@@ -67,6 +69,8 @@ class BinaryCESVM:
             mip_gap: Gurobi MIP gap tolerance
             threads: Number of threads (0 = all available)
             soft_mem_limit_gb: Gurobi SoftMemLimit in GB (None = unlimited)
+            nodefile_start: Gurobi NodeFileStart in GB (None = default)
+            nodefile_dir: Gurobi NodeFileDir path (None = default)
             verbose: Whether to print solver output
             accuracy_mode: Which accuracy bounds to include in objective
                           ("both", "positive_only", "negative_only")
@@ -93,6 +97,8 @@ class BinaryCESVM:
         self.mip_gap = mip_gap
         self.threads = threads
         self.soft_mem_limit_gb = soft_mem_limit_gb
+        self.nodefile_start = nodefile_start
+        self.nodefile_dir = nodefile_dir
         self.verbose = verbose
         self.accuracy_mode = accuracy_mode
         self.class_weight = class_weight
@@ -182,6 +188,10 @@ class BinaryCESVM:
         model.setParam('Threads', self.threads)
         if self.soft_mem_limit_gb is not None:
             model.setParam('SoftMemLimit', float(self.soft_mem_limit_gb))
+        if self.nodefile_start is not None:
+            model.setParam('NodeFileStart', float(self.nodefile_start))
+        if self.nodefile_dir is not None:
+            model.setParam('NodeFileDir', self.nodefile_dir)
 
         # === Decision Variables ===
         # w⁺ⱼ ∈ ℝ⁺, j = 1,...,d  (positive part of weight vector)

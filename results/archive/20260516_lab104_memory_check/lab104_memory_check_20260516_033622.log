@@ -1,0 +1,130 @@
+[2026-05-16 03:36:22 UTC] Local memory check setup
+branch=experiment/lab104-cement-nodefile
+commit=871d49013c9dd102320e3d83c6c45728dec0283a
+log_path=results/archive/20260516_lab104_memory_check/lab104_memory_check_20260516_033622.log
+
+[2026-05-16 03:36:22 UTC] SSH ControlMaster check/start
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+Master running (pid=640344)
+
+[2026-05-16 03:36:24 UTC] Remote memory diagnostics
+timestamp=2026-05-16 03:36:24 UTC
+hostname=lab104-gpuboost
+
+uptime:
+ 03:36:24 up 16:57,  1 user,  load average: 0.02, 0.01, 0.00
+
+free -h:
+               total        used        free      shared  buff/cache   available
+Mem:            27Gi       1.6Gi        20Gi       1.8Mi       5.6Gi        25Gi
+Swap:          8.0Gi          0B       8.0Gi
+
+meminfo selected:
+MemTotal:       28713052 kB
+MemFree:        21676636 kB
+MemAvailable:   27075552 kB
+Buffers:           66604 kB
+Cached:          5560808 kB
+SwapCached:            0 kB
+SwapTotal:       8388604 kB
+SwapFree:        8388604 kB
+Shmem:              1848 kB
+SReclaimable:     219172 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+
+top processes by RSS:
+    PID    PPID USER     COMMAND         %MEM %CPU   RSS    VSZ     ELAPSED COMMAND
+  18721       1 root     dockerd          0.3  0.0 95816 2618344   13:23:10 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+   1548    1354 bs10081  rclone           0.2  0.0 63056 1305180   16:57:38 /usr/bin/rclone mount dropbox: /home/bs10081/Dropbox --vfs-cache-mode full --vfs-cache-max-size 50G --vfs-cache-max-age 168h --cache-dir /home/bs10081/.cache/rclone/vfs
+   1037       1 root     containerd       0.2  0.0 58112 2765500   16:57:40 /usr/bin/containerd
+    980       1 root     tailscaled       0.1  0.2 52688 1357904   16:57:40 /usr/sbin/tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/run/tailscale/tailscaled.sock --port=41641
+    976       1 root     snapd            0.1  0.0 40412 2589500   16:57:40 /snap/snapd/current/usr/lib/snapd/snapd
+   1327       1 root     cloudflared      0.1  0.2 39592 1263704   16:57:38 /usr/local/bin/cloudflared --no-autoupdate --config /etc/cloudflared/config.yml tunnel run
+   1329       1 ollama   ollama           0.1  0.0 32764 2523164   16:57:38 /usr/local/bin/ollama serve
+    556       1 root     multipathd       0.0  0.0 27456 354524    16:57:41 /sbin/multipathd -d -s
+   1064       1 root     unattended-upgr  0.0  0.0 23220 109692    16:57:40 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+    522       1 root     systemd-journal  0.0  0.0 19876  67244    16:57:41 /usr/lib/systemd/systemd-journald
+      1       0 root     systemd          0.0  0.0 14184  22864    16:57:43 /sbin/init
+    981       1 root     udisksd          0.0  0.0 13668 468964    16:57:40 /usr/libexec/udisks2/udisksd
+    898       1 systemd+ systemd-resolve  0.0  0.0 13488  21984    16:57:40 /usr/lib/systemd/systemd-resolved
+   1080       1 root     ModemManager     0.0  0.0 13100 318300    16:57:40 /usr/sbin/ModemManager
+    972       1 root     canonical-livep  0.0  0.0 13016 1236400   16:57:40 /snap/canonical-livepatch/406/canonical-livepatchd
+   1354       1 bs10081  systemd          0.0  0.0 11628  20440    16:57:38 /usr/lib/systemd/systemd --user
+  73470   12110 root     sshd             0.0  0.0 10628  14740       00:02 sshd: bs10081 [priv]
+    808       1 systemd+ systemd-network  0.0  0.0 10060  22028    16:57:40 /usr/lib/systemd/systemd-networkd
+   4536       1 root     upowerd          0.0  0.0  9708 314468    16:16:11 /usr/libexec/upowerd
+    979       1 root     systemd-logind   0.0  0.0  9136  18256    16:57:40 /usr/lib/systemd/systemd-logind
+  12110       1 root     sshd             0.0  0.0  8396  12024    13:24:05 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+    583       1 root     systemd-udevd    0.0  0.0  8360  29580    16:57:41 /usr/lib/systemd/systemd-udevd
+    968       1 polkitd  polkitd          0.0  0.0  8072 308164    16:57:40 /usr/lib/polkit-1/polkitd --no-debug
+    910       1 systemd+ systemd-timesyn  0.0  0.0  8020  91028    16:57:40 /usr/lib/systemd/systemd-timesyncd
+  73565   73470 bs10081  sshd             0.0  0.0  7204  14996       00:00 sshd: bs10081@notty
+   1067       1 syslog   rsyslogd         0.0  0.0  6744 222508    16:57:40 /usr/sbin/rsyslogd -n -iNONE
+    958       1 message+ dbus-daemon      0.0  0.0  6040  10108    16:57:40 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+   1795    1354 bs10081  dbus-daemon      0.0  0.0  5208   9296    16:57:38 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+   1374    1371 www-data nginx            0.0  0.0  4712  12928    16:57:38 nginx: worker process
+
+RSS by command:
+      93.9 MiB  nginx
+      93.6 MiB  dockerd
+      61.6 MiB  rclone
+      56.8 MiB  containerd
+      51.5 MiB  tailscaled
+      39.5 MiB  snapd
+      38.7 MiB  cloudflared
+      32.0 MiB  ollama
+      26.8 MiB  multipathd
+      25.6 MiB  sshd
+      25.2 MiB  systemd
+      22.7 MiB  unattended-upgr
+      19.4 MiB  systemd-journal
+      13.3 MiB  udisksd
+      13.2 MiB  systemd-resolve
+      12.8 MiB  ModemManager
+      12.7 MiB  canonical-livep
+      11.0 MiB  dbus-daemon
+       9.8 MiB  systemd-network
+       9.5 MiB  upowerd
+
+python/gurobi/hcesvm processes:
+1064 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+73566 zsh -c set -u     echo "timestamp=$(date -u "+%Y-%m-%d %H:%M:%S UTC")"     echo "hostname=$(hostname)"     echo     echo "uptime:"; uptime     echo     echo "free -h:"; free -h     echo     echo "meminfo selected:"; egrep "MemTotal|MemFree|MemAvailable|Buffers|Cached|SReclaimable|Shmem|SwapTotal|SwapFree" /proc/meminfo     echo     echo "top processes by RSS:"; ps -eo pid,ppid,user,comm,%mem,%cpu,rss,vsz,etime,args --sort=-rss | head -30     echo     echo "RSS by command:"; ps -eo comm=,rss= | awk "{rss[\$1]+=\$2} END {for (c in rss) printf \"%10.1f MiB  %s\\n\", rss[c]/1024, c}" | sort -nr | head -20     echo     echo "python/gurobi/hcesvm processes:"; pgrep -af "run_teaching_data_hcesvm_full|gurobi|python" || true     echo     echo "tmux sessions:"; tmux ls 2>&1 || true     echo     echo "swap:"; cat /proc/swaps
+
+tmux sessions:
+error connecting to /tmp/tmux-1000/default (No such file or directory)
+
+swap:
+Filename				Type		Size		Used		Priority
+/swap.img                               file		8388604		0		-2
+
+[2026-05-16 03:36:37 UTC] Remote docker/container memory diagnostics
+docker ps:
+NAMES     STATUS    IMAGE
+
+docker stats --no-stream:
+
+systemd memory by unit if available:
+     189.0 MiB  ollama.service
+     111.5 MiB  containerd.service
+      83.5 MiB  user@1000.service
+      80.3 MiB  snapd.service
+      65.7 MiB  snap.canonical-livepatch.canonical-livepatchd.service
+      56.8 MiB  cloudflared.service
+      56.3 MiB  tailscaled.service
+      31.8 MiB  docker.service
+      29.1 MiB  systemd-journald.service
+      23.4 MiB  systemd-udevd.service
+      22.3 MiB  unattended-upgrades.service
+      21.9 MiB  multipathd.service
+      16.0 MiB  nginx.service
+       9.0 MiB  udisks2.service
+       8.1 MiB  ModemManager.service
+       7.8 MiB  systemd-resolved.service
+       4.5 MiB  rsyslog.service
+       4.1 MiB  ssh.service
+       3.7 MiB  systemd-networkd.service
+       3.0 MiB  dbus.service
+
+[2026-05-16 03:36:37 UTC] SSH ControlMaster shutdown
+Exit request sent.

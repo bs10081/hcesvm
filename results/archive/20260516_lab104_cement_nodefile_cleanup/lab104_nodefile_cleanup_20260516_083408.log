@@ -1,0 +1,49 @@
+[2026-05-16 08:34:08 UTC] Lab104 failed nodefile cleanup
+log_path=results/archive/20260516_lab104_cement_nodefile_cleanup/lab104_nodefile_cleanup_20260516_083408.log
+ssh_auth_sock=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.XIyFUaidU4
+
+[2026-05-16 08:34:08 UTC] SSH ControlMaster check/start
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+Master running (pid=751848)
+
+[2026-05-16 08:34:10 UTC] Remote cleanup
+timestamp=2026-05-16 08:34:11 UTC
+hostname=lab104-gpuboost
+base=/home/bs10081/hcesvm-gurobi-nodefiles
+active_dir=/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+active process:
+  75560 bs10081  python          4317432  04:44:28 python examples/run_teaching_data_hcesvm_full.py --datasets cement_strength --time-limit none --threads 0 --soft-mem-limit-gb 21 --nodefile-start-gb 0.5 --nodefile-dir auto --heartbeat-interval-seconds 60
+
+disk before:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  305G  172G  64% /
+
+nodefile dirs before:
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/20260514_021746
+4.9G	/home/bs10081/hcesvm-gurobi-nodefiles/20260514_022849
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034815
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034828
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034914
+22G	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+cleanup candidates:
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034914
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034828
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034815
+
+deleting /home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034914
+deleting /home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034828
+deleting /home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034815
+
+nodefile dirs after:
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/20260514_021746
+4.9G	/home/bs10081/hcesvm-gurobi-nodefiles/20260514_022849
+22G	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+disk after:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  305G  172G  64% /
+
+[2026-05-16 08:34:11 UTC] SSH ControlMaster shutdown
+Exit request sent.
