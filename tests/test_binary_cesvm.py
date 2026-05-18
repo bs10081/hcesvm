@@ -229,6 +229,13 @@ class TestBinaryCESVMEdgeCases:
 class TestBinaryCESVMHeartbeat:
     """Test solver heartbeat configuration and formatting."""
 
+    def test_mip_focus_must_be_gurobi_supported_value(self):
+        model = BinaryCESVM(verbose=False, mip_focus=3)
+        assert model.mip_focus == 3
+
+        with pytest.raises(ValueError, match="mip_focus"):
+            BinaryCESVM(verbose=False, mip_focus=4)
+
     def test_heartbeat_interval_must_be_positive(self):
         with pytest.raises(ValueError, match="heartbeat_interval_seconds"):
             BinaryCESVM(verbose=False, heartbeat_interval_seconds=0)

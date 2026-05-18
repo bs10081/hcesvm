@@ -49,6 +49,7 @@ class BinaryCESVM:
         soft_mem_limit_gb: Optional[float] = None,
         nodefile_start: Optional[float] = None,
         nodefile_dir: Optional[str] = None,
+        mip_focus: Optional[int] = None,
         verbose: bool = True,
         accuracy_mode: str = "both",
         class_weight: str = "none",
@@ -71,6 +72,7 @@ class BinaryCESVM:
             soft_mem_limit_gb: Gurobi SoftMemLimit in GB (None = unlimited)
             nodefile_start: Gurobi NodeFileStart in GB (None = default)
             nodefile_dir: Gurobi NodeFileDir path (None = default)
+            mip_focus: Gurobi MIPFocus value 0..3 (None = default)
             verbose: Whether to print solver output
             accuracy_mode: Which accuracy bounds to include in objective
                           ("both", "positive_only", "negative_only")
@@ -99,6 +101,7 @@ class BinaryCESVM:
         self.soft_mem_limit_gb = soft_mem_limit_gb
         self.nodefile_start = nodefile_start
         self.nodefile_dir = nodefile_dir
+        self.mip_focus = mip_focus
         self.verbose = verbose
         self.accuracy_mode = accuracy_mode
         self.class_weight = class_weight
@@ -117,6 +120,12 @@ class BinaryCESVM:
             raise ValueError(
                 f"class_weight must be 'none' or 'balanced', got '{class_weight}'"
             )
+
+        if mip_focus is not None:
+            mip_focus = int(mip_focus)
+            if mip_focus not in {0, 1, 2, 3}:
+                raise ValueError("mip_focus must be one of 0, 1, 2, 3 or None")
+            self.mip_focus = mip_focus
 
         if heartbeat_interval_seconds is not None:
             heartbeat_interval_seconds = float(heartbeat_interval_seconds)
@@ -192,6 +201,8 @@ class BinaryCESVM:
             model.setParam('NodeFileStart', float(self.nodefile_start))
         if self.nodefile_dir is not None:
             model.setParam('NodeFileDir', self.nodefile_dir)
+        if self.mip_focus is not None:
+            model.setParam('MIPFocus', self.mip_focus)
 
         # === Decision Variables ===
         # w⁺ⱼ ∈ ℝ⁺, j = 1,...,d  (positive part of weight vector)

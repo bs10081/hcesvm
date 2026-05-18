@@ -129,6 +129,12 @@ def test_parse_arguments_accepts_nodefile_controls() -> None:
     assert args.nodefile_dir == "~/hcesvm-gurobi-nodefiles/cement"
 
 
+def test_parse_arguments_accepts_mip_focus() -> None:
+    args = runner.parse_arguments(["--mip-focus", "3"])
+
+    assert args.mip_focus == 3
+
+
 def test_resolve_nodefile_dir_only_creates_directory_when_enabled(tmp_path) -> None:
     disabled = runner.resolve_nodefile_dir(
         nodefile_start_gb=None,
@@ -389,6 +395,8 @@ def test_full_runner_passes_nodefile_controls_to_model(monkeypatch, tmp_path) ->
             "0.5",
             "--nodefile-dir",
             str(nodefile_dir),
+            "--mip-focus",
+            "3",
             "--heartbeat-interval-seconds",
             "none",
         ]
@@ -401,6 +409,7 @@ def test_full_runner_passes_nodefile_controls_to_model(monkeypatch, tmp_path) ->
     assert cesvm_params["threads"] == 0
     assert cesvm_params["nodefile_start"] == 0.5
     assert cesvm_params["nodefile_dir"] == str(nodefile_dir)
+    assert cesvm_params["mip_focus"] == 3
     assert nodefile_dir.is_dir()
 
     workbook_path = next((tmp_path / "docs" / "reports").glob("BOSTONHOUSING_ORD_HCESVM_TEST3_FULL_*.xlsx"))
@@ -410,3 +419,4 @@ def test_full_runner_passes_nodefile_controls_to_model(monkeypatch, tmp_path) ->
     assert metadata["hcesvm_time_limit_label"] == "none"
     assert metadata["nodefile_start_gb"] == 0.5
     assert metadata["nodefile_dir"] == str(nodefile_dir)
+    assert metadata["mip_focus"] == 3

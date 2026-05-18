@@ -217,6 +217,12 @@ def parse_arguments(argv: list[str] | None = None) -> argparse.Namespace:
         ),
     )
     parser.add_argument("--mip-gap", type=float, default=1e-4, help="Gurobi MIP gap tolerance.")
+    parser.add_argument(
+        "--mip-focus",
+        type=parse_optional_int,
+        default=None,
+        help="Gurobi MIPFocus value 0..3. Use 'none' to keep Gurobi default. Default: none.",
+    )
     parser.add_argument("--C-hyper", type=float, default=1.0, help="Binary CE-SVM slack penalty.")
     parser.add_argument("--M", type=float, default=1000.0, help="Binary CE-SVM big-M constant.")
     parser.add_argument(
@@ -700,6 +706,8 @@ def render_markdown_report(
         f"- Threads: `{run_config['threads']}`",
         f"- SoftMemLimit: `{run_config['soft_mem_limit_gb']} GB`",
         f"- Per-classifier time limit: `{run_config['time_limit_label']}`",
+        f"- MIPGap: `{run_config['mip_gap']}`",
+        f"- MIPFocus: `{run_config['mip_focus']}`",
         f"- NodeFileStart: `{run_config['nodefile_start_gb']}`",
         f"- NodeFileDir: `{run_config['nodefile_dir']}`",
         "",
@@ -786,6 +794,8 @@ def main(argv: list[str] | None = None) -> int:
         "max_classifiers_per_dataset": args.max_classifiers_per_dataset,
         "threads": args.threads,
         "soft_mem_limit_gb": args.soft_mem_limit_gb,
+        "mip_gap": args.mip_gap,
+        "mip_focus": args.mip_focus,
         "nodefile_start_gb": args.nodefile_start_gb,
         "nodefile_dir_requested": args.nodefile_dir,
         "nodefile_dir": resolved_nodefile_dir,
@@ -802,6 +812,8 @@ def main(argv: list[str] | None = None) -> int:
         print(format_hcesvm_time_limit_message(args.time_limit), file=tee)
         print(f"Threads: {args.threads}", file=tee)
         print(f"SoftMemLimit: {args.soft_mem_limit_gb} GB", file=tee)
+        print(f"MIPGap: {args.mip_gap}", file=tee)
+        print(f"MIPFocus: {args.mip_focus}", file=tee)
         print(f"NodeFileStart: {args.nodefile_start_gb}", file=tee)
         print(f"NodeFileDir: {resolved_nodefile_dir}", file=tee)
         print(f"Heartbeat interval: {args.heartbeat_interval_seconds}", file=tee)
@@ -870,6 +882,7 @@ def main(argv: list[str] | None = None) -> int:
                 "mip_gap": args.mip_gap,
                 "threads": args.threads,
                 "soft_mem_limit_gb": args.soft_mem_limit_gb,
+                "mip_focus": args.mip_focus,
                 "heartbeat_interval_seconds": args.heartbeat_interval_seconds,
                 "feat_lower_bound": args.feat_lower_bound,
                 "retain_raw_solution_arrays": False,
@@ -880,6 +893,8 @@ def main(argv: list[str] | None = None) -> int:
                 hcesvm_params["nodefile_start"] = args.nodefile_start_gb
             if resolved_nodefile_dir is not None:
                 hcesvm_params["nodefile_dir"] = resolved_nodefile_dir
+            if args.mip_focus is not None:
+                hcesvm_params["mip_focus"] = args.mip_focus
             model = HierarchicalCESVM(
                 cesvm_params=hcesvm_params,
                 strategy="test3",
@@ -1040,6 +1055,8 @@ def main(argv: list[str] | None = None) -> int:
             "threads": args.threads,
             "soft_mem_limit_gb": args.soft_mem_limit_gb,
             "time_limit_label": "none" if args.time_limit is None else str(args.time_limit),
+            "mip_gap": args.mip_gap,
+            "mip_focus": args.mip_focus,
             "nodefile_start_gb": args.nodefile_start_gb,
             "nodefile_dir": resolved_nodefile_dir,
         },
