@@ -1,0 +1,7 @@
+[2026-05-22 02:53:06 UTC] Generated Cement Strength comparison artifacts
+markdown=docs/reports/CEMENT_STRENGTH_TIME_LIMIT_MEMORY_COMPARISON_20260522_025306.md
+workbook=docs/reports/CEMENT_STRENGTH_TIME_LIMIT_MEMORY_COMPARISON_20260522_025306.xlsx
+longest_version=Software Memory Limit 版
+longest_fit_seconds=116089.661303
+longest_workbook=docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260517_142734.xlsx
+longest_log=results/archive/20260517_test3_no_time_limit_full/test3_cement_strength_20260517_142734.log

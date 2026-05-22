@@ -1,0 +1,199 @@
+
+====================================================================================================
+[2026-05-22 02:42:18 UTC] HCESVM(test3) full teaching-data validation
+====================================================================================================
+Branch: experiment/hcesvm-runner-boston-nodefile
+Commit: a50d7c08bb47e798b9c6f6f471f99f5167acbc62
+Datasets: cement_strength
+HCESVM per-classifier time limit: 60s
+Threads: 0
+SoftMemLimit: 56.0 GB
+MIPGap: 0.0001
+MIPFocus: None
+NodeFileStart: None
+NodeFileDir: None
+Heartbeat interval: 60.0
+Feature lower bound: 1e-07
+Split rule: per-dataset; see <dataset>_split_rule
+Source [cement_strength]: teaching_csv | https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Loaded CSV data: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+  Total samples: 998
+  Features: 8
+  Classes: 5 (values: [np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5)])
+  Class 1 (train): 157 samples
+  Class 2 (train): 248 samples
+  Class 3 (train): 195 samples
+  Class 4 (train): 121 samples
+  Class 5 (train): 77 samples
+  Class 1 (test): 39 samples
+  Class 2 (test): 62 samples
+  Class 3 (test): 49 samples
+  Class 4 (test): 31 samples
+  Class 5 (test): 19 samples
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260522_024218.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-22 02:42:18 UTC] cement_strength | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Split rule: Stratified train_test_split with test_size=0.2
+Features: 8
+Train counts: [157, 248, 195, 121, 77]
+Test counts: [39, 62, 49, 31, 19]
+HCESVM per-classifier time limit: 60s
+Feature lower bound: 1e-07
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 157 samples
+Class 2: 248 samples
+Class 3: 195 samples
+Class 4: 121 samples
+Class 5: 77 samples
+Features: 8
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 798
+  Positive (+1): 157 samples
+  Negative (-1): 641 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 60
+Set parameter MIPGap to value 0.0001
+[2026-05-22 02:42:19 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+Time limit reached. Using best solution found (gap: 89.87%)
+
+H1 Solution:
+  Weights (w): [-1.00642306 -0.80804695 -0.85690767 -0.68398084 -0.0114528  -0.40675518
+ -0.4590707  -2.91605317]
+  Intercept (b): 1268.019626930212
+  Objective: 132.141778
+  Selected features: 8/8
+  L1 norm: 7.148690
+  Positive accuracy lb: 0.8471
+  Negative accuracy lb: 0.9719
+
+H1 status: time_limit_with_solution (code=9), elapsed=60.11s, mem=0.044304264 GB, peak_mem=0.400717272 GB
+Checkpoint Excel saved after cement_strength / H1: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260522_024218.xlsx
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4, 5} (-1)
+============================================================
+H2 Training samples: 798
+  Positive (+1): 405 samples
+  Negative (-1): 393 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 60
+Set parameter MIPGap to value 0.0001
+[2026-05-22 02:43:19 UTC] H2 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+Time limit reached. Using best solution found (gap: 90.33%)
+
+H2 Solution:
+  Weights (w): [-0.34791878 -0.20012252 -0.16413677  0.57241679 -1.13687064 -0.0929574
+  0.07097517 -0.94485161]
+  Intercept (b): 90.57784038514842
+  Objective: 313.525882
+  Selected features: 8/8
+  L1 norm: 3.530250
+  Positive accuracy lb: 0.8864
+  Negative accuracy lb: 0.8550
+
+H2 status: time_limit_with_solution (code=9), elapsed=60.13s, mem=0.072686168 GB, peak_mem=0.519900376 GB
+Checkpoint Excel saved after cement_strength / H2: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260522_024218.xlsx
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4, 5} (-1)
+============================================================
+H3 Training samples: 798
+  Positive (+1): 600 samples
+  Negative (-1): 198 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 60
+Set parameter MIPGap to value 0.0001
+[2026-05-22 02:44:19 UTC] H3 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+Time limit reached. Using best solution found (gap: 88.87%)
+
+H3 Solution:
+  Weights (w): [-0.59197648 -0.56111325 -0.58307905  1.00529736  0.77146373 -0.14457597
+ -0.14395434 -1.08603404]
+  Intercept (b): 399.96241260804965
+  Objective: 314.882472
+  Selected features: 8/8
+  L1 norm: 4.887494
+  Positive accuracy lb: 0.9317
+  Negative accuracy lb: 0.6869
+
+H3 status: time_limit_with_solution (code=9), elapsed=60.14s, mem=0.035576744 GB, peak_mem=0.583331256 GB
+Checkpoint Excel saved after cement_strength / H3: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260522_024218.xlsx
+============================================================
+Training H4: Class {1, 2, 3, 4} (+1) vs Class {5} (-1)
+============================================================
+H4 Training samples: 798
+  Positive (+1): 721 samples
+  Negative (-1): 77 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 60
+Set parameter MIPGap to value 0.0001
+[2026-05-22 02:45:19 UTC] H4 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-22 02:46:19 UTC] H4 heartbeat: stage=mip, runtime=60.0s, nodes=40023, solutions=23, incumbent=107.786428, best_bound=27.473305, gap=74.51%
+Time limit reached. Using best solution found (gap: 74.48%)
+
+H4 Solution:
+  Weights (w): [-0.87319477 -0.91419736 -0.87579604  0.54471766  1.44375347 -0.40576387
+ -0.45190263 -0.28690848]
+  Intercept (b): 1113.7980483890449
+  Objective: 107.786428
+  Selected features: 8/8
+  L1 norm: 5.796234
+  Positive accuracy lb: 0.9903
+  Negative accuracy lb: 0.6494
+
+H4 status: time_limit_with_solution (code=9), elapsed=60.12s, mem=0.064082856 GB, peak_mem=0.39155584 GB
+Checkpoint Excel saved after cement_strength / H4: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260522_024218.xlsx
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.6792
+  Class 1: 0.8471 (157 samples)
+  Class 2: 0.7460 (248 samples)
+  Class 3: 0.5692 (195 samples)
+  Class 4: 0.5207 (121 samples)
+  Class 5: 0.6494 (77 samples)
+Testing total accuracy: 0.6450
+  Class 1: 0.8462 (39 samples)
+  Class 2: 0.7742 (62 samples)
+  Class 3: 0.5306 (49 samples)
+  Class 4: 0.4194 (31 samples)
+  Class 5: 0.4737 (19 samples)
+Checkpoint Excel saved after cement_strength finalization: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260522_024218.xlsx
+
+====================================================================================================
+[2026-05-22 02:46:19 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260522_test3_teaching_data_full/test3_cement_strength_20260522_024218.log
+Excel saved to: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260522_024218.xlsx
+Markdown report target: /home/bs10081/Developer/hcesvm/docs/reports/CEMENT_STRENGTH_HCESVM_TEST3_FULL_20260522_024218.md
