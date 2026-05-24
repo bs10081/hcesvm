@@ -201,4 +201,3 @@ def test_run_manifest_experiment_runs_svor_then_npsvor_and_writes_artifacts(
     assert "Train counts: `[649, 642, 497, 28] -> [286, 283, 219, 12]`" in markdown
     assert "Test counts: `[162, 161, 124, 7] -> [71, 71, 55, 3]`" in markdown
     assert "Minority-only explanation still looks plausible on this exact split" in markdown
-
