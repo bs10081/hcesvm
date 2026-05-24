@@ -1,0 +1,198 @@
+name: branch-hygiene
+
+on:
+  schedule:
+    - cron: "41 18 * * 0"
+  workflow_dispatch:
+    inputs:
+      stale_days:
+        description: Number of inactive days before a branch or PR is reported
+        required: false
+        default: "45"
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  report:
+    name: branch-hygiene-report
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Build branch hygiene report
+        uses: actions/github-script@v7
+        env:
+          STALE_DAYS: ${{ inputs.stale_days || '45' }}
+        with:
+          script: |
+            const fs = require("fs");
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const staleDays = Number(process.env.STALE_DAYS || "45");
+            const now = new Date();
+
+            const repoInfo = await github.rest.repos.get({ owner, repo });
+            const defaultBranch = repoInfo.data.default_branch;
+
+            const branches = await github.paginate(github.rest.repos.listBranches, {
+              owner,
+              repo,
+              per_page: 100,
+            });
+
+            const openPulls = await github.paginate(github.rest.pulls.list, {
+              owner,
+              repo,
+              state: "open",
+              per_page: 100,
+            });
+
+            const openPullByHeadRef = new Map();
+            for (const pull of openPulls) {
+              if (pull.head.repo && pull.head.repo.full_name === `${owner}/${repo}`) {
+                openPullByHeadRef.set(pull.head.ref, pull);
+              }
+            }
+
+            function ageDays(date) {
+              return Math.floor((now.getTime() - date.getTime()) / (24 * 60 * 60 * 1000));
+            }
+
+            function escapeCell(value) {
+              return String(value).replace(/\|/g, "\\|");
+            }
+
+            function table(headers, rows) {
+              const header = `| ${headers.join(" | ")} |`;
+              const separator = `| ${headers.map(() => "---").join(" | ")} |`;
+              if (rows.length === 0) {
+                return `${header}\n${separator}\n| None | ${headers.slice(1).map(() => "").join(" | ")} |`;
+              }
+              const body = rows
+                .map((row) => `| ${row.map((cell) => escapeCell(cell)).join(" | ")} |`)
+                .join("\n");
+              return `${header}\n${separator}\n${body}`;
+            }
+
+            const branchRows = [];
+
+            for (const branch of branches) {
+              const commit = await github.rest.repos.getCommit({
+                owner,
+                repo,
+                ref: branch.commit.sha,
+              });
+              const committedAt = new Date(commit.data.commit.committer.date);
+              const branchAgeDays = ageDays(committedAt);
+
+              let mergedIntoDefault = false;
+              if (branch.name !== defaultBranch) {
+                const comparison = await github.rest.repos.compareCommitsWithBasehead({
+                  owner,
+                  repo,
+                  basehead: `${defaultBranch}...${branch.name}`,
+                });
+                mergedIntoDefault = ["behind", "identical"].includes(comparison.data.status);
+              }
+
+              branchRows.push({
+                name: branch.name,
+                protected: branch.protected,
+                sha: branch.commit.sha.slice(0, 7),
+                committedAt,
+                ageDays: branchAgeDays,
+                openPull: openPullByHeadRef.get(branch.name),
+                mergedIntoDefault,
+              });
+            }
+
+            const mergedBranches = branchRows
+              .filter((branch) => branch.name !== defaultBranch && branch.mergedIntoDefault)
+              .sort((a, b) => b.committedAt - a.committedAt)
+              .map((branch) => [
+                branch.name,
+                branch.sha,
+                branch.committedAt.toISOString(),
+                `${branch.ageDays}`,
+                branch.protected ? "yes" : "no",
+              ]);
+
+            const staleBranches = branchRows
+              .filter((branch) => {
+                return (
+                  branch.name !== defaultBranch &&
+                  !branch.openPull &&
+                  branch.ageDays >= staleDays
+                );
+              })
+              .sort((a, b) => b.ageDays - a.ageDays)
+              .map((branch) => [
+                branch.name,
+                branch.sha,
+                branch.committedAt.toISOString(),
+                `${branch.ageDays}`,
+                branch.protected ? "yes" : "no",
+              ]);
+
+            const inactivePulls = openPulls
+              .map((pull) => {
+                const updatedAt = new Date(pull.updated_at);
+                return {
+                  number: pull.number,
+                  title: pull.title,
+                  head: pull.head.label,
+                  updatedAt,
+                  ageDays: ageDays(updatedAt),
+                };
+              })
+              .filter((pull) => pull.ageDays >= staleDays)
+              .sort((a, b) => b.ageDays - a.ageDays)
+              .map((pull) => [
+                `#${pull.number}`,
+                pull.title,
+                pull.head,
+                pull.updatedAt.toISOString(),
+                `${pull.ageDays}`,
+              ]);
+
+            const generatedAt = now.toISOString();
+            const report = [
+              "# Branch Hygiene Report",
+              "",
+              `Generated at: ${generatedAt}`,
+              `Repository: ${owner}/${repo}`,
+              `Default branch: ${defaultBranch}`,
+              `Stale threshold: ${staleDays} days`,
+              "",
+              "This workflow is report-only. It does not delete branches, force-push, or mutate repository state.",
+              "",
+              "## Merged Branches",
+              "",
+              table(["Branch", "Head SHA", "Last commit", "Age days", "Protected"], mergedBranches),
+              "",
+              "## Stale Branches Without Open PRs",
+              "",
+              table(["Branch", "Head SHA", "Last commit", "Age days", "Protected"], staleBranches),
+              "",
+              "## Inactive Open PRs",
+              "",
+              table(["PR", "Title", "Head", "Last update", "Age days"], inactivePulls),
+              "",
+            ].join("\n");
+
+            fs.writeFileSync("branch-hygiene-report.md", report);
+            await core.summary.addRaw(report).write();
+
+      - name: Upload branch hygiene report
+        uses: actions/upload-artifact@v4
+        with:
+          name: branch-hygiene-report
+          path: branch-hygiene-report.md
+          if-no-files-found: error
