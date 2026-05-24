@@ -5,6 +5,54 @@ import numpy as np
 from typing import Dict
 
 
+def evaluate_multiclass(
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    n_classes: int = None
+) -> Dict:
+    """Evaluate multi-class classifier performance (supports N classes).
+
+    Args:
+        y_true: True labels (1, 2, ..., N)
+        y_pred: Predicted labels (1, 2, ..., N)
+        n_classes: Number of classes (auto-detect if None)
+
+    Returns:
+        Dictionary with various metrics
+    """
+    if n_classes is None:
+        n_classes = max(int(y_true.max()), int(y_pred.max()))
+
+    total_acc = calculate_accuracy(y_true, y_pred)
+
+    # Per-class accuracy
+    results = {
+        'total_accuracy': total_acc,
+        'n_samples': len(y_true),
+    }
+
+    for k in range(1, n_classes + 1):
+        mask = y_true == k
+        if np.sum(mask) > 0:
+            class_acc = np.mean(y_pred[mask] == k)
+            results[f'class_{k}_accuracy'] = class_acc
+            results[f'class_{k}_count'] = int(np.sum(mask))
+        else:
+            results[f'class_{k}_accuracy'] = np.nan
+            results[f'class_{k}_count'] = 0
+
+    # Confusion matrix
+    confusion = np.zeros((n_classes, n_classes), dtype=int)
+    for true_class in range(1, n_classes + 1):
+        for pred_class in range(1, n_classes + 1):
+            mask = (y_true == true_class) & (y_pred == pred_class)
+            confusion[true_class-1, pred_class-1] = np.sum(mask)
+
+    results['confusion_matrix'] = confusion
+
+    return results
+
+
 def calculate_accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """Calculate overall accuracy.
     

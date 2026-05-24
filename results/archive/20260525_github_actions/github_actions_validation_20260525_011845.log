@@ -1,0 +1,62 @@
+[2026-05-25 01:18:45 Asia/Taipei] GitHub Actions / branch maintenance validation
+
+Repository: /home/bs10081/Developer/hcesvm
+Branch: experiment/hcesvm-runner-boston-nodefile
+
+Files added:
+- .github/workflows/ci.yml
+- .github/workflows/dependency-review.yml
+- .github/workflows/codeql.yml
+- .github/workflows/branch-hygiene.yml
+- .github/dependabot.yml
+
+Files updated:
+- uv.lock
+
+Remote setting updated:
+- gh api -X PATCH repos/bs10081/hcesvm -f delete_branch_on_merge=true
+- Verified delete_branch_on_merge=true
+
+Remote setting still pending:
+- main branch protection is not enabled yet.
+- Required checks should be selected after the first workflow run exposes the actual GitHub check names.
+
+Validation commands and results:
+
+1. source .venv/bin/activate && uv sync --locked --dev
+   Result: passed
+   Output:
+   warning: The `tool.uv.dev-dependencies` field (used in `pyproject.toml`) is deprecated and will be removed in a future release; use `dependency-groups.dev` instead
+   Resolved 29 packages in 0.78ms
+   Checked 17 packages in 0.36ms
+
+2. source .venv/bin/activate && pytest tests -q
+   Result: passed
+   Output:
+   85 passed in 2.30s
+
+3. source .venv/bin/activate && python -m hcesvm.ordinal_cli --help >/tmp/hcesvm_ordinal_help.txt
+   Result: passed
+
+4. source .venv/bin/activate && python -m hcesvm.skill_1000_baselines_runner --help >/tmp/hcesvm_skill_help.txt
+   Result: passed
+
+5. ruby -e 'require "yaml"; Dir[".github/**/*.yml"].sort.each { |p| YAML.load_file(p); puts "ok #{p}" }'
+   Result: passed
+   Output:
+   ok .github/dependabot.yml
+   ok .github/workflows/branch-hygiene.yml
+   ok .github/workflows/ci.yml
+   ok .github/workflows/codeql.yml
+   ok .github/workflows/dependency-review.yml
+
+6. rg -n "[[:blank:]]$" .github || true
+   Result: passed, no trailing whitespace found
+
+7. git diff --check -- uv.lock
+   Result: passed
+
+Notes:
+- The initial locked sync failed because uv.lock was stale relative to pyproject.toml and omitted scikit-learn resolution metadata. Running uv lock updated uv.lock, after which locked sync passed.
+- actionlint is not installed on this machine, so workflow validation used YAML parsing plus local execution of the CI shell commands.
+- No formal Gurobi experiment runner was added to required CI.

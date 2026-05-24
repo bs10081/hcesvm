@@ -2,7 +2,7 @@
 
 __version__ = "0.1.0"
 
-from .models import BinaryCESVM, HierarchicalCESVM
+from .models import BinaryCESVM, HierarchicalCESVM, NPSVORQP, SVORImplicitQP
 from .config import (
     DEFAULT_CESVM_PARAMS,
     FEATURE_SELECTION_PARAMS,
@@ -13,6 +13,8 @@ from .config import (
 __all__ = [
     'BinaryCESVM',
     'HierarchicalCESVM',
+    'SVORImplicitQP',
+    'NPSVORQP',
     'DEFAULT_CESVM_PARAMS',
     'FEATURE_SELECTION_PARAMS',
     'HIERARCHICAL_CONFIG',

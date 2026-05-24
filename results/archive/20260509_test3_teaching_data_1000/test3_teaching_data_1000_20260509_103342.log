@@ -1,0 +1,73 @@
+
+====================================================================================================
+[2026-05-09 10:33:42 UTC] HCESVM(test3) derived 1000-sample validation
+====================================================================================================
+Branch: codex/model-trace
+Commit: e56b41323472960b230159f0f1cc36d1e8cc85d0
+Datasets: skill_method3_4class_1000
+HCESVM per-classifier time limit: 180s
+Threads: 20
+SoftMemLimit: 56.0 GB
+Heartbeat interval: None
+Feature lower bound: 1e-12
+Checkpoint Excel saved after skill_method3_4class_1000 dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103342.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-09 10:33:43 UTC] skill_method3_4class_1000 | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source dataset: skill
+Train counts: [649, 642, 497, 28] -> [286, 283, 219, 12]
+Test counts: [162, 161, 124, 7] -> [71, 71, 55, 3]
+HCESVM per-classifier time limit: 180s
+Feature lower bound: 1e-12
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 286 samples
+Class 2: 283 samples
+Class 3: 219 samples
+Class 4: 12 samples
+Features: 18
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4} (-1)
+============================================================
+H1 Training samples: 800
+  Positive (+1): 286 samples
+  Negative (-1): 514 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 180
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 95.71%)
+
+H1 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 571.998054
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+H1 status: time_limit_with_solution (code=9), elapsed=180.14s
+Checkpoint Excel saved after skill_method3_4class_1000 / H1: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103342.xlsx
+Stopping after H1 due to after_classifier callback.
+
+============================================================
+Training Stopped Early!
+Completed classifiers: 1/3
+Stop reason: after_classifier callback requested stop after h1
+============================================================
+Run stopped before all classifiers completed: requested stop after 1 classifiers
+Checkpoint Excel saved after skill_method3_4class_1000 finalization: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103342.xlsx
+
+====================================================================================================
+[2026-05-09 10:36:43 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260509_test3_teaching_data_1000/test3_teaching_data_1000_20260509_103342.log
+Excel saved to: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260509_103342.xlsx

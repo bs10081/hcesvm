@@ -1,0 +1,38 @@
+[2026-05-16 08:34:30 UTC] Lab104 stale inactive nodefile cleanup
+log_path=results/archive/20260516_lab104_cement_nodefile_cleanup/lab104_stale_nodefile_cleanup_20260516_083430.log
+
+[2026-05-16 08:34:30 UTC] SSH ControlMaster check/start
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+Master running (pid=751975)
+
+[2026-05-16 08:34:32 UTC] Remote stale cleanup
+timestamp=2026-05-16 08:34:32 UTC
+active_dir=/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+  75560 bs10081  python          4317432  04:44:49 python examples/run_teaching_data_hcesvm_full.py --datasets cement_strength --time-limit none --threads 0 --soft-mem-limit-gb 21 --nodefile-start-gb 0.5 --nodefile-dir auto --heartbeat-interval-seconds 60
+
+disk before:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  305G  172G  64% /
+
+nodefile dirs before:
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/20260514_021746
+4.9G	/home/bs10081/hcesvm-gurobi-nodefiles/20260514_022849
+22G	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+inactive cleanup candidates:
+4.0K	/home/bs10081/hcesvm-gurobi-nodefiles/20260514_021746
+4.9G	/home/bs10081/hcesvm-gurobi-nodefiles/20260514_022849
+
+deleting /home/bs10081/hcesvm-gurobi-nodefiles/20260514_021746
+deleting /home/bs10081/hcesvm-gurobi-nodefiles/20260514_022849
+
+nodefile dirs after:
+22G	/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+disk after:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  300G  177G  63% /
+
+[2026-05-16 08:34:32 UTC] SSH ControlMaster shutdown
+Exit request sent.

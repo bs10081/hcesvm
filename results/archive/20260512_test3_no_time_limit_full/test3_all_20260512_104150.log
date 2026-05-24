@@ -1,0 +1,20 @@
+
+====================================================================================================
+[2026-05-12 10:41:50 UTC] HCESVM(test3) full teaching-data validation
+====================================================================================================
+Branch: codex/model-trace
+Commit: e56b41323472960b230159f0f1cc36d1e8cc85d0
+Datasets: bostonhousing_ord, hayes_roth, car_evaluation, balance, thyroid, cement_strength, stock_ord
+HCESVM per-classifier time limit: none
+Threads: 2
+SoftMemLimit: 18.0 GB
+Heartbeat interval: None
+Feature lower bound: 1e-07
+Dataset source preflight failed. Missing source files:
+- hayes_roth:
+  - /home/bs10081/Developer/NSVORA/Archive/hayes-roth_split.xlsx
+  - /home/bs10081/Developer/NSVORA/Archive/hayes_roth_split.xlsx
+- car_evaluation:
+  - /home/bs10081/Developer/NSVORA/datasets/primary/car_evaluation/car_evaluation_split.xlsx
+- thyroid:
+  - /home/bs10081/Developer/NSVORA/Archive/thyroid_split.xlsx

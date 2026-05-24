@@ -1,0 +1,377 @@
+
+====================================================================================================
+[2026-05-07 08:26:09 UTC] HCESVM(test3) derived 1000-sample validation
+====================================================================================================
+Branch: codex/svor-npsvor-multiclass-eval
+Commit: b32fe03b3554ad87e3a40ee3d886641cda5240d5
+Datasets: skill_method3_4class_1000, californiahousing_1000
+Total HCESVM time budget per dataset: 1800s
+Threads: 20
+SoftMemLimit: 56.0 GB
+Heartbeat interval: 60.0
+Checkpoint Excel saved after skill_method3_4class_1000 dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-07 08:26:09 UTC] skill_method3_4class_1000 | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source dataset: skill
+Train counts: [649, 642, 497, 28] -> [286, 283, 219, 12]
+Test counts: [162, 161, 124, 7] -> [71, 71, 55, 3]
+Total HCESVM time budget: 1800s; per binary classifier time limit: 600s across 3 classifiers
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 286 samples
+Class 2: 283 samples
+Class 3: 219 samples
+Class 4: 12 samples
+Features: 18
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4} (-1)
+============================================================
+H1 Training samples: 800
+  Positive (+1): 286 samples
+  Negative (-1): 514 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 600
+Set parameter MIPGap to value 0.0001
+[2026-05-07 08:26:09 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-07 08:27:09 UTC] H1 heartbeat: stage=mip, runtime=60.1s, nodes=13058, solutions=3, incumbent=799.994558, best_bound=8.074626, gap=98.99%
+[2026-05-07 08:28:09 UTC] H1 heartbeat: stage=mip, runtime=120.3s, nodes=40221, solutions=21, incumbent=619.061670, best_bound=17.909128, gap=97.11%
+[2026-05-07 08:29:11 UTC] H1 heartbeat: stage=mip, runtime=181.3s, nodes=72612, solutions=24, incumbent=571.998054, best_bound=24.497756, gap=95.72%
+[2026-05-07 08:30:12 UTC] H1 heartbeat: stage=mip, runtime=242.3s, nodes=103001, solutions=24, incumbent=571.998054, best_bound=25.778348, gap=95.49%
+[2026-05-07 08:31:13 UTC] H1 heartbeat: stage=mip, runtime=304.0s, nodes=147248, solutions=24, incumbent=571.998054, best_bound=28.043250, gap=95.10%
+[2026-05-07 08:32:16 UTC] H1 heartbeat: stage=mip, runtime=366.5s, nodes=187652, solutions=24, incumbent=571.998054, best_bound=29.039759, gap=94.92%
+[2026-05-07 08:33:17 UTC] H1 heartbeat: stage=mip, runtime=427.3s, nodes=232976, solutions=24, incumbent=571.998054, best_bound=29.736345, gap=94.80%
+[2026-05-07 08:34:19 UTC] H1 heartbeat: stage=mip, runtime=489.7s, nodes=263590, solutions=24, incumbent=571.998054, best_bound=30.325138, gap=94.70%
+[2026-05-07 08:35:21 UTC] H1 heartbeat: stage=mip, runtime=551.7s, nodes=294822, solutions=24, incumbent=571.998054, best_bound=30.862451, gap=94.60%
+Time limit reached. Using best solution found (gap: 94.56%)
+
+H1 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 571.998054
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+H1 status: time_limit_with_solution (code=9), elapsed=600.30s
+Checkpoint Excel saved after skill_method3_4class_1000 / H1: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4} (-1)
+============================================================
+H2 Training samples: 800
+  Positive (+1): 569 samples
+  Negative (-1): 231 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 600
+Set parameter MIPGap to value 0.0001
+[2026-05-07 08:36:10 UTC] H2 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-07 08:37:10 UTC] H2 heartbeat: stage=mip, runtime=60.2s, nodes=22842, solutions=32, incumbent=461.998243, best_bound=11.446492, gap=97.52%
+[2026-05-07 08:38:10 UTC] H2 heartbeat: stage=mip, runtime=120.3s, nodes=50012, solutions=32, incumbent=461.998243, best_bound=13.159218, gap=97.15%
+[2026-05-07 08:39:11 UTC] H2 heartbeat: stage=mip, runtime=181.5s, nodes=80529, solutions=32, incumbent=461.998243, best_bound=14.089837, gap=96.95%
+[2026-05-07 08:40:12 UTC] H2 heartbeat: stage=mip, runtime=242.7s, nodes=144501, solutions=32, incumbent=461.998243, best_bound=14.089837, gap=96.95%
+[2026-05-07 08:41:12 UTC] H2 heartbeat: stage=mip, runtime=302.8s, nodes=247466, solutions=32, incumbent=461.998243, best_bound=15.009084, gap=96.75%
+[2026-05-07 08:42:13 UTC] H2 heartbeat: stage=mip, runtime=363.2s, nodes=357032, solutions=32, incumbent=461.998243, best_bound=15.983849, gap=96.54%
+[2026-05-07 08:43:15 UTC] H2 heartbeat: stage=mip, runtime=426.0s, nodes=436302, solutions=32, incumbent=461.998243, best_bound=16.413203, gap=96.45%
+[2026-05-07 08:44:16 UTC] H2 heartbeat: stage=mip, runtime=486.4s, nodes=534311, solutions=32, incumbent=461.998243, best_bound=16.865089, gap=96.35%
+[2026-05-07 08:45:17 UTC] H2 heartbeat: stage=mip, runtime=547.6s, nodes=636201, solutions=32, incumbent=461.998243, best_bound=17.297768, gap=96.26%
+Time limit reached. Using best solution found (gap: 96.19%)
+
+H2 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 461.998243
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+H2 status: time_limit_with_solution (code=9), elapsed=600.58s
+Checkpoint Excel saved after skill_method3_4class_1000 / H2: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4} (-1)
+============================================================
+H3 Training samples: 800
+  Positive (+1): 788 samples
+  Negative (-1): 12 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 600
+Set parameter MIPGap to value 0.0001
+[2026-05-07 08:46:10 UTC] H3 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-07 08:47:12 UTC] H3 heartbeat: stage=mip, runtime=61.4s, nodes=20647, solutions=4, incumbent=23.998731, best_bound=11.608860, gap=51.63%
+[2026-05-07 08:48:13 UTC] H3 heartbeat: stage=mip, runtime=122.7s, nodes=47112, solutions=4, incumbent=23.998731, best_bound=13.881290, gap=42.16%
+[2026-05-07 08:49:16 UTC] H3 heartbeat: stage=mip, runtime=186.2s, nodes=80784, solutions=4, incumbent=23.998731, best_bound=15.428551, gap=35.71%
+[2026-05-07 08:50:19 UTC] H3 heartbeat: stage=mip, runtime=248.8s, nodes=116815, solutions=4, incumbent=23.998731, best_bound=16.703782, gap=30.40%
+[2026-05-07 08:51:19 UTC] H3 heartbeat: stage=mip, runtime=309.3s, nodes=151683, solutions=4, incumbent=23.998731, best_bound=17.558966, gap=26.83%
+[2026-05-07 08:52:22 UTC] H3 heartbeat: stage=mip, runtime=371.8s, nodes=193519, solutions=4, incumbent=23.998731, best_bound=18.444975, gap=23.14%
+[2026-05-07 08:53:22 UTC] H3 heartbeat: stage=mip, runtime=432.3s, nodes=232432, solutions=4, incumbent=23.998731, best_bound=19.131454, gap=20.28%
+[2026-05-07 08:54:23 UTC] H3 heartbeat: stage=mip, runtime=493.1s, nodes=276366, solutions=4, incumbent=23.998731, best_bound=19.890698, gap=17.12%
+[2026-05-07 08:55:24 UTC] H3 heartbeat: stage=mip, runtime=553.9s, nodes=318895, solutions=4, incumbent=23.998731, best_bound=20.665732, gap=13.89%
+Time limit reached. Using best solution found (gap: 9.73%)
+
+H3 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 23.998731
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+H3 status: time_limit_with_solution (code=9), elapsed=600.18s
+Checkpoint Excel saved after skill_method3_4class_1000 / H3: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.3538
+  Class 1: 0.0000 (286 samples)
+  Class 2: 1.0000 (283 samples)
+  Class 3: 0.0000 (219 samples)
+  Class 4: 0.0000 (12 samples)
+Testing total accuracy: 0.3550
+  Class 1: 0.0000 (71 samples)
+  Class 2: 1.0000 (71 samples)
+  Class 3: 0.0000 (55 samples)
+  Class 4: 0.0000 (3 samples)
+Checkpoint Excel saved after skill_method3_4class_1000 finalization: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+Checkpoint Excel saved after californiahousing_1000 dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-07 08:56:11 UTC] californiahousing_1000 | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source dataset: californiahousing
+Train counts: [2595, 5476, 4059, 2040, 1103, 1239] -> [126, 265, 197, 99, 53, 60]
+Test counts: [649, 1369, 1015, 509, 276, 310] -> [32, 66, 49, 25, 13, 15]
+Total HCESVM time budget: 1800s; per binary classifier time limit: 360s across 5 classifiers
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 126 samples
+Class 2: 265 samples
+Class 3: 197 samples
+Class 4: 99 samples
+Class 5: 53 samples
+Class 6: 60 samples
+Features: 8
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5, 6} (-1)
+============================================================
+H1 Training samples: 800
+  Positive (+1): 126 samples
+  Negative (-1): 674 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+[2026-05-07 08:56:11 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-07 08:57:11 UTC] H1 heartbeat: stage=mip, runtime=60.6s, nodes=41669, solutions=4, incumbent=251.998516, best_bound=16.944198, gap=93.28%
+[2026-05-07 08:58:12 UTC] H1 heartbeat: stage=mip, runtime=120.9s, nodes=78630, solutions=4, incumbent=251.998516, best_bound=29.225407, gap=88.40%
+[2026-05-07 08:59:13 UTC] H1 heartbeat: stage=mip, runtime=182.5s, nodes=114903, solutions=4, incumbent=251.998516, best_bound=31.846163, gap=87.36%
+[2026-05-07 09:00:16 UTC] H1 heartbeat: stage=mip, runtime=245.4s, nodes=147798, solutions=4, incumbent=251.998516, best_bound=33.913877, gap=86.54%
+[2026-05-07 09:01:19 UTC] H1 heartbeat: stage=mip, runtime=307.9s, nodes=179884, solutions=4, incumbent=251.998516, best_bound=35.568911, gap=85.89%
+Time limit reached. Using best solution found (gap: 85.35%)
+
+H1 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 251.998516
+  Selected features: 8/8
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+H1 status: time_limit_with_solution (code=9), elapsed=360.19s
+Checkpoint Excel saved after californiahousing_1000 / H1: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4, 5, 6} (-1)
+============================================================
+H2 Training samples: 800
+  Positive (+1): 391 samples
+  Negative (-1): 409 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+[2026-05-07 09:02:11 UTC] H2 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-07 09:03:11 UTC] H2 heartbeat: stage=mip, runtime=60.1s, nodes=42447, solutions=45, incumbent=463.018984, best_bound=11.511822, gap=97.51%
+[2026-05-07 09:04:11 UTC] H2 heartbeat: stage=mip, runtime=120.1s, nodes=139177, solutions=57, incumbent=457.663008, best_bound=12.972604, gap=97.17%
+[2026-05-07 09:05:12 UTC] H2 heartbeat: stage=mip, runtime=180.8s, nodes=284307, solutions=60, incumbent=457.663002, best_bound=12.972604, gap=97.17%
+[2026-05-07 09:06:12 UTC] H2 heartbeat: stage=mip, runtime=240.8s, nodes=473272, solutions=61, incumbent=457.662947, best_bound=12.972604, gap=97.17%
+[2026-05-07 09:07:12 UTC] H2 heartbeat: stage=mip, runtime=301.1s, nodes=643743, solutions=61, incumbent=457.662947, best_bound=13.386353, gap=97.08%
+Time limit reached. Using best solution found (gap: 96.94%)
+
+H2 Solution:
+  Weights (w): [ 5.87786486e+00  6.25472501e+00  6.09348946e-02  3.62624895e-03
+ -3.29655348e-02  2.24688440e-03  1.18162356e-02 -4.42293398e+00]
+  Intercept (b): 492.2977546977125
+  Objective: 457.662947
+  Selected features: 8/8
+  L1 norm: 16.667114
+  Positive accuracy lb: 0.7545
+  Negative accuracy lb: 0.8875
+
+H2 status: time_limit_with_solution (code=9), elapsed=360.54s
+Checkpoint Excel saved after californiahousing_1000 / H2: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4, 5, 6} (-1)
+============================================================
+H3 Training samples: 800
+  Positive (+1): 588 samples
+  Negative (-1): 212 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+[2026-05-07 09:08:12 UTC] H3 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-07 09:09:12 UTC] H3 heartbeat: stage=mip, runtime=60.4s, nodes=52279, solutions=47, incumbent=315.994226, best_bound=12.752775, gap=95.96%
+[2026-05-07 09:10:12 UTC] H3 heartbeat: stage=mip, runtime=120.7s, nodes=116543, solutions=70, incumbent=289.219248, best_bound=13.156932, gap=95.45%
+[2026-05-07 09:11:13 UTC] H3 heartbeat: stage=mip, runtime=181.1s, nodes=246998, solutions=81, incumbent=265.977106, best_bound=13.156932, gap=95.05%
+[2026-05-07 09:12:13 UTC] H3 heartbeat: stage=mip, runtime=241.6s, nodes=390153, solutions=90, incumbent=263.188971, best_bound=13.156932, gap=95.00%
+[2026-05-07 09:13:14 UTC] H3 heartbeat: stage=mip, runtime=302.3s, nodes=525334, solutions=93, incumbent=262.896602, best_bound=13.309771, gap=94.94%
+Time limit reached. Using best solution found (gap: 94.65%)
+
+H3 Solution:
+  Weights (w): [ 3.37600341e+00  4.01751814e+00 -2.53777319e-01 -4.80740997e-03
+  2.44355137e-03  1.97329809e-02 -3.34249807e-02 -5.19399327e+00]
+  Intercept (b): 298.34641098079413
+  Objective: 262.896602
+  Selected features: 8/8
+  L1 norm: 12.901701
+  Positive accuracy lb: 0.9575
+  Negative accuracy lb: 0.7358
+
+H3 status: time_limit_with_solution (code=9), elapsed=360.46s
+Checkpoint Excel saved after californiahousing_1000 / H3: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+============================================================
+Training H4: Class {1, 2, 3, 4} (+1) vs Class {5, 6} (-1)
+============================================================
+H4 Training samples: 800
+  Positive (+1): 687 samples
+  Negative (-1): 113 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+[2026-05-07 09:14:12 UTC] H4 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-07 09:15:12 UTC] H4 heartbeat: stage=mip, runtime=60.5s, nodes=36197, solutions=4, incumbent=225.998544, best_bound=19.369830, gap=91.43%
+[2026-05-07 09:16:13 UTC] H4 heartbeat: stage=mip, runtime=120.5s, nodes=69804, solutions=4, incumbent=225.998544, best_bound=34.001703, gap=84.95%
+[2026-05-07 09:17:13 UTC] H4 heartbeat: stage=mip, runtime=181.3s, nodes=79679, solutions=4, incumbent=225.998544, best_bound=39.476034, gap=82.53%
+[2026-05-07 09:18:15 UTC] H4 heartbeat: stage=mip, runtime=242.6s, nodes=110639, solutions=4, incumbent=225.998544, best_bound=42.044681, gap=81.40%
+[2026-05-07 09:19:16 UTC] H4 heartbeat: stage=mip, runtime=304.2s, nodes=137176, solutions=4, incumbent=225.998544, best_bound=43.015012, gap=80.97%
+Time limit reached. Using best solution found (gap: 78.76%)
+
+H4 Solution:
+  Weights (w): [ 9.94690640e-01  1.60717388e+00 -3.22915497e-01 -6.43078809e-03
+  5.60253326e-02  3.56520283e-02 -1.12369388e-01 -6.73644219e+00]
+  Intercept (b): 116.69234427970176
+  Objective: 203.865947
+  Selected features: 8/8
+  L1 norm: 9.871700
+  Positive accuracy lb: 0.9927
+  Negative accuracy lb: 0.4867
+
+H4 status: time_limit_with_solution (code=9), elapsed=360.21s
+Checkpoint Excel saved after californiahousing_1000 / H4: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+============================================================
+Training H5: Class {1, 2, 3, 4, 5} (+1) vs Class {6} (-1)
+============================================================
+H5 Training samples: 800
+  Positive (+1): 740 samples
+  Negative (-1): 60 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+[2026-05-07 09:20:12 UTC] H5 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+[2026-05-07 09:21:13 UTC] H5 heartbeat: stage=mip, runtime=60.4s, nodes=34742, solutions=4, incumbent=119.998649, best_bound=12.438953, gap=89.63%
+[2026-05-07 09:22:13 UTC] H5 heartbeat: stage=mip, runtime=120.9s, nodes=87629, solutions=17, incumbent=106.233526, best_bound=15.159349, gap=85.73%
+[2026-05-07 09:23:14 UTC] H5 heartbeat: stage=mip, runtime=181.7s, nodes=151576, solutions=17, incumbent=106.233526, best_bound=15.159349, gap=85.73%
+[2026-05-07 09:24:14 UTC] H5 heartbeat: stage=mip, runtime=241.8s, nodes=236157, solutions=17, incumbent=106.233526, best_bound=15.159349, gap=85.73%
+[2026-05-07 09:25:14 UTC] H5 heartbeat: stage=mip, runtime=302.2s, nodes=325980, solutions=17, incumbent=106.233526, best_bound=15.159349, gap=85.73%
+Time limit reached. Using best solution found (gap: 85.69%)
+
+H5 Solution:
+  Weights (w): [ 8.86792498e-01  1.92203683e+00 -3.08720683e-01 -2.81786405e-03
+ -1.29621571e-02  1.24370056e-02 -1.84654889e-03 -3.09724716e+00]
+  Intercept (b): 70.472027489642
+  Objective: 106.233526
+  Selected features: 8/8
+  L1 norm: 6.244861
+  Positive accuracy lb: 0.9878
+  Negative accuracy lb: 0.6000
+
+H5 status: time_limit_with_solution (code=9), elapsed=360.28s
+Checkpoint Excel saved after californiahousing_1000 / H5: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.5138
+  Class 1: 0.0000 (126 samples)
+  Class 2: 0.6453 (265 samples)
+  Class 3: 0.7005 (197 samples)
+  Class 4: 0.5859 (99 samples)
+  Class 5: 0.2075 (53 samples)
+  Class 6: 0.5500 (60 samples)
+Testing total accuracy: 0.5000
+  Class 1: 0.0000 (32 samples)
+  Class 2: 0.5909 (66 samples)
+  Class 3: 0.7959 (49 samples)
+  Class 4: 0.3600 (25 samples)
+  Class 5: 0.1538 (13 samples)
+  Class 6: 0.7333 (15 samples)
+Checkpoint Excel saved after californiahousing_1000 finalization: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx
+
+====================================================================================================
+[2026-05-07 09:26:12 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260507_test3_teaching_data_1000/test3_teaching_data_1000_20260507_082609.log
+Excel saved to: /home/bs10081/Developer/hcesvm/docs/reports/HCESVM_TEST3_1000_VALIDATION_20260507_082609.xlsx

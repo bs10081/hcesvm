@@ -1,0 +1,54 @@
+[2026-05-16 08:37:22 UTC] Lab104 storage check
+log_path=results/archive/20260516_lab104_storage_check/lab104_storage_check_20260516_083722.log
+ssh_auth_sock=/home/bs10081/.ssh/agent/s.tWStqNGOtq.sshd.XIyFUaidU4
+
+[2026-05-16 08:37:22 UTC] SSH ControlMaster check/start
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+Master running (pid=752404)
+
+[2026-05-16 08:37:24 UTC] Remote storage snapshot
+timestamp=2026-05-16 08:37:24 UTC
+hostname=lab104-gpuboost
+active_nodefile_dir=/home/bs10081/hcesvm-gurobi-nodefiles/cement_strength_20260516_034943
+
+filesystem:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       502G  300G  177G  63% /
+
+active process:
+  75560 bs10081  python          4350100  04:47:41 python examples/run_teaching_data_hcesvm_full.py --datasets cement_strength --time-limit none --threads 0 --soft-mem-limit-gb 21 --nodefile-start-gb 0.5 --nodefile-dir auto --heartbeat-interval-seconds 60
+
+top HOME children:
+94G	/home/bs10081
+25G	/home/bs10081/miniconda3
+22G	/home/bs10081/hcesvm-gurobi-nodefiles
+19G	/home/bs10081/.cache
+13G	/home/bs10081/.local
+11G	/home/bs10081/Developer
+1.9G	/home/bs10081/.npm
+1.4G	/home/bs10081/.nvm
+957M	/home/bs10081/.happy
+705M	/home/bs10081/.bun
+281M	/home/bs10081/.claude
+197M	/home/bs10081/.opencode
+163M	/home/bs10081/.mempalace
+85M	/home/bs10081/.zed_server
+76M	/home/bs10081/.codex
+58M	/home/bs10081/.config
+16M	/home/bs10081/logbert_output_backup
+4.8M	/home/bs10081/.zsh
+3.6M	/home/bs10081/.tmux
+3.2M	/home/bs10081/powerlevel10k
+2.2M	/home/bs10081/.flex_gemm
+532K	/home/bs10081/.docker
+56K	/home/bs10081/.nv
+36K	/home/bs10081/.conda
+28K	/home/bs10081/Host
+16K	/home/bs10081/.terminfo
+16K	/home/bs10081/.ssh
+16K	/home/bs10081/.cloudflared
+8.0K	/home/bs10081/.vim
+4.0K	/home/bs10081/workspace
+
+[2026-05-16 08:37:39 UTC] SSH ControlMaster shutdown
+Exit request sent.

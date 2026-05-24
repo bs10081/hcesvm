@@ -1,0 +1,105 @@
+
+====================================================================================================
+[2026-05-14 15:16:59 UTC] HCESVM(test3) full teaching-data validation
+====================================================================================================
+Branch: codex/model-trace
+Commit: e56b41323472960b230159f0f1cc36d1e8cc85d0
+Datasets: hayes_roth
+HCESVM per-classifier time limit: none
+Threads: 0
+SoftMemLimit: 56.0 GB
+Heartbeat interval: 60.0
+Feature lower bound: 1e-07
+Source [hayes_roth]: lingo_workbook_combined_80_20 | /home/bs10081/Developer/NSVORA/Archive/hayes_roth_split.xlsx
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151659.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-14 15:16:59 UTC] hayes_roth | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: /home/bs10081/Developer/NSVORA/Archive/hayes_roth_split.xlsx
+Features: 4
+Train counts: [40, 41, 24]
+Test counts: [11, 10, 6]
+HCESVM per-classifier time limit: none
+Feature lower bound: 1e-07
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 40 samples
+Class 2: 41 samples
+Class 3: 24 samples
+Features: 4
+
+============================================================
+Training H1: Class 1 (+1) vs {Class 2, 3} (-1)
+============================================================
+H1 Training samples: 105
+  Positive (+1): 40 samples
+  Negative (-1): 65 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter MIPGap to value 0.0001
+[2026-05-14 15:16:59 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+
+H1 Solution:
+  Weights (w): [ 0. -2. -2. -2.]
+  Intercept (b): 9.0
+  Objective: 56.970865
+  Selected features: 4/4
+  L1 norm: 6.000000
+  Positive accuracy lb: 0.5500
+  Negative accuracy lb: 1.0000
+H1 status: optimal (code=2), elapsed=0.70s
+Checkpoint Excel saved after hayes_roth / H1: /home/bs10081/Developer/hcesvm/docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151659.xlsx
+
+============================================================
+Training H2: Class {1, 2} (+1) vs Class 3 (-1)
+============================================================
+H2 Training samples: 105
+  Positive (+1): 81 samples
+  Negative (-1): 24 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter MIPGap to value 0.0001
+[2026-05-14 15:17:00 UTC] H2 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+
+H2 Solution:
+  Weights (w): [ 0. -1. -1. -1.]
+  Intercept (b): 7.0
+  Objective: 19.948029
+  Selected features: 4/4
+  L1 norm: 3.000000
+  Positive accuracy lb: 0.9753
+  Negative accuracy lb: 0.9583
+H2 status: optimal (code=2), elapsed=0.35s
+Checkpoint Excel saved after hayes_roth / H2: /home/bs10081/Developer/hcesvm/docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151659.xlsx
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.7524
+  Class 1: 0.5500 (40 samples)
+  Class 2: 0.9512 (41 samples)
+  Class 3: 0.7500 (24 samples)
+Testing total accuracy: 0.7407
+  Class 1: 0.7273 (11 samples)
+  Class 2: 0.9000 (10 samples)
+  Class 3: 0.5000 (6 samples)
+Checkpoint Excel saved after hayes_roth finalization: /home/bs10081/Developer/hcesvm/docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151659.xlsx
+
+====================================================================================================
+[2026-05-14 15:17:00 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260514_test3_no_time_limit_full/test3_hayes_roth_20260514_151659.log
+Excel saved to: /home/bs10081/Developer/hcesvm/docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151659.xlsx
+Markdown report target: /home/bs10081/Developer/hcesvm/docs/reports/HAYES_ROTH_HCESVM_TEST3_FULL_20260514_151659.md

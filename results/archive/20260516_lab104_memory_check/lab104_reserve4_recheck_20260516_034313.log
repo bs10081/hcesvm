@@ -1,0 +1,37 @@
+[2026-05-16 03:43:13 UTC] Reserve 4GiB remote memory recheck
+branch=experiment/lab104-cement-nodefile
+commit=871d49013c9dd102320e3d83c6c45728dec0283a
+log_path=results/archive/20260516_lab104_memory_check/lab104_reserve4_recheck_20260516_034313.log
+
+[2026-05-16 03:43:13 UTC] SSH ControlMaster check/start
+Control socket connect(/home/bs10081/.ssh/controlmasters/lab104-gpu-boost-bs10081@100.119.75.44:22): No such file or directory
+Master running (pid=643248)
+
+[2026-05-16 03:43:15 UTC] Remote reserve=4GiB calculation
+timestamp=2026-05-16 03:43:15 UTC
+hostname=lab104-gpuboost
+               total        used        free      shared  buff/cache   available
+Mem:            27Gi       1.6Gi        20Gi       1.8Mi       5.6Gi        25Gi
+Swap:          8.0Gi          0B       8.0Gi
+MemTotalGiB=27.38 MemAvailableGiB=25.81 reserveGiB=4 softMemLimitGiB=21 below24=yes
+
+top RSS:
+    PID USER     COMMAND         %MEM   RSS     ELAPSED COMMAND
+  18721 root     dockerd          0.3 95876    13:30:01 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+   1548 bs10081  rclone           0.2 63056    17:04:29 /usr/bin/rclone mount dropbox: /home/bs10081/Dropbox --vfs-cache-mode full --vfs-cache-max-size 50G --vfs-cache-max-age 168h --cache-dir /home/bs10081/.cache/rclone/vfs
+   1037 root     containerd       0.2 61940    17:04:31 /usr/bin/containerd
+    980 root     tailscaled       0.1 52692    17:04:31 /usr/sbin/tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/run/tailscale/tailscaled.sock --port=41641
+    976 root     snapd            0.1 40412    17:04:31 /snap/snapd/current/usr/lib/snapd/snapd
+   1327 root     cloudflared      0.1 39592    17:04:30 /usr/local/bin/cloudflared --no-autoupdate --config /etc/cloudflared/config.yml tunnel run
+   1329 ollama   ollama           0.1 32764    17:04:30 /usr/local/bin/ollama serve
+    556 root     multipathd       0.0 27456    17:04:32 /sbin/multipathd -d -s
+   1064 root     unattended-upgr  0.0 23220    17:04:31 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+    522 root     systemd-journal  0.0 19896    17:04:32 /usr/lib/systemd/systemd-journald
+      1 root     systemd          0.0 14184    17:04:34 /sbin/init
+
+hcesvm/gurobi/python:
+1064 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+73776 zsh -c set -u     echo "timestamp=$(date -u "+%Y-%m-%d %H:%M:%S UTC")"     echo "hostname=$(hostname)"     free -h     awk '/MemTotal/ {total=$2} /MemAvailable/ {avail=$2} END {total_gib=total/1048576; avail_gib=avail/1048576; reserve=4; soft=int(avail_gib - reserve); printf "MemTotalGiB=%.2f MemAvailableGiB=%.2f reserveGiB=%d softMemLimitGiB=%d below24=%s\n", total_gib, avail_gib, reserve, soft, (soft < 24 ? "yes" : "no")}' /proc/meminfo     echo     echo "top RSS:"; ps -eo pid,user,comm,%mem,rss,etime,args --sort=-rss | head -12     echo     echo "hcesvm/gurobi/python:"; pgrep -af "run_teaching_data_hcesvm_full|gurobi|python" || true
+
+[2026-05-16 03:43:15 UTC] SSH ControlMaster shutdown
+Exit request sent.

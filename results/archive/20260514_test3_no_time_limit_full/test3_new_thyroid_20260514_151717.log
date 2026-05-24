@@ -1,0 +1,105 @@
+
+====================================================================================================
+[2026-05-14 15:17:17 UTC] HCESVM(test3) full teaching-data validation
+====================================================================================================
+Branch: codex/model-trace
+Commit: e56b41323472960b230159f0f1cc36d1e8cc85d0
+Datasets: new_thyroid
+HCESVM per-classifier time limit: none
+Threads: 0
+SoftMemLimit: 56.0 GB
+Heartbeat interval: 60.0
+Feature lower bound: 1e-07
+Source [new_thyroid]: lingo_workbook_combined_80_20 | /home/bs10081/Developer/NSVORA/Archive/new-thyroid_split.xlsx
+Checkpoint Excel saved after dataset loading: /home/bs10081/Developer/hcesvm/docs/reports/NEW_THYROID_HCESVM_TEST3_FULL_20260514_151717.xlsx
+
+----------------------------------------------------------------------------------------------------
+[2026-05-14 15:17:17 UTC] new_thyroid | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Source URL: /home/bs10081/Developer/NSVORA/Archive/new-thyroid_split.xlsx
+Features: 5
+Train counts: [120, 28, 24]
+Test counts: [30, 7, 6]
+HCESVM per-classifier time limit: none
+Feature lower bound: 1e-07
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 120 samples
+Class 2: 28 samples
+Class 3: 24 samples
+Features: 5
+
+============================================================
+Training H1: Class 1 (+1) vs {Class 2, 3} (-1)
+============================================================
+H1 Training samples: 172
+  Positive (+1): 120 samples
+  Negative (-1): 52 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter MIPGap to value 0.0001
+[2026-05-14 15:17:17 UTC] H1 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+
+H1 Solution:
+  Weights (w): [ 0.14310525 -1.01743281 -2.31098074 -2.02695432 -0.32532003]
+  Intercept (b): 6.039028838635295
+  Objective: 36.799396
+  Selected features: 5/5
+  L1 norm: 5.823793
+  Positive accuracy lb: 0.9750
+  Negative accuracy lb: 0.8462
+H1 status: optimal (code=2), elapsed=44.15s
+Checkpoint Excel saved after new_thyroid / H1: /home/bs10081/Developer/hcesvm/docs/reports/NEW_THYROID_HCESVM_TEST3_FULL_20260514_151717.xlsx
+
+============================================================
+Training H2: Class {1, 2} (+1) vs Class 3 (-1)
+============================================================
+H2 Training samples: 172
+  Positive (+1): 148 samples
+  Negative (-1): 24 samples
+  Class weight: balanced
+  Accuracy mode: both
+  Heartbeat interval: 60.0s
+
+Set parameter Username
+Set parameter LicenseID to value 2814110
+Academic license - for non-commercial use only - expires 2027-04-27
+Set parameter MIPGap to value 0.0001
+[2026-05-14 15:18:01 UTC] H2 heartbeat: stage=presolve, runtime=0.0s, rows_deleted=0, columns_deleted=0
+
+H2 Solution:
+  Weights (w): [ 0.04305757  2.98016449  0.          0.         -0.98693759]
+  Intercept (b): -14.699080793420402
+  Objective: 4.961736
+  Selected features: 5/5
+  L1 norm: 4.010160
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+H2 status: optimal (code=2), elapsed=0.19s
+Checkpoint Excel saved after new_thyroid / H2: /home/bs10081/Developer/hcesvm/docs/reports/NEW_THYROID_HCESVM_TEST3_FULL_20260514_151717.xlsx
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.9302
+  Class 1: 0.9667 (120 samples)
+  Class 2: 0.9643 (28 samples)
+  Class 3: 0.7083 (24 samples)
+Testing total accuracy: 0.9535
+  Class 1: 1.0000 (30 samples)
+  Class 2: 0.8571 (7 samples)
+  Class 3: 0.8333 (6 samples)
+Checkpoint Excel saved after new_thyroid finalization: /home/bs10081/Developer/hcesvm/docs/reports/NEW_THYROID_HCESVM_TEST3_FULL_20260514_151717.xlsx
+
+====================================================================================================
+[2026-05-14 15:18:01 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm/results/archive/20260514_test3_no_time_limit_full/test3_new_thyroid_20260514_151717.log
+Excel saved to: /home/bs10081/Developer/hcesvm/docs/reports/NEW_THYROID_HCESVM_TEST3_FULL_20260514_151717.xlsx
+Markdown report target: /home/bs10081/Developer/hcesvm/docs/reports/NEW_THYROID_HCESVM_TEST3_FULL_20260514_151717.md

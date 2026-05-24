@@ -1,0 +1,1070 @@
+
+====================================================================================================
+[2026-04-23 19:01:57 UTC] Teaching-data ordinal regression comparison
+====================================================================================================
+Branch: codex/svor-npsvor-multiclass-eval
+Commit: 4417a437dcfb1c00380ff9db3de91c297ce46ecc
+Split rule: Stratified 80/20 train/test split
+Random state: 42
+Datasets: cement_strength, bostonhousing_ord, californiahousing, skill, stock_ord
+HCESVM params: {"C_hyper": 1.0, "M": 1000.0, "time_limit": 1800, "mip_gap": 0.0001, "verbose": false}
+SVOR params: {"C": 1.0, "add_order_constraints": true, "solver_params": {"TimeLimit": 1800, "MIPGap": 0.0001, "OutputFlag": 0}}
+NPSVOR params: {"C1": 1.0, "C2": 1.0, "epsilon": 0.2, "prediction_rule": "min_distance", "solver_params": {"TimeLimit": 1800, "MIPGap": 0.0001, "OutputFlag": 0}}
+Checkpoint Excel saved after initialization: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+
+====================================================================================================
+[2026-04-23 19:01:57 UTC] Dataset cement_strength
+====================================================================================================
+Source: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/cement_strength.csv
+Classes: 5
+Features: 8
+Train counts: [157, 248, 195, 121, 77]
+Test counts: [39, 62, 49, 31, 19]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 19:01:57 UTC] cement_strength | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Total HCESVM time budget: 1800s; per binary classifier time limit: 450s across 4 classifiers
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 157 samples
+Class 2: 248 samples
+Class 3: 195 samples
+Class 4: 121 samples
+Class 5: 77 samples
+Features: 8
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 798
+  Positive (+1): 157 samples
+  Negative (-1): 641 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter Username
+Set parameter LicenseID to value 2749150
+Academic license - for non-commercial use only - expires 2026-12-03
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 84.71%)
+
+H1 Solution:
+  Weights (w): [-0.91372318 -0.6824138  -0.8221223  -0.69075129  0.55380363 -0.45956116
+ -0.50403083 -3.46866428]
+  Intercept (b): 1331.5085727858855
+  Objective: 127.088151
+  Selected features: 8/8
+  L1 norm: 8.095070
+  Positive accuracy lb: 0.8471
+  Negative accuracy lb: 0.9766
+
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4, 5} (-1)
+============================================================
+H2 Training samples: 798
+  Positive (+1): 405 samples
+  Negative (-1): 393 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 75.76%)
+
+H2 Solution:
+  Weights (w): [-0.77758794 -0.53151499 -0.48033024  0.44379208 -2.97198196 -0.14665165
+ -0.15660787 -1.4650283 ]
+  Intercept (b): 520.0041222553308
+  Objective: 295.968990
+  Selected features: 8/8
+  L1 norm: 6.973495
+  Positive accuracy lb: 0.8642
+  Negative accuracy lb: 0.8982
+
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4, 5} (-1)
+============================================================
+H3 Training samples: 798
+  Positive (+1): 600 samples
+  Negative (-1): 198 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 80.93%)
+
+H3 Solution:
+  Weights (w): [-0.41626159 -0.45343526 -0.33713295  0.03607793 -2.19146863 -0.22513312
+ -0.23307974 -0.37309045]
+  Intercept (b): 611.4828856651521
+  Objective: 330.260392
+  Selected features: 8/8
+  L1 norm: 4.265680
+  Positive accuracy lb: 0.9017
+  Negative accuracy lb: 0.7475
+
+============================================================
+Training H4: Class {1, 2, 3, 4} (+1) vs Class {5} (-1)
+============================================================
+H4 Training samples: 798
+  Positive (+1): 721 samples
+  Negative (-1): 77 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 49.88%)
+
+H4 Solution:
+  Weights (w): [-0.51197144 -0.54422803 -0.53328905  1.11400924  2.22646398 -0.09042915
+ -0.13030597 -0.28571429]
+  Intercept (b): 268.35133138141344
+  Objective: 108.425434
+  Selected features: 8/8
+  L1 norm: 5.436411
+  Positive accuracy lb: 0.9820
+  Negative accuracy lb: 0.7403
+
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.6905
+  Class 1: 0.8408 (157 samples)
+  Class 2: 0.7258 (248 samples)
+  Class 3: 0.6103 (195 samples)
+  Class 4: 0.5372 (121 samples)
+  Class 5: 0.7143 (77 samples)
+Testing total accuracy: 0.6650
+  Class 1: 0.7949 (39 samples)
+  Class 2: 0.7742 (62 samples)
+  Class 3: 0.6122 (49 samples)
+  Class 4: 0.4194 (31 samples)
+  Class 5: 0.5789 (19 samples)
+H1 weights: [-0.9137231812, -0.6824138021, -0.8221223045, -0.6907512915, 0.5538036274, -0.4595611594, -0.5040308287, -3.4686642835]
+H1 b: 1331.5085727859
+H2 weights: [-0.7775879375, -0.5315149947, -0.4803302367, 0.4437920774, -2.9719819567, -0.1466516492, -0.1566078733, -1.465028296]
+H2 b: 520.0041222553
+H3 weights: [-0.4162615936, -0.4534352572, -0.3371329538, 0.0360779329, -2.1914686283, -0.2251331248, -0.2330797387, -0.373090449]
+H3 b: 611.4828856652
+H4 weights: [-0.5119714443, -0.5442280315, -0.5332890467, 1.114009239, 2.2264639775, -0.0904291474, -0.1303059691, -0.2857142857]
+H4 b: 268.3513313814
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 19:31:59 UTC] cement_strength | SVOR
+----------------------------------------------------------------------------------------------------
+Total SVOR time budget: 1800s (single optimization problem)
+Training total accuracy: 0.4749
+  Class 1: 0.3885 (157 samples)
+  Class 2: 0.7581 (248 samples)
+  Class 3: 0.3231 (195 samples)
+  Class 4: 0.3802 (121 samples)
+  Class 5: 0.2727 (77 samples)
+Testing total accuracy: 0.5150
+  Class 1: 0.5128 (39 samples)
+  Class 2: 0.7742 (62 samples)
+  Class 3: 0.4490 (49 samples)
+  Class 4: 0.2258 (31 samples)
+  Class 5: 0.3158 (19 samples)
+Weights (w): [0.0152862652, 0.0127484848, 0.0114124693, -0.0110847372, 0.0437810787, 0.0031964358, 0.0037795175, 0.0139163572]
+Thresholds (b): [8.9857917168, 10.6402709544, 11.8520685201, 13.550232008]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 19:31:59 UTC] cement_strength | NPSVOR
+----------------------------------------------------------------------------------------------------
+Total NPSVOR time budget: 1800s; per rank time limit: 360s across 5 ranks
+Training total accuracy: 0.5639
+  Class 1: 0.6561 (157 samples)
+  Class 2: 0.7661 (248 samples)
+  Class 3: 0.4256 (195 samples)
+  Class 4: 0.4298 (121 samples)
+  Class 5: 0.2857 (77 samples)
+Testing total accuracy: 0.5900
+  Class 1: 0.7436 (39 samples)
+  Class 2: 0.8065 (62 samples)
+  Class 3: 0.5510 (49 samples)
+  Class 4: 0.2258 (31 samples)
+  Class 5: 0.2632 (19 samples)
+Rank 1 weights: [0.0123375661, 0.0108058396, 0.0101879638, 0.0063870793, -0.0096455848, 0.003973878, 0.0072253529, 0.0457123575]
+Rank 1 b: -14.9055096047
+Rank 2 weights: [0.0095300625, 0.0071086046, 0.0065375578, -0.0043233849, 0.0354051703, 0.0015322955, 0.0014955805, 0.0218312899]
+Rank 2 b: -5.8466156035
+Rank 3 weights: [0.0095996178, 0.006984152, 0.005893093, -0.0054367291, 0.0492541702, 0.0024600951, 0.0024713289, 0.0100442449]
+Rank 3 b: -7.9365352276
+Rank 4 weights: [0.0086511494, 0.0083398222, 0.0076585888, -0.0056362231, 0.0186683109, 0.0029293085, 0.002840339, 0.0056862449]
+Rank 4 b: -8.8755086114
+Rank 5 weights: [0.008926657, 0.0096704388, 0.0079441462, -0.0216020793, -0.0304547139, 0.0013530774, 0.0020591767, 0.0051019358]
+Rank 5 b: -4.7319729014
+Checkpoint Excel saved after cement_strength / HCESVM(test3): /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after cement_strength / SVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after cement_strength / NPSVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+
+====================================================================================================
+[2026-04-23 19:32:00 UTC] Dataset bostonhousing_ord
+====================================================================================================
+Source: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/bostonhousing_ord.csv
+Classes: 5
+Features: 13
+Train counts: [61, 191, 98, 29, 25]
+Test counts: [16, 48, 25, 7, 6]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 19:32:00 UTC] bostonhousing_ord | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Total HCESVM time budget: 1800s; per binary classifier time limit: 450s across 4 classifiers
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 61 samples
+Class 2: 191 samples
+Class 3: 98 samples
+Class 4: 29 samples
+Class 5: 25 samples
+Features: 13
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 404
+  Positive (+1): 61 samples
+  Negative (-1): 343 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 48.79%)
+
+H1 Solution:
+  Weights (w): [ 4.87676942e-01  0.00000000e+00 -3.34623308e-01  5.54738847e-01
+  0.00000000e+00 -3.69628681e+00  1.67437257e-01 -2.57004867e+00
+ -1.15474364e-01  2.94601960e-03  1.57293191e+00 -1.93929643e-02
+  8.79480285e-01]
+  Intercept (b): -27.621092479562353
+  Objective: 69.383966
+  Selected features: 13/13
+  L1 norm: 10.401037
+  Positive accuracy lb: 0.8689
+  Negative accuracy lb: 0.9679
+
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4, 5} (-1)
+============================================================
+H2 Training samples: 404
+  Positive (+1): 252 samples
+  Negative (-1): 152 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 75.21%)
+
+H2 Solution:
+  Weights (w): [ 1.06862601e+00 -2.62140639e-02 -1.99658023e-02  0.00000000e+00
+  0.00000000e+00 -7.95004619e+00  8.47937925e-02  9.73432357e-01
+ -4.45365958e-01  1.40596460e-02  8.38011638e-01 -1.51569994e-04
+  3.61298046e-01]
+  Intercept (b): 19.963438942680796
+  Objective: 123.772628
+  Selected features: 13/13
+  L1 norm: 11.781965
+  Positive accuracy lb: 0.9405
+  Negative accuracy lb: 0.8487
+
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4, 5} (-1)
+============================================================
+H3 Training samples: 404
+  Positive (+1): 350 samples
+  Negative (-1): 54 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 32.43%)
+
+H3 Solution:
+  Weights (w): [ 1.74823246e-07  1.05508714e-03  1.47936249e-01 -3.72814497e-01
+  0.00000000e+00 -6.85396689e+00  7.60109901e-02  6.54615627e-01
+  2.63164968e-01  6.18702914e-03  4.72412793e-01 -4.86303448e-02
+  5.70184208e-01]
+  Intercept (b): 45.70936184912077
+  Objective: 41.448036
+  Selected features: 13/13
+  L1 norm: 9.466979
+  Positive accuracy lb: 0.9886
+  Negative accuracy lb: 0.8704
+
+============================================================
+Training H4: Class {1, 2, 3, 4} (+1) vs Class {5} (-1)
+============================================================
+H4 Training samples: 404
+  Positive (+1): 379 samples
+  Negative (-1): 25 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+
+H4 Solution:
+  Weights (w): [-1.00000000e-07 -1.15173964e-02 -3.90537204e-01  8.19926657e-01
+  0.00000000e+00 -4.20809672e+00  6.33892875e-02  7.13099458e-01
+  3.82520091e-02  1.74836071e-02  6.91531582e-01  1.85830853e-02
+  3.83678848e-01]
+  Intercept (b): 2.433311343108711
+  Objective: 19.318257
+  Selected features: 13/13
+  L1 norm: 7.356096
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.8800
+
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.8366
+  Class 1: 0.8689 (61 samples)
+  Class 2: 0.8743 (191 samples)
+  Class 3: 0.7347 (98 samples)
+  Class 4: 0.8966 (29 samples)
+  Class 5: 0.8000 (25 samples)
+Testing total accuracy: 0.7549
+  Class 1: 0.8125 (16 samples)
+  Class 2: 0.8125 (48 samples)
+  Class 3: 0.6000 (25 samples)
+  Class 4: 0.8571 (7 samples)
+  Class 5: 0.6667 (6 samples)
+H1 weights: [0.4876769418, 0.0, -0.3346233079, 0.5547388467, 0.0, -3.696286814, 0.1674372565, -2.5700486712, -0.1154743638, 0.0029460196, 1.5729319061, -0.0193929643, 0.8794802848]
+H1 b: -27.6210924796
+H2 weights: [1.0686260109, -0.0262140639, -0.0199658023, 0.0, 0.0, -7.9500461854, 0.0847937925, 0.9734323571, -0.4453659578, 0.014059646, 0.8380116379, -0.00015157, 0.3612980455]
+H2 b: 19.9634389427
+H3 weights: [1.748e-07, 0.0010550871, 0.1479362495, -0.3728144974, 0.0, -6.8539668906, 0.0760109901, 0.6546156272, 0.2631649679, 0.0061870291, 0.4724127928, -0.0486303448, 0.5701842083]
+H3 b: 45.7093618491
+H4 weights: [-1e-07, -0.0115173964, -0.3905372042, 0.8199266574, 0.0, -4.2080967208, 0.0633892875, 0.7130994581, 0.0382520091, 0.0174836071, 0.6915315818, 0.0185830853, 0.3836788484]
+H4 b: 2.4333113431
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 19:54:59 UTC] bostonhousing_ord | SVOR
+----------------------------------------------------------------------------------------------------
+Total SVOR time budget: 1800s (single optimization problem)
+Training total accuracy: 0.7624
+  Class 1: 0.7377 (61 samples)
+  Class 2: 0.8429 (191 samples)
+  Class 3: 0.6939 (98 samples)
+  Class 4: 0.5862 (29 samples)
+  Class 5: 0.6800 (25 samples)
+Testing total accuracy: 0.7255
+  Class 1: 0.6250 (16 samples)
+  Class 2: 0.8333 (48 samples)
+  Class 3: 0.6400 (25 samples)
+  Class 4: 0.7143 (7 samples)
+  Class 5: 0.5000 (6 samples)
+Weights (w): [-0.0674237262, -0.000652826, 0.0276802626, 0.192426219, -1.3603298046, 1.1591594095, -0.0058639662, -0.1408096154, 0.0895234845, -0.0049109208, -0.2639027934, 0.0031923674, -0.2151794245]
+Thresholds (b): [-5.0139294763, -0.7383674735, 1.4662563344, 2.5121342528]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 19:54:59 UTC] bostonhousing_ord | NPSVOR
+----------------------------------------------------------------------------------------------------
+Total NPSVOR time budget: 1800s; per rank time limit: 360s across 5 ranks
+Training total accuracy: 0.7550
+  Class 1: 0.6721 (61 samples)
+  Class 2: 0.8482 (191 samples)
+  Class 3: 0.6837 (98 samples)
+  Class 4: 0.6552 (29 samples)
+  Class 5: 0.6400 (25 samples)
+Testing total accuracy: 0.7353
+  Class 1: 0.6250 (16 samples)
+  Class 2: 0.8542 (48 samples)
+  Class 3: 0.5600 (25 samples)
+  Class 4: 0.8571 (7 samples)
+  Class 5: 0.6667 (6 samples)
+Rank 1 weights: [-0.0094670093, 7.79e-08, 0.0400256383, 1e-10, -0.8345354305, -0.0440489329, -0.0025358486, 0.1533182777, 0.0348238408, -0.0022889002, -0.0644758896, 0.0008390433, -0.0614368656]
+Rank 1 b: 3.8220205797
+Rank 2 weights: [-0.0303360871, 0.0048616876, 0.0044102426, 0.0939971013, -0.6393253469, 0.2098162723, -0.0010272074, -0.0772437923, 0.0396391289, -0.0020475459, -0.0656563394, 0.0007496634, -0.0624577757]
+Rank 2 b: 1.8544807733
+Rank 3 weights: [-0.000739382, 0.0043006834, 0.0005928128, 0.1815185461, -0.3078361046, 0.713780661, -0.0074079201, -0.1332470835, 0.055842777, -0.0028649781, -0.1042459629, -0.0005363141, -0.0868406435]
+Rank 3 b: -0.4614678139
+Rank 4 weights: [0.0160833548, 0.0037698315, 0.0137267805, 0.1748624217, -0.0783944342, 1.0911179277, -0.0019081361, -0.1041411798, 0.0474303221, -0.0017701688, -0.0911364795, 0.0037007902, -0.186479504]
+Rank 4 b: -6.2848936869
+Rank 5 weights: [-0.0071151123, 0.0028196392, 0.0411340323, -0.0907380957, -0.0074085756, 0.4963766714, -0.0012322344, -0.0711481367, 0.1167255479, -0.0033995565, -0.1471797587, -0.0028654097, -0.1830605214]
+Rank 5 b: 0.2837636678
+Checkpoint Excel saved after bostonhousing_ord / HCESVM(test3): /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after bostonhousing_ord / SVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after bostonhousing_ord / NPSVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+
+====================================================================================================
+[2026-04-23 19:54:59 UTC] Dataset californiahousing
+====================================================================================================
+Source: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/californiahousing.csv
+Classes: 6
+Features: 8
+Train counts: [2595, 5476, 4059, 2040, 1103, 1239]
+Test counts: [649, 1369, 1015, 509, 276, 310]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 19:54:59 UTC] californiahousing | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Total HCESVM time budget: 1800s; per binary classifier time limit: 360s across 5 classifiers
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 2595 samples
+Class 2: 5476 samples
+Class 3: 4059 samples
+Class 4: 2040 samples
+Class 5: 1103 samples
+Class 6: 1239 samples
+Features: 8
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5, 6} (-1)
+============================================================
+H1 Training samples: 16512
+  Positive (+1): 2595 samples
+  Negative (-1): 13917 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 99.65%)
+
+H1 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 5189.999928
+  Selected features: 8/8
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4, 5, 6} (-1)
+============================================================
+H2 Training samples: 16512
+  Positive (+1): 8071 samples
+  Negative (-1): 8441 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 99.75%)
+
+H2 Solution:
+  Weights (w): [ 8.24862198e-01  8.34030934e-01 -2.06060106e-02  1.38173709e-04
+ -1.18335239e-03  9.42302795e-04 -2.77078759e-03 -8.35833420e-01]
+  Intercept (b): 72.70415586059298
+  Objective: 10788.520166
+  Selected features: 8/8
+  L1 norm: 2.520367
+  Positive accuracy lb: 0.7832
+  Negative accuracy lb: 0.8763
+
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4, 5, 6} (-1)
+============================================================
+H3 Training samples: 16512
+  Positive (+1): 12130 samples
+  Negative (-1): 4382 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 99.60%)
+
+H3 Solution:
+  Weights (w): [ 2.06917671e+00  1.93884281e+00 -1.11608067e-01 -5.81728985e-04
+ -1.42584398e-03  6.78306802e-03 -1.54393266e-02 -3.29918026e+00]
+  Intercept (b): 200.66661129295034
+  Objective: 6781.442823
+  Selected features: 8/8
+  L1 norm: 7.443038
+  Positive accuracy lb: 0.9637
+  Negative accuracy lb: 0.5915
+
+============================================================
+Training H4: Class {1, 2, 3, 4} (+1) vs Class {5, 6} (-1)
+============================================================
+H4 Training samples: 16512
+  Positive (+1): 14170 samples
+  Negative (-1): 2342 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 99.61%)
+
+H4 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 4683.999929
+  Selected features: 8/8
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+============================================================
+Training H5: Class {1, 2, 3, 4, 5} (+1) vs Class {6} (-1)
+============================================================
+H5 Training samples: 16512
+  Positive (+1): 15273 samples
+  Negative (-1): 1239 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 360
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 99.54%)
+
+H5 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 2477.999935
+  Selected features: 8/8
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.4523
+  Class 1: 0.0000 (2595 samples)
+  Class 2: 0.6958 (5476 samples)
+  Class 3: 0.6943 (4059 samples)
+  Class 4: 0.4123 (2040 samples)
+  Class 5: 0.0000 (1103 samples)
+  Class 6: 0.0000 (1239 samples)
+Testing total accuracy: 0.4457
+  Class 1: 0.0000 (649 samples)
+  Class 2: 0.6874 (1369 samples)
+  Class 3: 0.6778 (1015 samples)
+  Class 4: 0.4145 (509 samples)
+  Class 5: 0.0000 (276 samples)
+  Class 6: 0.0000 (310 samples)
+H1 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H1 b: -1.0000000000
+H2 weights: [0.8248621979, 0.8340309343, -0.0206060106, 0.0001381737, -0.0011833524, 0.0009423028, -0.0027707876, -0.8358334205]
+H2 b: 72.7041558606
+H3 weights: [2.0691767128, 1.938842809, -0.1116080671, -0.000581729, -0.001425844, 0.006783068, -0.0154393266, -3.2991802641]
+H3 b: 200.6666112930
+H4 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H4 b: 1.0000000000
+H5 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H5 b: 1.0000000000
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 20:25:05 UTC] californiahousing | SVOR
+----------------------------------------------------------------------------------------------------
+Total SVOR time budget: 1800s (single optimization problem)
+Training total accuracy: 0.5448
+  Class 1: 0.4825 (2595 samples)
+  Class 2: 0.6689 (5476 samples)
+  Class 3: 0.5866 (4059 samples)
+  Class 4: 0.3951 (2040 samples)
+  Class 5: 0.2693 (1103 samples)
+  Class 6: 0.4818 (1239 samples)
+Testing total accuracy: 0.5310
+  Class 1: 0.5008 (649 samples)
+  Class 2: 0.6516 (1369 samples)
+  Class 3: 0.5724 (1015 samples)
+  Class 4: 0.3694 (509 samples)
+  Class 5: 0.2464 (276 samples)
+  Class 6: 0.4452 (310 samples)
+Weights (w): [-1.0709728856, -1.0928264755, 0.0218398222, -0.0001773671, 0.0022541313, -0.0008975953, 0.0014367947, 0.7998979822]
+Thresholds (b): [90.7762104641, 92.9381652339, 94.398406053, 95.3948335661, 96.2324986175]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 20:25:09 UTC] californiahousing | NPSVOR
+----------------------------------------------------------------------------------------------------
+Total NPSVOR time budget: 1800s; per rank time limit: 300s across 6 ranks
+Training total accuracy: 0.5476
+  Class 1: 0.5021 (2595 samples)
+  Class 2: 0.6687 (5476 samples)
+  Class 3: 0.5753 (4059 samples)
+  Class 4: 0.4598 (2040 samples)
+  Class 5: 0.3509 (1103 samples)
+  Class 6: 0.3366 (1239 samples)
+Testing total accuracy: 0.5266
+  Class 1: 0.5146 (649 samples)
+  Class 2: 0.6406 (1369 samples)
+  Class 3: 0.5576 (1015 samples)
+  Class 4: 0.4479 (509 samples)
+  Class 5: 0.3043 (276 samples)
+  Class 6: 0.2742 (310 samples)
+Rank 1 weights: [-0.3291890743, -0.3388162881, -0.0018359642, -0.0001534841, 0.0015724602, -0.0001003771, -0.0004933636, 0.3777704269]
+Rank 1 b: -27.2709641118
+Rank 2 weights: [-0.5629350465, -0.5684756359, 0.0048810016, -0.0001829658, 0.0014578746, -0.000386602, 0.0007482688, 0.4738144393]
+Rank 2 b: -48.5337626635
+Rank 3 weights: [-0.7790333594, -0.7836439464, 0.014067666, -0.0001006441, 0.0012684069, -0.0006937009, 0.0014082816, 0.5440205898]
+Rank 3 b: -68.3069529889
+Rank 4 weights: [-0.7824916112, -0.7905062371, 0.0219723479, 9.15019e-05, 0.0006309106, -0.0010728978, 0.0019773967, 0.5396808875]
+Rank 4 b: -69.5730451190
+Rank 5 weights: [-0.6048114077, -0.6407345207, 0.0238757659, 7.30002e-05, 0.000713487, -0.000989541, 0.0015783238, 0.4479002096]
+Rank 5 b: -53.7420626283
+Rank 6 weights: [-0.2155193977, -0.2402963381, 0.0079814123, 6.19158e-05, 9.0608e-06, -0.0004734187, 0.0008418432, 0.1397851466]
+Rank 6 b: -19.3604395094
+Checkpoint Excel saved after californiahousing / HCESVM(test3): /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after californiahousing / SVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after californiahousing / NPSVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+
+====================================================================================================
+[2026-04-23 20:25:14 UTC] Dataset skill
+====================================================================================================
+Source: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/skill.csv
+Classes: 7
+Features: 18
+Train counts: [134, 277, 442, 649, 642, 497, 28]
+Test counts: [33, 70, 111, 162, 161, 124, 7]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 20:25:14 UTC] skill | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Total HCESVM time budget: 1800s; per binary classifier time limit: 300s across 6 classifiers
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 134 samples
+Class 2: 277 samples
+Class 3: 442 samples
+Class 4: 649 samples
+Class 5: 642 samples
+Class 6: 497 samples
+Class 7: 28 samples
+Features: 18
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5, 6, 7} (-1)
+============================================================
+H1 Training samples: 2669
+  Positive (+1): 134 samples
+  Negative (-1): 2535 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 300
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 91.18%)
+
+H1 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 267.999606
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4, 5, 6, 7} (-1)
+============================================================
+H2 Training samples: 2669
+  Positive (+1): 411 samples
+  Negative (-1): 2258 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 300
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 96.40%)
+
+H2 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): -1.0
+  Objective: 821.999557
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 0.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4, 5, 6, 7} (-1)
+============================================================
+H3 Training samples: 2669
+  Positive (+1): 853 samples
+  Negative (-1): 1816 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 300
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 98.65%)
+
+H3 Solution:
+  Weights (w): [ 1.83290556e-02  1.91820778e-02 -2.63611375e-04 -6.70702529e-02
+  0.00000000e+00  0.00000000e+00 -1.21672535e+00  0.00000000e+00
+  0.00000000e+00  0.00000000e+00  3.50833107e-01 -3.84054020e-02
+  6.81611824e-01 -3.02211149e-02  0.00000000e+00 -1.16292671e+00
+  0.00000000e+00  0.00000000e+00]
+  Intercept (b): 1.0349770678749897
+  Objective: 1867.584399
+  Selected features: 18/18
+  L1 norm: 3.585569
+  Positive accuracy lb: 0.6002
+  Negative accuracy lb: 0.8464
+
+============================================================
+Training H4: Class {1, 2, 3, 4} (+1) vs Class {5, 6, 7} (-1)
+============================================================
+H4 Training samples: 2669
+  Positive (+1): 1502 samples
+  Negative (-1): 1167 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 300
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 96.27%)
+
+H4 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 0.0
+  Objective: 2668.998477
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 1.0000
+
+============================================================
+Training H5: Class {1, 2, 3, 4, 5} (+1) vs Class {6, 7} (-1)
+============================================================
+H5 Training samples: 2669
+  Positive (+1): 2144 samples
+  Negative (-1): 525 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 300
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 97.99%)
+
+H5 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 1049.999534
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+============================================================
+Training H6: Class {1, 2, 3, 4, 5, 6} (+1) vs Class {7} (-1)
+============================================================
+H6 Training samples: 2669
+  Positive (+1): 2641 samples
+  Negative (-1): 28 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 300
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 75.85%)
+
+H6 Solution:
+  Weights (w): [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  Intercept (b): 1.0
+  Objective: 55.999621
+  Selected features: 18/18
+  L1 norm: 0.000000
+  Positive accuracy lb: 1.0000
+  Negative accuracy lb: 0.0000
+
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.2608
+  Class 1: 0.0000 (134 samples)
+  Class 2: 0.0000 (277 samples)
+  Class 3: 0.4887 (442 samples)
+  Class 4: 0.7396 (649 samples)
+  Class 5: 0.0000 (642 samples)
+  Class 6: 0.0000 (497 samples)
+  Class 7: 0.0000 (28 samples)
+Testing total accuracy: 0.2455
+  Class 1: 0.0000 (33 samples)
+  Class 2: 0.0000 (70 samples)
+  Class 3: 0.5315 (111 samples)
+  Class 4: 0.6481 (162 samples)
+  Class 5: 0.0000 (161 samples)
+  Class 6: 0.0000 (124 samples)
+  Class 7: 0.0000 (7 samples)
+H1 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H1 b: -1.0000000000
+H2 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H2 b: -1.0000000000
+H3 weights: [0.0183290556, 0.0191820778, -0.0002636114, -0.0670702529, 0.0, 0.0, -1.2167253541, 0.0, 0.0, 0.0, 0.3508331066, -0.038405402, 0.6816118244, -0.0302211149, 0.0, -1.1629267105, 0.0, 0.0]
+H3 b: 1.0349770679
+H4 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H4 b: 0.0000000000
+H5 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H5 b: 1.0000000000
+H6 weights: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+H6 b: 1.0000000000
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 20:55:16 UTC] skill | SVOR
+----------------------------------------------------------------------------------------------------
+Total SVOR time budget: 1800s (single optimization problem)
+Training total accuracy: 0.3855
+  Class 1: 0.1866 (134 samples)
+  Class 2: 0.2058 (277 samples)
+  Class 3: 0.2828 (442 samples)
+  Class 4: 0.5116 (649 samples)
+  Class 5: 0.4875 (642 samples)
+  Class 6: 0.3561 (497 samples)
+  Class 7: 0.0000 (28 samples)
+Testing total accuracy: 0.3877
+  Class 1: 0.2727 (33 samples)
+  Class 2: 0.1429 (70 samples)
+  Class 3: 0.3333 (111 samples)
+  Class 4: 0.4444 (162 samples)
+  Class 5: 0.4907 (161 samples)
+  Class 6: 0.4113 (124 samples)
+  Class 7: 0.1429 (7 samples)
+Weights (w): [0.0184312041, 0.0134581508, -1.938e-06, 0.0133292721, 0.0349300561, 0.1126485995, 0.0644443048, 0.0975620711, 0.0481614459, 0.1000419387, -0.0179139514, -0.0286469929, -0.1197295565, -0.0034410277, 0.2296450018, 0.0031635703, 0.0256077682, 0.047899669]
+Thresholds (b): [-3.7705281645, -2.6670012594, -1.713245305, -0.5281655012, 0.7363183221, 3.2587498806]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 20:55:17 UTC] skill | NPSVOR
+----------------------------------------------------------------------------------------------------
+Total NPSVOR time budget: 1800s; per rank time limit: 257s across 7 ranks
+Training total accuracy: 0.3953
+  Class 1: 0.0149 (134 samples)
+  Class 2: 0.2419 (277 samples)
+  Class 3: 0.4050 (442 samples)
+  Class 4: 0.4900 (649 samples)
+  Class 5: 0.5234 (642 samples)
+  Class 6: 0.3078 (497 samples)
+  Class 7: 0.0000 (28 samples)
+Testing total accuracy: 0.3997
+  Class 1: 0.0000 (33 samples)
+  Class 2: 0.3000 (70 samples)
+  Class 3: 0.4054 (111 samples)
+  Class 4: 0.4630 (162 samples)
+  Class 5: 0.5590 (161 samples)
+  Class 6: 0.2903 (124 samples)
+  Class 7: 0.0000 (7 samples)
+Rank 1 weights: [-1e-10, -0.0, 0.0, 1e-10, 1.3183e-06, 7.2818e-06, -0.0, 4.59943e-05, 3.367e-07, -2.0044e-06, -1e-10, -1e-10, -9e-10, 0.0, 3.9425e-06, -2e-10, 2.327e-07, 7.247e-07]
+Rank 1 b: 1.0000000167
+Rank 2 weights: [0.0028612535, -0.0067738586, 0.0006968441, 0.0076702463, 0.0163491477, 0.0141050806, 0.0120800664, 0.0050426499, 0.0029878614, 0.0104397573, -0.0067408825, -0.0109253584, -0.0650561288, -0.0053128121, 0.0339041455, -0.0068609339, 0.0058323374, 0.0079745044]
+Rank 2 b: 1.6213795310
+Rank 3 weights: [0.0113534299, -0.0065220572, 0.0008002534, 0.0113189824, 0.0564077116, 0.0281530061, 0.0204561361, 0.0166627744, 0.0064785309, 0.0038672249, -0.0107218535, -0.017841494, -0.0895749322, -0.0045815684, 0.0722008433, 0.017374983, 0.0127633336, 0.016351732]
+Rank 3 b: 1.0531291187
+Rank 4 weights: [0.0091362688, -0.0007658725, 0.0006072681, 0.0100435197, 0.0612483364, 0.0363648947, 0.0498240298, 0.0303979141, 0.0092235408, 0.0106980161, -0.0119897729, -0.0232443427, -0.1038559535, -0.0038962152, 0.0946593763, -0.0014176589, 0.0098926153, 0.0189213022]
+Rank 4 b: 0.9080807140
+Rank 5 weights: [0.0059665614, 0.0138427704, -1.3611e-06, 0.0082690634, 0.1102094415, 0.0352221795, 0.0596079424, 0.0407779206, 0.0190664193, 0.017900401, -0.0160030506, -0.0218968299, -0.1020490888, -0.0024644398, 0.0812443993, 0.0027080806, 0.0032384329, 0.0082586476]
+Rank 5 b: 0.3869326286
+Rank 6 weights: [-0.0001253111, 0.0080681749, -8.455e-07, 0.0037094068, 0.1008342308, 0.0285012307, 0.0282587622, 0.0241486471, 0.0111419398, 0.0152399577, -0.0099863325, -0.0097153337, -0.0751160771, -0.0014909811, 0.0204734991, -0.0015433465, 0.0006338297, 0.0047615635]
+Rank 6 b: -0.4097113650
+Rank 7 weights: [2e-10, 1e-10, 0.0, -1e-10, 2.913e-07, 7.0498e-06, 1e-10, 7.9237e-06, -2.957e-07, 4.0184e-06, -2e-10, -2e-10, 1.6e-09, 2e-10, 1.8521e-06, 0.0, -0.0001068134, 1.50485e-05]
+Rank 7 b: -1.0000000280
+Checkpoint Excel saved after skill / HCESVM(test3): /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after skill / SVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after skill / NPSVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+
+====================================================================================================
+[2026-04-23 20:55:18 UTC] Dataset stock_ord
+====================================================================================================
+Source: https://raw.githubusercontent.com/gagolews/teaching-data/master/ordinal_regression/stock_ord.csv
+Classes: 5
+Features: 9
+Train counts: [126, 182, 218, 165, 69]
+Test counts: [32, 45, 54, 42, 17]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 20:55:18 UTC] stock_ord | HCESVM(test3)
+----------------------------------------------------------------------------------------------------
+Total HCESVM time budget: 1800s; per binary classifier time limit: 450s across 4 classifiers
+============================================================
+Training Hierarchical CE-SVM (Strategy: test3)
+============================================================
+Class 1: 126 samples
+Class 2: 182 samples
+Class 3: 218 samples
+Class 4: 165 samples
+Class 5: 69 samples
+Features: 9
+
+============================================================
+Training H1: Class {1} (+1) vs Class {2, 3, 4, 5} (-1)
+============================================================
+H1 Training samples: 760
+  Positive (+1): 126 samples
+  Negative (-1): 634 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 37.37%)
+
+H1 Solution:
+  Weights (w): [-0.24448145  1.24976648 -1.74336198 -2.07887797 -0.6647081   1.42948307
+ -1.18127314 -1.30139497 -0.35627725]
+  Intercept (b): 193.00332014129447
+  Objective: 65.240518
+  Selected features: 9/9
+  L1 norm: 10.249624
+  Positive accuracy lb: 0.9524
+  Negative accuracy lb: 0.9811
+
+============================================================
+Training H2: Class {1, 2} (+1) vs Class {3, 4, 5} (-1)
+============================================================
+H2 Training samples: 760
+  Positive (+1): 308 samples
+  Negative (-1): 452 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 55.01%)
+
+H2 Solution:
+  Weights (w): [-2.84619047 -1.38927141  0.43372468  0.          0.08106942 -0.54615713
+  0.91502716 -0.17002604 -0.04596497]
+  Intercept (b): 103.3439212934089
+  Objective: 124.422328
+  Selected features: 9/9
+  L1 norm: 6.427431
+  Positive accuracy lb: 0.9026
+  Negative accuracy lb: 0.9823
+
+============================================================
+Training H3: Class {1, 2, 3} (+1) vs Class {4, 5} (-1)
+============================================================
+H3 Training samples: 760
+  Positive (+1): 526 samples
+  Negative (-1): 234 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+Time limit reached. Using best solution found (gap: 41.52%)
+
+H3 Solution:
+  Weights (w): [-0.8121132  -0.7622406  -1.6027149   0.94445185 -0.06664352  1.78497451
+ -0.14694902  0.05743609 -1.4889942 ]
+  Intercept (b): 94.79766010148667
+  Objective: 70.660474
+  Selected features: 9/9
+  L1 norm: 7.666518
+  Positive accuracy lb: 0.9696
+  Negative accuracy lb: 0.9829
+
+============================================================
+Training H4: Class {1, 2, 3, 4} (+1) vs Class {5} (-1)
+============================================================
+H4 Training samples: 760
+  Positive (+1): 691 samples
+  Negative (-1): 69 samples
+  Class weight: balanced
+  Accuracy mode: both
+
+Set parameter TimeLimit to value 450
+Set parameter MIPGap to value 0.0001
+
+H4 Solution:
+  Weights (w): [-1.38795236  0.69212955  0.04450776 -0.55303999 -0.52731044  0.
+  0.42230694 -0.29513057 -1.16525734]
+  Intercept (b): 129.65089982151545
+  Objective: 23.072329
+  Selected features: 9/9
+  L1 norm: 5.087635
+  Positive accuracy lb: 0.9971
+  Negative accuracy lb: 0.9565
+
+
+============================================================
+Training Complete!
+============================================================
+Training total accuracy: 0.8829
+  Class 1: 0.9524 (126 samples)
+  Class 2: 0.7637 (182 samples)
+  Class 3: 0.8807 (218 samples)
+  Class 4: 0.9515 (165 samples)
+  Class 5: 0.9130 (69 samples)
+Testing total accuracy: 0.8053
+  Class 1: 0.9688 (32 samples)
+  Class 2: 0.6889 (45 samples)
+  Class 3: 0.7037 (54 samples)
+  Class 4: 0.9286 (42 samples)
+  Class 5: 0.8235 (17 samples)
+H1 weights: [-0.2444814521, 1.2497664772, -1.74336198, -2.078877966, -0.6647080958, 1.4294830709, -1.1812731432, -1.3013949696, -0.3562772486]
+H1 b: 193.0033201413
+H2 weights: [-2.8461904665, -1.3892714073, 0.4337246829, 0.0, 0.0810694245, -0.5461571278, 0.9150271591, -0.1700260442, -0.0459649725]
+H2 b: 103.3439212934
+H3 weights: [-0.8121131953, -0.762240597, -1.6027148955, 0.94445185, -0.0666435209, 1.7849745148, -0.1469490211, 0.0574360934, -1.4889941963]
+H3 b: 94.7976601015
+H4 weights: [-1.3879523642, 0.6921295532, 0.0445077622, -0.5530399879, -0.5273104442, 0.0, 0.4223069372, -0.2951305748, -1.1652573417]
+H4 b: 129.6508998215
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 21:18:13 UTC] stock_ord | SVOR
+----------------------------------------------------------------------------------------------------
+Total SVOR time budget: 1800s (single optimization problem)
+Training total accuracy: 0.7053
+  Class 1: 0.7143 (126 samples)
+  Class 2: 0.5714 (182 samples)
+  Class 3: 0.6927 (218 samples)
+  Class 4: 0.7939 (165 samples)
+  Class 5: 0.8696 (69 samples)
+Testing total accuracy: 0.6421
+  Class 1: 0.7188 (32 samples)
+  Class 2: 0.5556 (45 samples)
+  Class 3: 0.5370 (54 samples)
+  Class 4: 0.7381 (42 samples)
+  Class 5: 0.8235 (17 samples)
+Weights (w): [0.273823129, 0.0915956807, 0.0514815975, -0.1412720322, 0.0409233481, -0.2392129959, 0.0917129828, 0.1219088322, 0.3218835802]
+Thresholds (b): [25.6749100024, 28.0632524678, 31.0772521732, 33.9949912503]
+
+----------------------------------------------------------------------------------------------------
+[2026-04-23 21:18:13 UTC] stock_ord | NPSVOR
+----------------------------------------------------------------------------------------------------
+Total NPSVOR time budget: 1800s; per rank time limit: 360s across 5 ranks
+Training total accuracy: 0.8026
+  Class 1: 0.9127 (126 samples)
+  Class 2: 0.6319 (182 samples)
+  Class 3: 0.8165 (218 samples)
+  Class 4: 0.8606 (165 samples)
+  Class 5: 0.8696 (69 samples)
+Testing total accuracy: 0.7211
+  Class 1: 0.8750 (32 samples)
+  Class 2: 0.6000 (45 samples)
+  Class 3: 0.6296 (54 samples)
+  Class 4: 0.8095 (42 samples)
+  Class 5: 0.8235 (17 samples)
+Rank 1 weights: [0.0734833906, -0.0335100622, 0.0699453262, 0.1276016867, 0.0716875667, -0.1449426248, 0.0417694861, -0.0481980108, 0.0283812693]
+Rank 1 b: -10.1171451532
+Rank 2 weights: [0.1174110342, -0.0004668824, -0.0029792784, -0.0076701949, 0.030455036, -0.0526079827, 0.0434715262, -0.0518847707, 0.080676853]
+Rank 2 b: -9.2189555960
+Rank 3 weights: [0.0880552472, 0.069372142, -0.0170270612, -0.0599127388, -0.0026049943, -0.1033396425, 0.0345944971, 0.0766151047, 0.098578458]
+Rank 3 b: -9.3871268918
+Rank 4 weights: [0.1023498486, 0.0727020023, 0.1061896068, -0.1215370815, 0.0057204641, -0.0777437675, -0.0006685789, 0.1399563978, 0.188518426]
+Rank 4 b: -14.9092442030
+Rank 5 weights: [0.0830291771, 0.001979335, 0.0618149878, 0.0314808835, 0.0102336576, -0.0996391386, -0.0030694104, 0.0131774744, 0.091109826]
+Rank 5 b: -10.3717931778
+Checkpoint Excel saved after stock_ord / HCESVM(test3): /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after stock_ord / SVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+Checkpoint Excel saved after stock_ord / NPSVOR: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
+
+====================================================================================================
+[2026-04-23 21:18:14 UTC] Run complete
+====================================================================================================
+Log saved to: /home/bs10081/Developer/hcesvm-multiclass-eval/results/archive/20260423_three_model_ordinal_regression/three_model_ordinal_regression_all_20260423_190157.log
+Excel report target: /home/bs10081/Developer/hcesvm-multiclass-eval/docs/reports/TEACHING_DATA_THREE_MODEL_COMPARISON_20260423_190157.xlsx
