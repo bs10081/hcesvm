@@ -31,13 +31,22 @@ def _accuracy(y_true, y_pred) -> float:
     return float(calculate_accuracy(np.asarray(y_true), np.asarray(y_pred)))
 
 
+def _fit_or_skip_size_limited(model, X, y) -> None:
+    try:
+        model.fit(X, y)
+    except RuntimeError as exc:
+        if "size-limited gurobi license" in str(exc).lower():
+            raise unittest.SkipTest(str(exc)) from exc
+        raise
+
+
 @unittest.skipUnless(HAS_GUROBI, "gurobipy is required for optimization tests.")
 class WorkbookModelTests(unittest.TestCase):
     def test_svor_matches_reported_balance_accuracy(self) -> None:
         dataset = load_lingo_split_workbook(SVOR_BALANCE)
         model = SVORImplicitQP(C=1.0)
 
-        model.fit(dataset.X_train, dataset.y_train)
+        _fit_or_skip_size_limited(model, dataset.X_train, dataset.y_train)
 
         train_accuracy = _accuracy(dataset.y_train, model.predict(dataset.X_train))
         test_accuracy = _accuracy(dataset.y_test, model.predict(dataset.X_test))
@@ -51,7 +60,7 @@ class WorkbookModelTests(unittest.TestCase):
         dataset = load_lingo_split_workbook(NPSVOR_BALANCE)
         model = NPSVORQP(C1=1.0, C2=1.0, epsilon=0.2, prediction_rule="min_distance")
 
-        model.fit(dataset.X_train, dataset.y_train)
+        _fit_or_skip_size_limited(model, dataset.X_train, dataset.y_train)
 
         train_accuracy = _accuracy(dataset.y_train, model.predict(dataset.X_train))
         test_accuracy = _accuracy(dataset.y_test, model.predict(dataset.X_test))

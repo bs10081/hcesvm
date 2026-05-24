@@ -1,0 +1,31 @@
+[2026-05-25 01:39:19 Asia/Taipei] GitHub Actions CI failure follow-up
+
+Repository: /home/bs10081/Developer/hcesvm
+Branch: experiment/hcesvm-runner-boston-nodefile
+
+CI failure:
+- GitHub Actions CI failed in tests/test_ordinal_models.py because the full Balance SVOR/NPSVOR workbook models exceed the active size-limited Gurobi license on the hosted runner.
+
+Code change:
+- tests/test_ordinal_models.py now preserves the full workbook accuracy checks when a full Gurobi license is available.
+- If model.fit raises the existing size-limited Gurobi RuntimeError, only those full-workbook validation tests are skipped.
+- The existing subset smoke test remains in place to keep size-limited CI exercising SVOR/NPSVOR fit and predict paths.
+
+Dependency Review follow-up:
+- GitHub dependency-review failed because Dependency graph was not enabled for the repository.
+- Tried to enable dependency_graph via GitHub API. The API accepted the request but did not expose dependency_graph in the returned security_and_analysis object.
+- Enabled Dependabot security updates via GitHub API.
+- If dependency-review still reports unsupported after rerun, enable Dependency graph manually at:
+  https://github.com/bs10081/hcesvm/settings/security_analysis
+
+Validation commands and results:
+
+1. source .venv/bin/activate && pytest tests/test_ordinal_models.py -q
+   Result: passed
+   Output:
+   6 passed in 1.29s
+
+2. source .venv/bin/activate && pytest tests -q
+   Result: passed
+   Output:
+   85 passed in 2.26s
