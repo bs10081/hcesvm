@@ -1,253 +1,205 @@
 # HCESVM Classification Strategies
 
-## Overview
+This document describes the current `HierarchicalCESVM(strategy=...)` interface.
+The implementation accepts four strategy names:
 
-This document provides a comprehensive overview of all classification strategies implemented in the HCESVM project for three-class ordinal classification problems.
+- `single_filter`
+- `multiple_filter`
+- `inverted`
+- `test3`
 
-## Strategy Types
+`class1_first` and `test2` are historical experiment names. They may still
+appear in old scripts or reports, but they are not valid current
+`HierarchicalCESVM` strategy values.
 
-HCESVM supports **6 classification strategies**, categorized into two types:
+## Current Strategy Table
 
-### Fixed Strategies
-Strategies with predetermined class groupings that do not change based on sample distribution.
+| Strategy | Scope | H1 Grouping | H2 / Hk Grouping | Objective |
+| --- | --- | --- | --- | --- |
+| `single_filter` | 3-class only | Class 3 vs {1,2} | H2: Class 2 vs 1 | Standard |
+| `multiple_filter` | 3-class only | Class 1 vs {2,3} | H2: {1,2} vs 3 | Standard |
+| `inverted` | 3-class only | Medium vs {Majority, Minority} | H2: {Medium, Majority} vs Minority | Standard |
+| `test3` | N-class | Class 1 vs {2..N} | Hk: {1..k} vs {k+1..N} | Balanced sample weighting |
 
-### Dynamic Strategies
-Strategies that adapt class groupings based on the minority/majority class distribution in the training data.
+Legend:
 
----
+- Majority: class with the largest training sample count
+- Medium: class with the middle training sample count
+- Minority: class with the smallest training sample count
+- `s+`: positive sample count for a binary classifier
+- `s-`: negative sample count for a binary classifier
 
-## Strategy Comparison Table
+## 3-Class Strategies
 
-| Strategy | Type | H1 Grouping | H2 Grouping | Objective Function | Use Case |
-|----------|------|-------------|-------------|-------------------|----------|
-| **single_filter** | Fixed | Class 3 vs {1,2} | Class 2 vs 1 | Standard | Original baseline strategy |
-| **multiple_filter** | Fixed | Class 1 vs {2,3} | {1,2} vs 3 | Standard | Standard multi-filter approach |
-| **class1_first** | Fixed | Class 1 vs {2,3} | Class 2 vs 3 | Standard | Prioritize Class 1 identification |
-| **inverted** | Dynamic | Medium vs {Maj,Min} | {Med,Maj} vs Min | Standard | Adaptive class grouping |
-| **test2** | Dynamic | Based on minority position | Based on minority position | Removes accuracy term for majority (when Class 2) | Aggressive imbalance handling |
-| **test3** | Dynamic | Based on minority position | Based on minority position | Sample-weighted: `-(1/s_p)·l_p - (1/s_n)·l_n` | Balanced imbalance handling |
+### `single_filter`
 
-**Legend:**
-- **Maj** = Majority class (largest sample count)
-- **Med** = Medium class (middle sample count)
-- **Min** = Minority class (smallest sample count)
-- **s_p** = Number of positive (+1) class samples
-- **s_n** = Number of negative (-1) class samples
+`single_filter` is the original 3-class cascade:
 
----
+```text
+H1: Class 3 (+1) vs {Class 1, Class 2} (-1)
+  if H1 predicts +1 -> Class 3
+  otherwise run H2
 
-## Fixed vs Dynamic Strategies
-
-### Fixed Strategies
-
-**Characteristics:**
-- Class groupings are predetermined
-- Independent of sample distribution
-- Consistent behavior across all datasets
-- Simpler to understand and debug
-
-**When to use:**
-- Balanced datasets (sample counts similar across classes)
-- When domain knowledge suggests a specific classification hierarchy
-- When reproducibility and consistency are prioritized
-
-**Available Fixed Strategies:**
-1. `single_filter` - Class 3 separation first
-2. `multiple_filter` - Class 1 separation first
-3. `class1_first` - Class 1 priority with specific prediction flow
-
-### Dynamic Strategies
-
-**Characteristics:**
-- Class groupings adapt to sample distribution
-- Minority class is identified at training time
-- Different groupings for different datasets
-- More complex but potentially better for imbalanced data
-
-**When to use:**
-- Imbalanced datasets (significant differences in sample counts)
-- When minority class detection is critical
-- When optimal performance across diverse datasets is desired
-
-**Available Dynamic Strategies:**
-1. `inverted` - Medium class separation with standard objective
-2. `test2` - Aggressive accuracy term removal for majority class
-3. `test3` - Balanced sample-weighted objective function
-
----
-
-## Hierarchical Classification Flow
-
-All strategies use a two-level hierarchical approach:
-
-```
-Training Data (3 classes)
-        ↓
-   [Classifier H1]
-        ↓
-   Split into 2 groups
-        ↓
-   [Classifier H2]
-        ↓
-  Final 3-class prediction
+H2: Class 2 (+1) vs Class 1 (-1)
+  if H2 predicts +1 -> Class 2
+  otherwise -> Class 1
 ```
 
-### Prediction Logic
+### `multiple_filter`
 
-**Fixed Strategies (single_filter, multiple_filter):**
-- H1 → Binary prediction separates one group from another
-- H2 → Further classifies within remaining group
+`multiple_filter` is the standard fixed 3-class grouping:
 
-**Fixed Strategy (class1_first):**
-```
-H1: Class 1 (+1) vs {Class 2, 3} (-1)
-  ├─ H1 = +1 → Class 1
-  └─ H1 = -1 → H2: Class 2 (+1) vs Class 3 (-1)
-      ├─ H2 = +1 → Class 2
-      └─ H2 = -1 → Class 3
-```
+```text
+H1: Class 1 (+1) vs {Class 2, Class 3} (-1)
+  if H1 predicts +1 -> Class 1
+  otherwise run H2
 
-**Dynamic Strategies:**
-- Minority class position is detected during training
-- Class groupings are adjusted accordingly
-- Prediction flow depends on detected configuration
-
----
-
-## Objective Function Variations
-
-### Standard Objective
-```
-min  Σⱼ(w⁺ⱼ + w⁻ⱼ) + C·Σᵢ(αᵢ + βᵢ + ρᵢ) - l⁺ - l⁻
-```
-Used by: `single_filter`, `multiple_filter`, `class1_first`, `inverted`
-
-### Test2 Objective (Accuracy Term Removal)
-```
-When majority class is Class 2:
-  Remove the accuracy term for the majority class
-
-Result: More aggressive optimization for minority class
-```
-Used by: `test2`
-
-### Test3 Objective (Sample-Weighted)
-```
-min  Σⱼ(w⁺ⱼ + w⁻ⱼ) + C·Σᵢ(αᵢ + βᵢ + ρᵢ) - (1/s⁺)·l⁺ - (1/s⁻)·l⁻
-```
-Where:
-- `s⁺` = number of positive class samples
-- `s⁻` = number of negative class samples
-
-**Effect:** Minority class receives higher weight automatically through inverse sample counting.
-
-Used by: `test3`
-
----
-
-## Strategy Selection Guide
-
-### Decision Tree
-
-```
-Do you have significant class imbalance?
-├─ No → Use Fixed Strategy
-│   ├─ Domain suggests Class 1 priority? → class1_first
-│   ├─ Standard approach? → multiple_filter
-│   └─ Baseline comparison? → single_filter
-│
-└─ Yes → Use Dynamic Strategy
-    ├─ Aggressive minority focus? → test2
-    ├─ Balanced weighting? → test3
-    └─ Standard adaptation? → inverted
+H2: {Class 1, Class 2} (+1) vs Class 3 (-1)
+  if H2 predicts +1 -> Class 2
+  otherwise -> Class 3
 ```
 
-### Recommended Defaults
+### `inverted`
 
-| Scenario | Recommended Strategy | Rationale |
-|----------|---------------------|-----------|
-| Balanced dataset | `multiple_filter` or `class1_first` | Consistent, interpretable |
-| Moderate imbalance (1:2-1:3) | `test3` | Balanced sample weighting |
-| Severe imbalance (>1:3) | `test2` | Aggressive minority focus |
-| Exploratory analysis | `inverted` | Adaptive with standard objective |
-| Production deployment | `class1_first` | Fixed, predictable behavior |
+`inverted` is a 3-class dynamic strategy. It determines majority, medium, and
+minority classes from training sample counts:
 
----
+```text
+H1: Medium (+1) vs {Majority, Minority} (-1)
+H2: {Medium, Majority} (+1) vs Minority (-1)
+```
 
-## Implementation Examples
+The objective remains the standard CE-SVM objective. Only the class grouping is
+data-dependent.
 
-### Fixed Strategy Example
+## N-Class Strategy
+
+### `test3`
+
+`test3` supports 3-class and N-class ordinal classification. For N classes it
+uses `N-1` binary classifiers:
+
+```text
+H1: Class 1 (+1) vs {2, 3, ..., N} (-1)
+H2: {1, 2} (+1) vs {3, 4, ..., N} (-1)
+H3: {1, 2, 3} (+1) vs {4, 5, ..., N} (-1)
+...
+H(N-1): {1, 2, ..., N-1} (+1) vs Class N (-1)
+```
+
+Prediction rule:
+
+```text
+Hk predicts +1 -> Class k
+Hk predicts -1 -> continue to H(k+1)
+H(N-1) predicts -1 -> Class N
+```
+
+`test3` configures each `BinaryCESVM` with:
+
+- `class_weight="balanced"`
+- `accuracy_mode="both"`
+
+The weighted objective is:
+
+```text
+min  sum_j(w+_j + w-_j) + C * sum_i(alpha_i + beta_i + rho_i)
+     - (1 / s+) * l+ - (1 / s-) * l-
+```
+
+This gives the accuracy terms inverse-sample-count weights for the positive and
+negative sides of each binary classifier.
+
+## Selection Guide
+
+| Situation | Recommended Strategy | Notes |
+| --- | --- | --- |
+| 3-class baseline comparison | `single_filter` | Original Class 3 first cascade |
+| 3-class fixed grouping | `multiple_filter` | Stable and easy to compare |
+| 3-class sample-count-adaptive grouping | `inverted` | Uses majority / medium / minority roles |
+| 3-class or N-class teaching-data runs | `test3` | Current N-class path with balanced weighting |
+
+## Examples
+
+3-class fixed strategy:
+
 ```python
 from hcesvm import HierarchicalCESVM
 
 model = HierarchicalCESVM(
     cesvm_params={
-        'C_hyper': 1.0,
-        'M': 1000.0,
-        'time_limit': 1800
+        "C_hyper": 1.0,
+        "M": 1000.0,
+        "time_limit": 1800,
     },
-    strategy='class1_first'  # Fixed strategy
+    strategy="multiple_filter",
 )
 
 model.fit(X1_train, X2_train, X3_train)
 predictions = model.predict(X_test)
 ```
 
-### Dynamic Strategy Example
+N-class `test3`:
+
 ```python
 from hcesvm import HierarchicalCESVM
 
-# Test3 strategy (sample-weighted)
 model = HierarchicalCESVM(
     cesvm_params={
-        'C_hyper': 1.0,
-        'M': 1000.0,
-        'time_limit': 1800
+        "C_hyper": 1.0,
+        "M": 1000.0,
+        "time_limit": 1800,
     },
-    strategy='test3'  # Dynamic strategy with balanced weighting
+    strategy="test3",
+    n_classes=4,
 )
 
-model.fit(X1_train, X2_train, X3_train)
+model.fit(X1_train, X2_train, X3_train, X4_train)
 predictions = model.predict(X_test)
 ```
 
----
+## Runtime Semantics
 
-## Performance Considerations
+`time_limit` is per classifier, not a total cascade budget. A 4-class `test3`
+run trains three binary classifiers, so `time_limit=1800` can take roughly
+`1800s * 3` in the worst case.
 
-### Computational Cost
-All strategies have similar computational complexity, dominated by MIP solving time.
+Teaching-data HCESVM runners preserve this per-classifier behavior:
 
-**Typical solve time per classifier:** 1-30 minutes (depends on dataset size and `time_limit`)
+```bash
+source .venv/bin/activate
+python examples/run_teaching_data_hcesvm_1000.py --time-limit 1800
+python examples/run_teaching_data_hcesvm_full.py --time-limit none
+python examples/run_teaching_data_hcesvm_deadline.py --dataset skill --time-limit 1800
+```
 
-### Memory Usage
-- **Fixed strategies:** Minimal overhead
-- **Dynamic strategies:** Additional sample counting and class detection (~O(n))
+The full runner also supports Gurobi resource controls:
 
-### Accuracy Tradeoffs
-- **Fixed strategies:** Consistent but may not adapt to imbalance
-- **Dynamic strategies:** Potentially better on imbalanced data but less predictable
+```bash
+python examples/run_teaching_data_hcesvm_full.py \
+  --time-limit none \
+  --threads 0 \
+  --soft-mem-limit-gb 56 \
+  --nodefile-start-gb 23.6 \
+  --nodefile-dir auto
+```
 
----
+## Historical References
 
-## Further Reading
+The old strategy documents below describe previous experiments and may not match
+the current `HierarchicalCESVM` constructor:
 
-For detailed information on each strategy:
+- [class1_first.md](./class1_first.md) - historical
+- [test2.md](./test2.md) - historical
+
+Current strategy details:
+
 - [single_filter.md](./single_filter.md)
 - [multiple_filter.md](./multiple_filter.md)
-- [class1_first.md](./class1_first.md)
 - [inverted.md](./inverted.md)
-- [test2.md](./test2.md)
 - [test3.md](./test3.md)
 
 For mathematical details:
+
 - [CE-SVM Mathematical Model](/docs/CE_SVM_MATHEMATICAL_MODEL.md)
 - [Decision Variables](/docs/DECISION_VARIABLES.md)
-
----
-
-## Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2026-02-24 | Initial comprehensive strategy documentation |

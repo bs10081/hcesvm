@@ -20,7 +20,7 @@
 
 然後手動執行:
 ```bash
-python scripts/cleanup_temp_files.py --execute
+source .venv/bin/activate && python scripts/cleanup_temp_files.py --execute
 ```
 
 ---
@@ -31,7 +31,6 @@ python scripts/cleanup_temp_files.py --execute
 **功能**:
 - 自動識別日誌的日期和策略
 - 建立歸檔目錄結構 (`results/archive/YYYYMMDD_strategy/`)
-- 智能檢測比較測試（test2 vs test3）
 - 生成歸檔摘要
 
 **使用**:
@@ -41,17 +40,17 @@ python scripts/cleanup_temp_files.py --execute
 
 然後手動執行:
 ```bash
-python scripts/archive_results.py --execute
+source .venv/bin/activate && python scripts/archive_results.py --execute
 ```
 
 ---
 
 ### `/test-strategies` - 策略測試
-運行所有 6 種分類策略的測試套件。
+運行目前 4 種 `HierarchicalCESVM` 策略的測試套件。
 
 **功能**:
-- 測試固定策略（single_filter, multiple_filter, class1_first）
-- 測試動態策略（inverted, test2, test3）
+- 測試 3-class 策略（single_filter, multiple_filter, inverted）
+- 測試 N-class `test3`
 - 驗證預測邏輯
 - 檢查邊界情況
 

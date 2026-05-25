@@ -49,11 +49,11 @@ git status
 # 2. Review changes
 git diff
 
-# 3. Stage files
-git add src/hcesvm/models/hierarchical.py
+# 3. Stage specific files
+git add README.md docs/strategies/README.md
 
 # 4. Commit
-git commit -m "feat: add class1_first strategy"
+git commit -S -m "docs: refresh strategy guidance"
 
 # 5. Push
 git push
@@ -77,7 +77,7 @@ git push
 
 ```bash
 # Run tests
-pytest tests/ -v
+source .venv/bin/activate && pytest tests/ -v
 
 # Check for secrets
 grep -r "password" src/

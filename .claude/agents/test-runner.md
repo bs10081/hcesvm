@@ -33,6 +33,8 @@ Automated test execution and coverage validation specialist. Ensures code change
 
 ### Smart Test Selection
 ```bash
+source .venv/bin/activate
+
 # All tests
 pytest tests/ -v
 
@@ -48,6 +50,8 @@ pytest --lf -v
 
 ### Coverage Reporting
 ```bash
+source .venv/bin/activate
+
 # HTML report
 pytest tests/ --cov=src/hcesvm --cov-report=html
 

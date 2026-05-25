@@ -2,9 +2,9 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "name": "archive",
   "description": "Archive test result logs from results/ directory into dated subdirectories",
-  "instructions": "Execute the results archival script to organize historical test logs by date and strategy.\n\n**What it does:**\n- Scans results/ directory for log files with date patterns\n- Groups logs by date and strategy (e.g., 20260130_inverted, 20260210_comparison)\n- Creates archive subdirectories automatically\n- Moves logs to appropriate archive folders\n- Generates archive summary report\n\n**Usage:**\n```bash\n# Preview (dry-run mode)\npython scripts/archive_results.py\n\n# Execute archival\npython scripts/archive_results.py --execute\n\n# Execute without confirmation\npython scripts/archive_results.py --execute --yes\n```\n\n**Archive structure:**\n```\nresults/archive/\n├── 20260130_inverted/\n├── 20260201_test2/\n├── 20260210_comparison/\n└── 20260213_class1_first/\n```\n\n**Log naming pattern:**\n`{strategy}_{dataset}_{YYYYMMDD}_{HHMMSS}.log`\n\nRun the archival script now with dry-run mode first to preview the archival plan.",
+  "instructions": "Execute the results archival script to organize historical test logs by date and strategy.\n\n**What it does:**\n- Scans results/ directory for log files with date patterns\n- Groups logs by date and strategy (e.g., 20260130_inverted, 20260210_test3)\n- Creates archive subdirectories automatically\n- Moves logs to appropriate archive folders\n- Generates archive summary report\n\n**Usage:**\n```bash\n# Preview (dry-run mode)\nsource .venv/bin/activate && python scripts/archive_results.py\n\n# Execute archival\nsource .venv/bin/activate && python scripts/archive_results.py --execute\n\n# Execute without confirmation\nsource .venv/bin/activate && python scripts/archive_results.py --execute --yes\n```\n\n**Archive structure:**\n```\nresults/archive/\n├── 20260130_inverted/\n├── 20260210_test3/\n└── 20260514_test3_no_time_limit_full/\n```\n\n**Log naming pattern:**\n`{strategy}_{dataset}_{YYYYMMDD}_{HHMMSS}.log`\n\nRun the archival script now with dry-run mode first to preview the archival plan.",
   "handler": {
     "type": "command",
-    "command": "python scripts/archive_results.py"
+    "command": "source .venv/bin/activate && python scripts/archive_results.py"
   }
 }
