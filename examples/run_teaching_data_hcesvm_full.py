@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run HCESVM(test3) on full teaching-data ordinal datasets."""
+"""Run HCESVM(test3/test4) on full teaching-data ordinal datasets."""
 
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ from hcesvm.utils.teaching_data_1000 import (
 from hcesvm.utils.teaching_data_runtime import format_hcesvm_time_limit_message
 
 
-MODEL_NAME = "HCESVM(test3)"
+DEFAULT_STRATEGY = "test3"
 DEFAULT_DATASETS = [
     "bostonhousing_ord",
     "hayes_roth",
@@ -166,7 +166,13 @@ def parse_optional_path(value: str) -> str | None:
 
 def parse_arguments(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run HCESVM(test3) on full teaching-data ordinal datasets."
+        description="Run HCESVM(test3/test4) on full teaching-data ordinal datasets."
+    )
+    parser.add_argument(
+        "--strategy",
+        choices=["test3", "test4"],
+        default=DEFAULT_STRATEGY,
+        help="HCESVM strategy to run. Default: test3.",
     )
     parser.add_argument(
         "--datasets",
@@ -249,7 +255,10 @@ def human_timestamp(dt: datetime | None) -> str | None:
 
 
 def git_output(*args: str) -> str:
-    return subprocess.check_output(args, cwd=ROOT, text=True).strip()
+    try:
+        return subprocess.check_output(args, cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return "unavailable"
 
 
 def banner(tee: TeeStream, title: str, *, major: bool = True) -> None:
@@ -452,11 +461,11 @@ def build_metric_headers(max_classes: int) -> list[str]:
     return headers
 
 
-def build_metric_row(outcome: DatasetRunOutcome, *, max_classes: int) -> dict[str, Any]:
+def build_metric_row(outcome: DatasetRunOutcome, *, max_classes: int, model_name: str) -> dict[str, Any]:
     split = outcome.split
     row: dict[str, Any] = {
         "dataset": split.name,
-        "model": MODEL_NAME,
+        "model": model_name,
         "status": outcome.status,
         "stop_reason": outcome.stop_reason,
         "n_classes": split.n_classes,
@@ -695,7 +704,7 @@ def render_markdown_report(
     run_config: dict[str, Any],
 ) -> str:
     lines = [
-        "# HCESVM(test3) Full Teaching-Data Validation",
+        f"# {run_config['model_name']} Full Teaching-Data Validation",
         "",
         f"Generated at: `{generated_at}`",
         f"Workbook: `{workbook_path}`",
@@ -703,6 +712,7 @@ def render_markdown_report(
         "",
         "## Run Configuration",
         "",
+        f"- Strategy: `{run_config['strategy']}`",
         f"- Threads: `{run_config['threads']}`",
         f"- SoftMemLimit: `{run_config['soft_mem_limit_gb']} GB`",
         f"- Per-classifier time limit: `{run_config['time_limit_label']}`",
@@ -752,13 +762,25 @@ def is_expected_early_stop(outcome: DatasetRunOutcome) -> bool:
     ).startswith("requested stop after")
 
 
+def model_name_for_strategy(strategy: str) -> str:
+    return f"HCESVM({strategy})"
+
+
+def archive_label_for_strategy(strategy: str, time_limit: int | None) -> str:
+    suffix = "no_time_limit_full" if time_limit is None else "teaching_data_full"
+    return f"{strategy}_{suffix}"
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_arguments(argv)
     started_at = utc_now()
     timestamp = short_timestamp(started_at)
     date_prefix = started_at.strftime("%Y%m%d")
 
-    archive_label = "test3_no_time_limit_full" if args.time_limit is None else "test3_teaching_data_full"
+    strategy = args.strategy
+    model_name = model_name_for_strategy(strategy)
+    strategy_label = strategy.upper()
+    archive_label = archive_label_for_strategy(strategy, args.time_limit)
     archive_dir = ROOT / "results" / "archive" / f"{date_prefix}_{archive_label}"
     archive_dir.mkdir(parents=True, exist_ok=True)
     dataset_slug = "all" if len(args.datasets) > 1 else args.datasets[0]
@@ -768,9 +790,9 @@ def main(argv: list[str] | None = None) -> int:
         dataset_slug=dataset_slug,
         timestamp=timestamp,
     )
-    log_path = archive_dir / f"test3_{dataset_slug}_{timestamp}.log"
-    xlsx_path = ROOT / "docs" / "reports" / f"{dataset_slug.upper()}_HCESVM_TEST3_FULL_{timestamp}.xlsx"
-    report_path = ROOT / "docs" / "reports" / f"{dataset_slug.upper()}_HCESVM_TEST3_FULL_{timestamp}.md"
+    log_path = archive_dir / f"{strategy}_{dataset_slug}_{timestamp}.log"
+    xlsx_path = ROOT / "docs" / "reports" / f"{dataset_slug.upper()}_HCESVM_{strategy_label}_FULL_{timestamp}.xlsx"
+    report_path = ROOT / "docs" / "reports" / f"{dataset_slug.upper()}_HCESVM_{strategy_label}_FULL_{timestamp}.md"
 
     metric_rows: list[dict[str, Any]] = []
     parameter_rows: list[dict[str, Any]] = []
@@ -782,6 +804,8 @@ def main(argv: list[str] | None = None) -> int:
         "generated_at_utc": human_timestamp(started_at),
         "branch": git_output("git", "rev-parse", "--abbrev-ref", "HEAD"),
         "commit": git_output("git", "rev-parse", "HEAD"),
+        "strategy": strategy,
+        "model_name": model_name,
         "worktree": str(ROOT),
         "log_path": str(log_path),
         "excel_path": str(xlsx_path),
@@ -805,9 +829,10 @@ def main(argv: list[str] | None = None) -> int:
 
     with log_path.open("w", encoding="utf-8", buffering=1) as log_handle:
         tee = TeeStream(sys.stdout, log_handle)
-        banner(tee, "HCESVM(test3) full teaching-data validation")
+        banner(tee, f"{model_name} full teaching-data validation")
         print(f"Branch: {metadata['branch']}", file=tee)
         print(f"Commit: {metadata['commit']}", file=tee)
+        print(f"Strategy: {metadata['strategy']}", file=tee)
         print(f"Datasets: {metadata['datasets']}", file=tee)
         print(format_hcesvm_time_limit_message(args.time_limit), file=tee)
         print(f"Threads: {args.threads}", file=tee)
@@ -864,7 +889,7 @@ def main(argv: list[str] | None = None) -> int:
 
         for split in loaded_splits:
 
-            banner(tee, f"{split.name} | {MODEL_NAME}", major=False)
+            banner(tee, f"{split.name} | {model_name}", major=False)
             print(f"Source URL: {split.source_url}", file=tee)
             print(f"Split rule: {split.split_rule}", file=tee)
             print(f"Features: {split.n_features}", file=tee)
@@ -897,7 +922,7 @@ def main(argv: list[str] | None = None) -> int:
                 hcesvm_params["mip_focus"] = args.mip_focus
             model = HierarchicalCESVM(
                 cesvm_params=hcesvm_params,
-                strategy="test3",
+                strategy=strategy,
                 n_classes=split.n_classes,
             )
 
@@ -972,7 +997,9 @@ def main(argv: list[str] | None = None) -> int:
                     time_limit_message=time_limit_message,
                 )
                 outcomes.append(outcome)
-                metric_rows.append(build_metric_row(outcome, max_classes=max_classes))
+                metric_rows.append(
+                    build_metric_row(outcome, max_classes=max_classes, model_name=model_name)
+                )
                 metadata[f"{split.name}_final_status"] = outcome.status
                 metadata[f"{split.name}_stop_reason"] = outcome.stop_reason
                 print(dataset_stop_reason, file=tee)
@@ -1025,7 +1052,9 @@ def main(argv: list[str] | None = None) -> int:
                 )
 
             outcomes.append(outcome)
-            metric_rows.append(build_metric_row(outcome, max_classes=max_classes))
+            metric_rows.append(
+                build_metric_row(outcome, max_classes=max_classes, model_name=model_name)
+            )
             metadata[f"{split.name}_final_status"] = outcome.status
             metadata[f"{split.name}_stop_reason"] = outcome.stop_reason
             checkpoint_excel(
@@ -1052,6 +1081,8 @@ def main(argv: list[str] | None = None) -> int:
         workbook_path=xlsx_path,
         log_path=log_path,
         run_config={
+            "strategy": strategy,
+            "model_name": model_name,
             "threads": args.threads,
             "soft_mem_limit_gb": args.soft_mem_limit_gb,
             "time_limit_label": "none" if args.time_limit is None else str(args.time_limit),

@@ -106,7 +106,14 @@ def test_parse_arguments_defaults_to_boston_with_5400s_time_limit() -> None:
     args = runner.parse_arguments([])
 
     assert args.datasets == ["bostonhousing_ord"]
+    assert args.strategy == "test3"
     assert args.time_limit == 5400
+
+
+def test_parse_arguments_accepts_test4_strategy() -> None:
+    args = runner.parse_arguments(["--strategy", "test4"])
+
+    assert args.strategy == "test4"
 
 
 def test_parse_arguments_accepts_no_time_limit() -> None:
@@ -168,6 +175,15 @@ def test_preflight_reports_missing_dataset_sources(monkeypatch) -> None:
     assert "Dataset source preflight failed" in str(exc_info.value)
     assert "hayes_roth" in str(exc_info.value)
     assert "/missing/hayes-roth_split.xlsx" in str(exc_info.value)
+
+
+def test_git_output_falls_back_when_git_metadata_is_unavailable(monkeypatch) -> None:
+    def fake_check_output(*args, **kwargs):
+        raise runner.subprocess.CalledProcessError(128, args[0])
+
+    monkeypatch.setattr(runner.subprocess, "check_output", fake_check_output)
+
+    assert runner.git_output("git", "rev-parse", "HEAD") == "unavailable"
 
 
 def test_lingo_workbook_source_preserves_train_test_sheets(monkeypatch, tmp_path) -> None:
@@ -257,6 +273,7 @@ def test_full_runner_writes_accuracy_and_classifier_diagnostics(monkeypatch, tmp
     metric_headers = metrics_rows[0]
     metric_row = dict(zip(metric_headers, metrics_rows[1]))
     assert metric_row["dataset"] == "bostonhousing_ord"
+    assert metric_row["model"] == "HCESVM(test3)"
     assert metric_row["status"] == "completed"
     assert metric_row["train_total_accuracy"] == 0.2
     assert metric_row["test_total_accuracy"] == 0.2
@@ -276,6 +293,8 @@ def test_full_runner_writes_accuracy_and_classifier_diagnostics(monkeypatch, tmp
 
     metadata_rows = list(workbook["Run_Metadata"].iter_rows(values_only=True))
     metadata = {key: value for key, value in metadata_rows[1:]}
+    assert metadata["strategy"] == "test3"
+    assert metadata["model_name"] == "HCESVM(test3)"
     assert metadata["hcesvm_time_limit_seconds"] == 5400
     assert metadata["threads"] == 20
     assert metadata["soft_mem_limit_gb"] == 56
@@ -288,13 +307,91 @@ def test_full_runner_writes_accuracy_and_classifier_diagnostics(monkeypatch, tmp
     assert len(metadata["bostonhousing_ord_test_row_fingerprint"]) == 64
 
     markdown = report_path.read_text(encoding="utf-8")
+    assert "# HCESVM(test3) Full Teaching-Data Validation" in markdown
     assert "## bostonhousing_ord" in markdown
+    assert "- Strategy: `test3`" in markdown
     assert "- Threads: `20`" in markdown
     assert "- SoftMemLimit: `56.0 GB`" in markdown
     assert "- NodeFileStart: `None`" in markdown
     assert f"- Split rule: `{runner.TEACHING_CSV_SPLIT_RULE}`" in markdown
     assert "| Train | 0.2000 | C1=1.0000" in markdown
     assert "| H4 | Fake H4 | 40/80 | optimal | 4.00 | 40.000000 | 0.000000 | 1.000000 | 2.000000" in markdown
+
+
+def test_full_runner_can_run_test4_strategy(monkeypatch, tmp_path) -> None:
+    split = fake_split()
+
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    monkeypatch.setattr(runner, "HierarchicalCESVM", FakeIncrementalHierarchicalCESVM)
+    monkeypatch.setattr(runner, "git_output", lambda *args: "unavailable")
+    monkeypatch.setattr(
+        runner,
+        "validate_dataset_sources",
+        lambda names: [
+            runner.DatasetSourceSpec(
+                name="bostonhousing_ord",
+                source_type="teaching_csv",
+                source="https://example.test/bostonhousing_ord.csv",
+            )
+        ],
+    )
+    monkeypatch.setattr(runner, "load_dataset_from_spec", lambda spec: split)
+    monkeypatch.setattr(
+        runner,
+        "evaluate_multiclass",
+        lambda y_true, y_pred, *, n_classes: {
+            "total_accuracy": 0.2,
+            **{f"class_{index}_accuracy": (1.0 if index == 1 else 0.0) for index in range(1, n_classes + 1)},
+            **{f"class_{index}_count": int(np.sum(np.asarray(y_true) == index)) for index in range(1, n_classes + 1)},
+        },
+    )
+
+    exit_code = runner.main(
+        [
+            "--strategy",
+            "test4",
+            "--datasets",
+            "bostonhousing_ord",
+            "--time-limit",
+            "1800",
+            "--threads",
+            "0",
+            "--soft-mem-limit-gb",
+            "18",
+            "--heartbeat-interval-seconds",
+            "none",
+        ]
+    )
+
+    assert exit_code == 0
+    assert FakeIncrementalHierarchicalCESVM.last_init is not None
+    assert FakeIncrementalHierarchicalCESVM.last_init["strategy"] == "test4"
+    assert FakeIncrementalHierarchicalCESVM.last_init["cesvm_params"]["time_limit"] == 1800
+    assert FakeIncrementalHierarchicalCESVM.last_init["cesvm_params"]["threads"] == 0
+    assert FakeIncrementalHierarchicalCESVM.last_init["cesvm_params"]["soft_mem_limit_gb"] == 18
+
+    workbook_path = next((tmp_path / "docs" / "reports").glob("BOSTONHOUSING_ORD_HCESVM_TEST4_FULL_*.xlsx"))
+    report_path = next((tmp_path / "docs" / "reports").glob("BOSTONHOUSING_ORD_HCESVM_TEST4_FULL_*.md"))
+    assert next((tmp_path / "results" / "archive").glob("*_test4_teaching_data_full/test4_bostonhousing_ord_*.log"))
+
+    workbook = load_workbook(workbook_path, read_only=True, data_only=True)
+    metrics_rows = list(workbook["Metrics"].iter_rows(values_only=True))
+    metric_headers = metrics_rows[0]
+    metric_row = dict(zip(metric_headers, metrics_rows[1]))
+    assert metric_row["model"] == "HCESVM(test4)"
+
+    metadata_rows = list(workbook["Run_Metadata"].iter_rows(values_only=True))
+    metadata = {key: value for key, value in metadata_rows[1:]}
+    assert metadata["branch"] == "unavailable"
+    assert metadata["commit"] == "unavailable"
+    assert metadata["strategy"] == "test4"
+    assert metadata["model_name"] == "HCESVM(test4)"
+    assert metadata["threads"] == 0
+    assert metadata["soft_mem_limit_gb"] == 18
+
+    markdown = report_path.read_text(encoding="utf-8")
+    assert "# HCESVM(test4) Full Teaching-Data Validation" in markdown
+    assert "- Strategy: `test4`" in markdown
 
 
 def test_full_runner_passes_no_time_limit_to_model(monkeypatch, tmp_path) -> None:
