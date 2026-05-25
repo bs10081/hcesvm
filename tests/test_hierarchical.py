@@ -2,8 +2,8 @@
 Unit tests for HierarchicalCESVM
 
 Tests the hierarchical multi-class classifier including:
-- 3-class strategies (single_filter, multiple_filter, inverted, test3)
-- N-class test3 strategy (5-class, 7-class)
+- 3-class strategies (single_filter, multiple_filter, inverted, test3, test4)
+- N-class test3/test4 strategies
 - Prediction logic and model summaries
 """
 
@@ -134,10 +134,37 @@ class TestHierarchicalCESVMDynamicStrategies:
 
         # Test3 uses fixed grouping, no dynamic class detection
         assert not hasattr(model, 'class_roles') or model.class_roles is None
+        assert model.h1.objective_variant == "standard"
+        assert model.h2.objective_variant == "standard"
+        assert model.h1.class_weight == "balanced"
+        assert model.h2.class_weight == "balanced"
+
+    def test_test4_strategy(self):
+        """Test test4 strategy: test3 grouping with normalized indicator penalty."""
+        model = HierarchicalCESVM(
+            cesvm_params={
+                'C_hyper': 1.0,
+                'M': 1000.0,
+                'time_limit': 120,
+                'verbose': False
+            },
+            strategy='test4'
+        )
+
+        model.fit(self.X1, self.X2, self.X3)
+        predictions = model.predict(self.X_test)
+
+        assert len(predictions) == len(self.y_test)
+        assert all(p in [1, 2, 3] for p in predictions)
+        assert not hasattr(model, 'class_roles') or model.class_roles is None
+        assert model.h1.objective_variant == "test4"
+        assert model.h2.objective_variant == "test4"
+        assert model.h1.class_weight == "balanced"
+        assert model.h2.class_weight == "balanced"
 
 
 class TestHierarchicalCESVMNClass:
-    """Test N-class test3 strategy (N > 3)."""
+    """Test N-class test3/test4 strategies (N > 3)."""
 
     def test_5class_test3_strategy(self):
         """Test test3 strategy with 5 classes."""
@@ -186,6 +213,33 @@ class TestHierarchicalCESVMNClass:
         assert summary['n_classes'] == 5
         assert 'classifiers' in summary
         assert len(summary['classifiers']) == 4
+        assert all(classifier.objective_variant == "standard" for classifier in model.classifiers.values())
+
+    def test_5class_test4_strategy(self):
+        """Test test4 strategy with 5 classes."""
+        np.random.seed(42)
+        X1 = np.random.randn(8, 2) + [0, 0]
+        X2 = np.random.randn(8, 2) + [5, 0]
+        X3 = np.random.randn(8, 2) + [10, 0]
+        X4 = np.random.randn(8, 2) + [15, 0]
+        X5 = np.random.randn(8, 2) + [20, 0]
+
+        model = HierarchicalCESVM(
+            cesvm_params={
+                'C_hyper': 1.0,
+                'M': 1000.0,
+                'time_limit': 120,
+                'verbose': False
+            },
+            strategy='test4',
+            n_classes=5
+        )
+
+        model.fit(X1, X2, X3, X4, X5)
+
+        assert model.n_classes == 5
+        assert len(model.classifiers) == 4
+        assert all(classifier.objective_variant == "test4" for classifier in model.classifiers.values())
 
     def test_7class_test3_strategy(self):
         """Test test3 strategy with 7 classes."""
@@ -276,7 +330,7 @@ class TestHierarchicalCESVMPredictionLogic:
 
 
 class TestHierarchicalCESVMIncrementalFit:
-    """Test incremental training behavior for N-class test3."""
+    """Test incremental training behavior for N-class test3/test4."""
 
     def setup_method(self):
         """Create 5-class data for incremental-fit tests."""
@@ -400,7 +454,8 @@ class TestHierarchicalCESVMStrategyComparison:
         'single_filter',
         'multiple_filter',
         'inverted',
-        'test3'
+        'test3',
+        'test4'
     ])
     def test_all_strategies_work(self, strategy):
         """Test that all strategies can fit and predict."""
@@ -459,7 +514,7 @@ class TestHierarchicalCESVMEdgeCases:
         assert all(p in [1, 2, 3] for p in predictions)
 
     def test_nclass_with_wrong_strategy(self):
-        """Test N-class (N>3) with non-test3 strategy should fail."""
+        """Test N-class (N>3) with a 3-class-only strategy should fail."""
         np.random.seed(42)
         X1 = np.random.randn(5, 2)
         X2 = np.random.randn(5, 2)

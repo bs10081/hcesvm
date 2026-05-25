@@ -92,6 +92,33 @@ class TestBinaryCESVMClassWeight:
         ])
         self.y_imbalanced = np.array([1]*10 + [-1]*2)
 
+    def objective_coefficients(
+        self,
+        *,
+        class_weight: str,
+        C_hyper: float,
+        objective_variant: str = "standard",
+    ) -> dict[str, float]:
+        model = BinaryCESVM(
+            C_hyper=C_hyper,
+            M=1000.0,
+            class_weight=class_weight,
+            objective_variant=objective_variant,
+            time_limit=60,
+            verbose=False,
+            release_solver_resources_after_fit=False,
+        )
+        try:
+            gurobi_model = model.build_model(self.X_imbalanced, self.y_imbalanced)
+            gurobi_model.update()
+            objective = gurobi_model.getObjective()
+            return {
+                objective.getVar(index).VarName: objective.getCoeff(index)
+                for index in range(objective.size())
+            }
+        finally:
+            model.release_solver_resources()
+
     def test_class_weight_none(self):
         """Test with no class weighting."""
         model = BinaryCESVM(
@@ -129,6 +156,31 @@ class TestBinaryCESVMClassWeight:
         assert hasattr(model, 's_minus')
         assert model.s_plus == 10
         assert model.s_minus == 2
+
+    def test_class_weight_none_keeps_indicator_penalty_unscaled(self):
+        """Standard strategies keep C as the alpha/beta/rho coefficient."""
+        coeffs = self.objective_coefficients(class_weight='none', C_hyper=6.0)
+
+        for var_name in ("alpha[0]", "beta[0]", "rho[0]"):
+            assert coeffs[var_name] == pytest.approx(6.0)
+
+    def test_class_weight_balanced_keeps_standard_indicator_penalty_unscaled(self):
+        """Balanced class weighting alone does not activate the test4 objective."""
+        coeffs = self.objective_coefficients(class_weight='balanced', C_hyper=6.0)
+
+        for var_name in ("alpha[0]", "beta[0]", "rho[0]"):
+            assert coeffs[var_name] == pytest.approx(6.0)
+
+    def test_test4_objective_normalizes_indicator_penalty_by_sample_count(self):
+        """The test4 model uses C / n_samples as the alpha/beta/rho coefficient."""
+        coeffs = self.objective_coefficients(
+            class_weight='balanced',
+            C_hyper=6.0,
+            objective_variant='test4',
+        )
+
+        for var_name in ("alpha[0]", "beta[0]", "rho[0]"):
+            assert coeffs[var_name] == pytest.approx(0.5)
 
 
 class TestBinaryCESVMAccuracyMode:
@@ -214,6 +266,11 @@ class TestBinaryCESVMEdgeCases:
         # Should raise an error
         with pytest.raises((ValueError, AssertionError)):
             model.fit(X, y)
+
+    def test_invalid_objective_variant(self):
+        """Unknown objective variants should be rejected at construction time."""
+        with pytest.raises(ValueError, match="objective_variant"):
+            BinaryCESVM(objective_variant="patched_test3")
 
     def test_mismatched_dimensions(self):
         """Test with mismatched X and y dimensions."""

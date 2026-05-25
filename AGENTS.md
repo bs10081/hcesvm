@@ -18,5 +18,7 @@ Hard rules:
 - Do not stage unrelated generated outputs, reports, workbooks, logs, or CSVs.
 
 Current `HierarchicalCESVM` strategies are `single_filter`, `multiple_filter`,
-`inverted`, and `test3`. Treat `class1_first` and `test2` as historical names
-only, unless the user explicitly asks to inspect legacy artifacts.
+`inverted`, `test3`, and `test4`. Treat `class1_first` and `test2` as historical
+names only, unless the user explicitly asks to inspect legacy artifacts.
+
+## Imported Claude Cowork project instructions

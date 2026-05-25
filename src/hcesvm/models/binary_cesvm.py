@@ -26,6 +26,8 @@ class BinaryCESVM:
     
     Mathematical Model:
         min  ||w||_1 + C * Σ(α + β + ρ) - l_+ - l_-
+        test4 objective:
+            min ||w||_1 + (C / n) * Σ(α + β + ρ) - (1/s+)l_+ - (1/s-)l_-
         s.t. y_i * (w·x_i + b) >= 1 - ξ_i
              ξ_i <= M * α_i
              ξ_i <= 1 + M * β_i
@@ -53,6 +55,7 @@ class BinaryCESVM:
         verbose: bool = True,
         accuracy_mode: str = "both",
         class_weight: str = "none",
+        objective_variant: str = "standard",
         heartbeat_interval_seconds: Optional[float] = None,
         retain_raw_solution_arrays: bool = True,
         release_solver_resources_after_fit: bool = True,
@@ -78,6 +81,8 @@ class BinaryCESVM:
                           ("both", "positive_only", "negative_only")
             class_weight: Class weighting for accuracy terms
                          ("none": equal weight (default), "balanced": inverse of sample count)
+            objective_variant: Objective definition to use
+                               ("standard": original CE-SVM, "test4": current test4 model)
             heartbeat_interval_seconds: Emit solver heartbeats this often while optimize()
                                         is still running (None = disabled)
             retain_raw_solution_arrays: Whether to keep per-sample raw solution arrays
@@ -105,6 +110,7 @@ class BinaryCESVM:
         self.verbose = verbose
         self.accuracy_mode = accuracy_mode
         self.class_weight = class_weight
+        self.objective_variant = objective_variant
         self.retain_raw_solution_arrays = retain_raw_solution_arrays
         self.release_solver_resources_after_fit = release_solver_resources_after_fit
 
@@ -119,6 +125,12 @@ class BinaryCESVM:
         if class_weight not in ["none", "balanced"]:
             raise ValueError(
                 f"class_weight must be 'none' or 'balanced', got '{class_weight}'"
+            )
+
+        # Validate objective_variant
+        if objective_variant not in ["standard", "test4"]:
+            raise ValueError(
+                f"objective_variant must be 'standard' or 'test4', got '{objective_variant}'"
             )
 
         if mip_focus is not None:
@@ -249,16 +261,20 @@ class BinaryCESVM:
         #   accuracy_mode="positive_only":  ... - l⁺        (remove -l⁻)
         #   accuracy_mode="negative_only":  ... - l⁻        (remove -l⁺)
         #
-        # Test3 (class_weight="balanced"):
-        #   min  Σⱼ(w⁺ⱼ + w⁻ⱼ) + C·Σᵢ(αᵢ + βᵢ + ρᵢ) - (1/s⁺)·l⁺ - (1/s⁻)·l⁻
+        # Test4 (objective_variant="test4", class_weight="balanced"):
+        #   min  Σⱼ(w⁺ⱼ + w⁻ⱼ) + (C/n)·Σᵢ(αᵢ + βᵢ + ρᵢ) - (1/s⁺)·l⁺ - (1/s⁻)·l⁻
         #   Where s⁺ = |{i: yᵢ=+1}|, s⁻ = |{i: yᵢ=-1}|
-        #   Gives higher weight to accuracy of minority class
+        #   and n = s⁺ + s⁻ for this binary classifier
         #
+        indicator_penalty_weight = self.C_hyper
+        if self.objective_variant == "test4":
+            indicator_penalty_weight = self.C_hyper / n
+
         obj_expr = (
             # Term 1: ||w||₁ = Σⱼ(w⁺ⱼ + w⁻ⱼ)  (L1 regularization for sparsity)
             gp.quicksum(w_plus[j] + w_minus[j] for j in range(d))
-            # Term 2: C·Σᵢ(αᵢ + βᵢ + ρᵢ)  (three-tier misclassification penalty)
-            + self.C_hyper * gp.quicksum(alpha[i] + beta[i] + rho[i] for i in range(n))
+            # Term 2: three-tier misclassification penalty
+            + indicator_penalty_weight * gp.quicksum(alpha[i] + beta[i] + rho[i] for i in range(n))
         )
 
         # Determine accuracy term weights based on class_weight parameter
